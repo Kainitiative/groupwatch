@@ -42,9 +42,9 @@ export default function Landing() {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
-            <Link href="/demo">
+            <Link href="/features">
               <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 text-base bg-primary-foreground/10 text-white border-primary-foreground/20 hover:bg-primary-foreground/20 rounded-xl backdrop-blur-sm transition-all">
-                View Live Demo
+                See All Features
               </Button>
             </Link>
           </div>

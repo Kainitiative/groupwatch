@@ -18,6 +18,17 @@ import SubmitReport from "@/pages/reports/SubmitReport";
 import MyReports from "@/pages/reports/MyReports";
 import SuperAdmin from "@/pages/admin/SuperAdmin";
 import PwaPrompts from "@/components/PwaPrompts";
+// Public content pages
+import Pricing from "@/pages/Pricing";
+import Features from "@/pages/Features";
+import OfflinePwa from "@/pages/OfflinePwa";
+import Help from "@/pages/Help";
+import Legal from "@/pages/Legal";
+import Contact from "@/pages/Contact";
+// Pillar pages
+import AnglingClubs from "@/pages/pillar/AnglingClubs";
+import EnvironmentalGroups from "@/pages/pillar/EnvironmentalGroups";
+import SportsClubs from "@/pages/pillar/SportsClubs";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +48,22 @@ function Router() {
       <Route path="/register" component={Register} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password/:token" component={ResetPassword} />
+
+      {/* Content pages */}
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/features" component={Features} />
+      <Route path="/offline" component={OfflinePwa} />
+      <Route path="/help" component={Help} />
+      <Route path="/legal" component={Legal} />
+      <Route path="/contact" component={Contact} />
+
+      {/* Pillar pages */}
+      <Route path="/for/angling" component={AnglingClubs} />
+      <Route path="/for/environment" component={EnvironmentalGroups} />
+      <Route path="/for/sports" component={SportsClubs} />
+
+      {/* /demo → redirect to register */}
+      <Route path="/demo" component={Register} />
 
       {/* Group public pages */}
       <Route path="/g/:slug" component={GroupProfile} />
