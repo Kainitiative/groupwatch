@@ -9,7 +9,9 @@ import {
   ShieldAlert,
   Users,
   Building,
-  Plus
+  Plus,
+  BarChart2,
+  Map
 } from "lucide-react";
 import { useGetMe, useGetMyGroups, useLogout } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
@@ -95,21 +97,45 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                 <div className="pl-11 space-y-1">
                   {(group.myRole === 'admin' || group.myPermissions.canViewDashboard) && (
                     <Link href={`/g/${group.slug}/reports`} className={cn(
-                      "block px-3 py-1.5 rounded-lg text-sm transition-colors",
-                      location === `/g/${group.slug}/reports` 
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
+                      location === `/g/${group.slug}/reports` || location.startsWith(`/g/${group.slug}/reports/`)
                         ? "text-accent bg-accent/10 font-medium" 
                         : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
                     )}>
+                      <FileText className="w-3.5 h-3.5" />
                       Reports
+                    </Link>
+                  )}
+                  {(group.myRole === 'admin' || group.myPermissions.canViewDashboard) && (
+                    <Link href={`/g/${group.slug}/analytics`} className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
+                      location === `/g/${group.slug}/analytics`
+                        ? "text-accent bg-accent/10 font-medium" 
+                        : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
+                    )}>
+                      <BarChart2 className="w-3.5 h-3.5" />
+                      Analytics
+                    </Link>
+                  )}
+                  {group.myRole === 'admin' && (
+                    <Link href={`/g/${group.slug}/map`} className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
+                      location === `/g/${group.slug}/map`
+                        ? "text-accent bg-accent/10 font-medium" 
+                        : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
+                    )}>
+                      <Map className="w-3.5 h-3.5" />
+                      Map Boundaries
                     </Link>
                   )}
                   {group.myRole === 'admin' && (
                     <Link href={`/g/${group.slug}/settings`} className={cn(
-                      "block px-3 py-1.5 rounded-lg text-sm transition-colors",
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
                       location.startsWith(`/g/${group.slug}/settings`)
                         ? "text-accent bg-accent/10 font-medium" 
                         : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
                     )}>
+                      <Settings className="w-3.5 h-3.5" />
                       Settings
                     </Link>
                   )}

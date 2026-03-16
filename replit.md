@@ -65,6 +65,11 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - `GET /api/admin/groups` — super admin group list
 - `GET/PATCH /api/admin/platform-settings` — platform config
 - `GET /api/admin/revenue` — MRR overview
+- `GET /api/groups/:slug/escalation-contacts` — escalation contacts list
+- `POST/PATCH/DELETE /api/groups/:slug/escalation-contacts/:id` — manage contacts
+- `GET /api/groups/:slug/analytics?period=week|month|year|all` — analytics data
+- `GET /api/groups/:slug/reports/export/csv` — CSV export
+- `GET/POST/PATCH/DELETE /api/groups/:slug/boundaries` — map boundaries
 
 ## Frontend Pages
 
@@ -73,7 +78,10 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - `/dashboard` — user's groups dashboard
 - `/groups/new` — group creation wizard
 - `/g/:slug` — public group profile page
-- `/g/:slug/settings` — group admin settings (tabs: Profile, Members, Incident Types, Billing)
+- `/g/:slug/settings` — group admin settings (tabs: Profile, Members, Incident Types, Escalation, Billing)
+- `/g/:slug/analytics` — analytics charts (reports over time, by type, by severity, day-of-week, KPIs)
+- `/g/:slug/map` — map boundary drawing (Leaflet Draw — polygon boundaries)
+- `/g/:slug/reports/:ref/print` — print-to-PDF individual report (court-quality, auto-triggers print)
 - `/report/:slug` — mobile-first incident report submission
 - `/my-reports` — user's submitted reports
 - `/admin` — super admin dashboard

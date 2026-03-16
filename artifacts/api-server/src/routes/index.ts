@@ -10,6 +10,8 @@ import pushRouter from "./push";
 import billingRouter from "./billing";
 import adminRouter from "./admin";
 import escalationRouter from "./escalation";
+import analyticsRouter from "./analytics";
+import boundariesRouter from "./boundaries";
 
 const router: IRouter = Router();
 
@@ -24,5 +26,7 @@ router.use(pushRouter);
 router.use(billingRouter);
 router.use(adminRouter);
 router.use(escalationRouter);
+router.use(analyticsRouter);
+router.use(boundariesRouter);
 
 export default router;

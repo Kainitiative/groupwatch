@@ -7,7 +7,7 @@ import SidebarLayout from "@/components/layout/SidebarLayout";
 import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft, MapPin, Camera, User, Shield, Clock, CheckCircle2,
-  ArrowUpRight, MessageSquare, Loader2, Lock, Mic, MicOff, AlertTriangle, Flag, PhoneCall
+  ArrowUpRight, MessageSquare, Loader2, Lock, Mic, MicOff, AlertTriangle, Flag, PhoneCall, Printer
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -249,11 +249,18 @@ export default function ReportDetail() {
 
         {/* Back + header */}
         <div>
-          <Link href={`/g/${slug}/reports`}>
-            <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4">
-              <ArrowLeft className="w-4 h-4" /> All Reports
-            </button>
-          </Link>
+          <div className="flex items-center justify-between mb-4">
+            <Link href={`/g/${slug}/reports`}>
+              <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="w-4 h-4" /> All Reports
+              </button>
+            </Link>
+            <Link href={`/g/${slug}/reports/${ref}/print`} target="_blank">
+              <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-3 py-1.5 hover:bg-muted/30">
+                <Printer className="w-3.5 h-3.5" /> Print / PDF
+              </button>
+            </Link>
+          </div>
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 flex-wrap">
