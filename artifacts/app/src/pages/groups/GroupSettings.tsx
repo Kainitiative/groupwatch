@@ -4,7 +4,8 @@ import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUp
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
-import { Settings, Users, List, CreditCard, Share2, CheckCircle2, Circle, Copy, ExternalLink, ChevronDown, ChevronUp, Shield, Bell, Eye, Wrench } from "lucide-react";
+import { Settings, Users, List, CreditCard, Share2, CheckCircle2, Circle, Copy, ExternalLink, ChevronDown, ChevronUp, Shield, Bell, Eye, Wrench, Download } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 
 type Tab = "profile" | "members" | "incident-types" | "billing";
@@ -380,20 +381,58 @@ export default function GroupSettings() {
                 <h3 className="font-semibold text-white">Share & Join Link</h3>
               </div>
               {joinLink ? (
-                <div>
-                  <div className="bg-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
-                    <span className="text-sm text-slate-300 flex-1 truncate font-mono">{joinLink.url}</span>
-                    <button
-                      onClick={() => { navigator.clipboard.writeText(joinLink.url); toast({ title: "Copied!" }); }}
-                      className="text-slate-400 hover:text-white transition-colors"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </button>
-                    <a href={joinLink.url} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-xs text-slate-400 mb-1.5 font-medium">Join link</p>
+                    <div className="bg-slate-800 rounded-xl px-4 py-3 flex items-center gap-3">
+                      <span className="text-sm text-slate-300 flex-1 truncate font-mono">{joinLink.url}</span>
+                      <button
+                        onClick={() => { navigator.clipboard.writeText(joinLink.url); toast({ title: "Copied!" }); }}
+                        className="text-slate-400 hover:text-white transition-colors"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </button>
+                      <a href={joinLink.url} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1.5">Share this with members so they can join your group.</p>
                   </div>
-                  <p className="text-xs text-slate-500 mt-2">Share this link with your members so they can join your group.</p>
+                  <div>
+                    <p className="text-xs text-slate-400 mb-2 font-medium">QR Code — print and display at your venue</p>
+                    <div className="flex items-start gap-4">
+                      <div className="bg-white p-3 rounded-xl" id="group-qr-code">
+                        <QRCodeSVG value={joinLink.url} size={120} level="H" />
+                      </div>
+                      <div className="flex flex-col gap-2 pt-1">
+                        <button
+                          onClick={() => {
+                            const svg = document.querySelector("#group-qr-code svg") as SVGElement;
+                            if (!svg) return;
+                            const canvas = document.createElement("canvas");
+                            canvas.width = 400; canvas.height = 400;
+                            const ctx = canvas.getContext("2d")!;
+                            ctx.fillStyle = "white";
+                            ctx.fillRect(0, 0, 400, 400);
+                            const img = new Image();
+                            const svgData = new XMLSerializer().serializeToString(svg);
+                            img.onload = () => {
+                              ctx.drawImage(img, 20, 20, 360, 360);
+                              const a = document.createElement("a");
+                              a.download = `${slug}-join-qr.png`;
+                              a.href = canvas.toDataURL("image/png");
+                              a.click();
+                            };
+                            img.src = "data:image/svg+xml;base64," + btoa(svgData);
+                          }}
+                          className="flex items-center gap-2 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-medium transition-colors"
+                        >
+                          <Download className="w-3.5 h-3.5" /> Download PNG
+                        </button>
+                        <p className="text-xs text-slate-500">High-res PNG for printing</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <p className="text-sm text-slate-400">Loading join link...</p>

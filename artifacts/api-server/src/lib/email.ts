@@ -90,3 +90,35 @@ export async function sendMemberInviteEmail(
     `,
   });
 }
+
+export async function sendReportNotificationEmail(
+  email: string,
+  responderName: string,
+  groupName: string,
+  referenceNumber: string,
+  incidentTypeName: string,
+  severity: string,
+  reportUrl: string
+): Promise<void> {
+  if (!process.env.SMTP_USER) return;
+
+  const severityColour = severity === "emergency" ? "#dc2626" : severity === "high" ? "#ea580c" : severity === "medium" ? "#ca8a04" : "#2563eb";
+
+  await transporter.sendMail({
+    from: `"${APP_NAME}" <${FROM_ADDRESS}>`,
+    to: email,
+    subject: `[${severity.toUpperCase()}] New incident report for ${groupName} — ${referenceNumber}`,
+    html: `
+      <h2>New Incident Report</h2>
+      <p>Hi ${responderName},</p>
+      <p>A new incident has been reported to <strong>${groupName}</strong>.</p>
+      <table style="border-collapse:collapse;width:100%;max-width:480px;margin:16px 0;">
+        <tr><td style="padding:8px;background:#f3f4f6;font-weight:bold;">Reference</td><td style="padding:8px;">${referenceNumber}</td></tr>
+        <tr><td style="padding:8px;background:#f3f4f6;font-weight:bold;">Type</td><td style="padding:8px;">${incidentTypeName}</td></tr>
+        <tr><td style="padding:8px;background:#f3f4f6;font-weight:bold;">Severity</td><td style="padding:8px;"><span style="color:${severityColour};font-weight:bold;">${severity.toUpperCase()}</span></td></tr>
+      </table>
+      <p><a href="${reportUrl}" style="display:inline-block;background:#10b981;color:white;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold;">View Report →</a></p>
+      <p>The ${APP_NAME} team</p>
+    `,
+  });
+}

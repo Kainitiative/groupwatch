@@ -12,6 +12,24 @@ import {
 import { eq, and, desc, count } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
 import { getGroupBySlug, getMemberRecord, getMemberPermissions, generateReferenceNumber } from "../lib/groups";
+import { sendReportNotificationEmail } from "../lib/email";
+import { sendPushToGroupResponders } from "../lib/push";
+import multer from "multer";
+import path from "path";
+import fs from "fs";
+import exifr from "exifr";
+
+const uploadsDir = path.join(process.cwd(), "uploads", "photos");
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+
+const photoUpload = multer({
+  dest: uploadsDir,
+  limits: { fileSize: 8 * 1024 * 1024, files: 10 },
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) cb(null, true);
+    else cb(new Error("Only image files are accepted"));
+  },
+});
 
 const router = Router();
 
@@ -188,6 +206,46 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
     submittedAt: report.submittedAt,
     photoCount: 0,
   });
+
+  // Fire notifications asynchronously (do not block response)
+  const reportUrl = `${process.env.APP_URL || "https://incidentiq.io"}/g/${slug}/reports/${referenceNumber}`;
+  const notifTitle = `New ${incidentType.name} — ${severity.toUpperCase()}`;
+  const notifBody = `${group.name} · ${referenceNumber}`;
+
+  sendPushToGroupResponders(group.id, { title: notifTitle, body: notifBody, url: reportUrl }).catch(() => {});
+
+  // Email eligible responders
+  (async () => {
+    try {
+      const eligibleResponders = await db
+        .select({ user: usersTable, perms: groupMemberPermissionsTable })
+        .from(groupMemberPermissionsTable)
+        .innerJoin(usersTable, eq(usersTable.id, groupMemberPermissionsTable.userId))
+        .innerJoin(groupMembersTable, and(
+          eq(groupMembersTable.groupId, groupMemberPermissionsTable.groupId),
+          eq(groupMembersTable.userId, groupMemberPermissionsTable.userId)
+        ))
+        .where(and(
+          eq(groupMemberPermissionsTable.groupId, group.id),
+          eq(groupMemberPermissionsTable.canReceiveNotifications, true),
+          eq(groupMembersTable.status, "active")
+        ));
+
+      await Promise.allSettled(
+        eligibleResponders
+          .filter(r => r.user.id !== req.session.userId)
+          .map(r => sendReportNotificationEmail(
+            r.user.email,
+            r.user.name,
+            group.name,
+            referenceNumber,
+            incidentType.name,
+            severity,
+            reportUrl
+          ))
+      );
+    } catch {}
+  })();
 });
 
 router.get("/groups/:groupSlug/reports/:referenceNumber", requireAuth, async (req, res): Promise<void> => {
@@ -341,6 +399,85 @@ router.post("/groups/:groupSlug/reports/:referenceNumber/updates", requireAuth, 
     escalatedTo: update.escalatedTo,
     createdAt: update.createdAt,
   });
+});
+
+router.post(
+  "/groups/:groupSlug/reports/:referenceNumber/photos",
+  requireAuth,
+  photoUpload.array("photos", 10),
+  async (req, res): Promise<void> => {
+    const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
+    const refNum = Array.isArray(req.params.referenceNumber) ? req.params.referenceNumber[0] : req.params.referenceNumber;
+    const group = await getGroupBySlug(slug);
+    if (!group) { res.status(404).json({ error: "Group not found" }); return; }
+
+    const member = await getMemberRecord(group.id, req.session.userId!);
+    if (!member) { res.status(403).json({ error: "You are not a member of this group" }); return; }
+
+    const [report] = await db
+      .select()
+      .from(incidentReportsTable)
+      .where(and(
+        eq(incidentReportsTable.referenceNumber, refNum),
+        eq(incidentReportsTable.groupId, group.id)
+      ));
+
+    if (!report) { res.status(404).json({ error: "Report not found" }); return; }
+    if (report.reporterId !== req.session.userId && member.role !== "admin" && member.role !== "responder") {
+      res.status(403).json({ error: "You can only add photos to your own reports" }); return;
+    }
+
+    const files = (req.files ?? []) as Express.Multer.File[];
+    if (files.length === 0) { res.status(422).json({ error: "No photos provided" }); return; }
+
+    const saved = await Promise.all(files.map(async (file) => {
+      let exifLat: number | null = null;
+      let exifLng: number | null = null;
+      let exifTaken: Date | null = null;
+      try {
+        const exif = await exifr.parse(file.path, { pick: ["GPSLatitude", "GPSLongitude", "DateTimeOriginal"] });
+        if (exif?.GPSLatitude && exif?.GPSLongitude) {
+          exifLat = exif.GPSLatitude;
+          exifLng = exif.GPSLongitude;
+        }
+        if (exif?.DateTimeOriginal) exifTaken = new Date(exif.DateTimeOriginal);
+      } catch {}
+
+      const [photo] = await db.insert(reportPhotosTable).values({
+        reportId: report.id,
+        url: file.path,
+        uploadedByUserId: req.session.userId!,
+        filePath: file.path,
+        fileSize: file.size,
+        exifLatitude: exifLat,
+        exifLongitude: exifLng,
+        exifTakenAt: exifTaken,
+      }).returning();
+
+      const photoUrl = `/api/photos/${photo.id}`;
+      await db.update(reportPhotosTable).set({ url: photoUrl }).where(eq(reportPhotosTable.id, photo.id));
+
+      return {
+        id: photo.id,
+        url: photoUrl,
+        exifTakenAt: photo.exifTakenAt,
+        exifLatitude: photo.exifLatitude,
+        exifLongitude: photo.exifLongitude,
+      };
+    }));
+
+    res.status(201).json({ photos: saved, count: saved.length });
+  }
+);
+
+router.get("/photos/:photoId", requireAuth, async (req, res): Promise<void> => {
+  const photoId = Array.isArray(req.params.photoId) ? req.params.photoId[0] : req.params.photoId;
+  const [photo] = await db.select().from(reportPhotosTable).where(eq(reportPhotosTable.id, photoId));
+  if (!photo) { res.status(404).json({ error: "Photo not found" }); return; }
+  if (!fs.existsSync(photo.filePath)) { res.status(404).json({ error: "File not found" }); return; }
+  res.setHeader("Content-Type", photo.mimeType || "image/jpeg");
+  res.setHeader("Cache-Control", "private, max-age=86400");
+  fs.createReadStream(photo.filePath).pipe(res);
 });
 
 export default router;
