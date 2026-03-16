@@ -9,6 +9,7 @@ import reportsRouter from "./reports";
 import pushRouter from "./push";
 import billingRouter from "./billing";
 import adminRouter from "./admin";
+import escalationRouter from "./escalation";
 
 const router: IRouter = Router();
 
@@ -22,5 +23,6 @@ router.use(reportsRouter);
 router.use(pushRouter);
 router.use(billingRouter);
 router.use(adminRouter);
+router.use(escalationRouter);
 
 export default router;

@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { useGetReport, useAddReportUpdate, useGetMe } from "@workspace/api-client-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { getGetReportQueryKey } from "@workspace/api-client-react";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft, MapPin, Camera, User, Shield, Clock, CheckCircle2,
-  ArrowUpRight, MessageSquare, Loader2, Lock, Mic, MicOff, AlertTriangle, Flag
+  ArrowUpRight, MessageSquare, Loader2, Lock, Mic, MicOff, AlertTriangle, Flag, PhoneCall
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -104,9 +104,21 @@ export default function ReportDetail() {
 
   const [noteText, setNoteText] = useState("");
   const [newStatus, setNewStatus] = useState<string>("");
-  const [activePanel, setActivePanel] = useState<"note" | "status" | null>(null);
+  const [activePanel, setActivePanel] = useState<"note" | "status" | "escalation" | null>(null);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef<any>(null);
+  const [selectedContactId, setSelectedContactId] = useState<string>("");
+  const [escalationNote, setEscalationNote] = useState<string>("");
+
+  const { data: escalationContacts = [] } = useQuery<any[]>({
+    queryKey: [`/api/groups/${slug}/escalation-contacts`],
+    queryFn: async () => {
+      const res = await fetch(`/api/groups/${slug}/escalation-contacts`, { credentials: "include" });
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: activePanel === "escalation",
+  });
 
   const report = detail?.report;
   const updates = detail?.updates ?? [];
@@ -190,6 +202,27 @@ export default function ReportDetail() {
     }
   };
 
+  const handleEscalate = async () => {
+    if (!selectedContactId) return;
+    try {
+      await addUpdate.mutateAsync({
+        groupSlug: slug, referenceNumber: ref,
+        data: {
+          updateType: "escalation" as any,
+          escalationContactId: selectedContactId,
+          note: escalationNote.trim() || undefined,
+        } as any,
+      });
+      invalidate();
+      setSelectedContactId("");
+      setEscalationNote("");
+      setActivePanel(null);
+      toast({ title: "Report escalated", description: "Status updated to Escalated." });
+    } catch (e: any) {
+      toast({ title: "Error", description: e?.message ?? "Could not escalate report", variant: "destructive" });
+    }
+  };
+
   if (isLoading) return (
     <SidebarLayout>
       <div className="flex items-center justify-center py-32">
@@ -269,6 +302,13 @@ export default function ReportDetail() {
               <MessageSquare className="w-4 h-4 mr-1.5" />
               Add Note
             </Button>
+            <Button
+              size="sm" variant="outline" className="rounded-xl border-orange-500/40 text-orange-400 hover:bg-orange-500/10"
+              onClick={() => setActivePanel(activePanel === "escalation" ? null : "escalation")}
+            >
+              <PhoneCall className="w-4 h-4 mr-1.5" />
+              Escalate
+            </Button>
           </div>
 
           {/* Status panel */}
@@ -331,6 +371,74 @@ export default function ReportDetail() {
                   Cancel
                 </Button>
               </div>
+            </div>
+          )}
+
+          {/* Escalation panel */}
+          {activePanel === "escalation" && (
+            <div className="mt-4 pt-4 border-t border-border space-y-3">
+              {escalationContacts.length === 0 ? (
+                <div className="text-sm text-muted-foreground text-center py-4">
+                  <PhoneCall className="w-6 h-6 mx-auto mb-2 opacity-40" />
+                  <p>No escalation contacts configured.</p>
+                  <p className="text-xs mt-1">An admin can add contacts in Settings → Escalation.</p>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <p className="text-sm font-medium text-foreground mb-2">Select contact to escalate to:</p>
+                    <div className="space-y-2">
+                      {escalationContacts.map((c: any) => (
+                        <button
+                          key={c.id}
+                          onClick={() => setSelectedContactId(selectedContactId === c.id ? "" : c.id)}
+                          className={cn(
+                            "w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left transition-colors",
+                            selectedContactId === c.id
+                              ? "border-orange-500/60 bg-orange-500/10"
+                              : "border-border hover:border-border/80 hover:bg-muted/30"
+                          )}
+                        >
+                          <div className="w-8 h-8 rounded-full bg-orange-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">{c.name}{c.role && <span className="text-muted-foreground font-normal"> · {c.role}</span>}</p>
+                            {c.organisation && <p className="text-xs text-muted-foreground">{c.organisation}</p>}
+                            <div className="flex gap-3 mt-0.5">
+                              {c.phone && <span className="text-xs text-emerald-400">{c.phone}</span>}
+                              {c.email && <span className="text-xs text-muted-foreground">{c.email}</span>}
+                            </div>
+                          </div>
+                          {selectedContactId === c.id && (
+                            <div className="w-4 h-4 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-1">
+                              <CheckCircle2 className="w-3 h-3 text-white" />
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <Textarea
+                    value={escalationNote}
+                    onChange={(e) => setEscalationNote(e.target.value)}
+                    placeholder="Optional: reason for escalation or instructions…"
+                    className="min-h-[70px] resize-none text-sm"
+                  />
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm" onClick={handleEscalate}
+                      disabled={!selectedContactId || addUpdate.isPending}
+                      className="rounded-xl bg-orange-600 hover:bg-orange-500 text-white"
+                    >
+                      {addUpdate.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Escalate Report"}
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => { setActivePanel(null); setSelectedContactId(""); setEscalationNote(""); }}>
+                      Cancel
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

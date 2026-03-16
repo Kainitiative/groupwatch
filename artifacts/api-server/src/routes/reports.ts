@@ -8,6 +8,7 @@ import {
   groupMembersTable,
   groupMemberPermissionsTable,
   usersTable,
+  escalationContactsTable,
 } from "@workspace/db";
 import { eq, and, desc, count, gte } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
@@ -421,6 +422,24 @@ router.post("/groups/:groupSlug/reports/:referenceNumber/updates", requireAuth, 
       .where(eq(incidentReportsTable.id, result.id));
   }
 
+  // When escalating, look up the contact name for the escalatedTo field
+  let escalatedToText: string | null = null;
+  if (updateType === "escalation" && escalationContactId) {
+    const [contact] = await db
+      .select()
+      .from(escalationContactsTable)
+      .where(eq(escalationContactsTable.id, escalationContactId));
+    if (contact) {
+      escalatedToText = contact.organisation
+        ? `${contact.name} (${contact.organisation})`
+        : contact.name;
+      // Also mark the report as escalated
+      await db.update(incidentReportsTable)
+        .set({ status: "escalated" })
+        .where(eq(incidentReportsTable.id, result.id));
+    }
+  }
+
   const [update] = await db
     .insert(reportUpdatesTable)
     .values({
@@ -429,8 +448,9 @@ router.post("/groups/:groupSlug/reports/:referenceNumber/updates", requireAuth, 
       actorNameSnapshot: actorUser?.name ?? "Unknown",
       updateType,
       note: note ?? null,
-      newStatus: newStatus ?? null,
+      newStatus: updateType === "escalation" ? "escalated" : (newStatus ?? null),
       escalationContactId: escalationContactId ?? null,
+      escalatedTo: escalatedToText,
     })
     .returning();
 
