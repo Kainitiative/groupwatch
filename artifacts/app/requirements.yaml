@@ -1,0 +1,22 @@
+packages:
+  "framer-motion": "For smooth page transitions and micro-interactions"
+  "recharts": "For analytics and revenue charts in the admin dashboard"
+  "date-fns": "For formatting timestamps on reports and activity logs"
+  "react-hook-form": "For robust form state management"
+  "@hookform/resolvers": "For Zod schema validation with forms"
+  "zod": "For strict schema validation on all inputs"
+
+images:
+  - path: "artifacts/app/public/images/hero-bg.png"
+    description: "Dark slate and deep navy abstract geometric background with subtle glowing emerald teal accents, perfect for a professional SaaS hero section"
+    aspect_ratio: "16:9"
+  - path: "artifacts/app/public/images/logo-icon.png"
+    description: "Minimalist emerald teal shield or beacon logo on transparent background"
+    aspect_ratio: "1:1"
+  - path: "artifacts/app/public/images/placeholder-group.png"
+    description: "Abstract soft gradient pattern representing a community or group in muted teal and slate"
+    aspect_ratio: "16:9"
+
+notes:
+  - Hooks are imported directly from @workspace/api-client-react as per project constraints
+  - Using manual sidebar/layout implementations to ensure 100% reliability over assuming specific shadcn sidebar version APIs

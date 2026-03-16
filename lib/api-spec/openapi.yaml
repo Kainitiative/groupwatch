@@ -1,22 +1,40 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
-  version: 0.1.0
-  description: API specification
+  version: 1.0.0
+  description: IncidentIQ - Group Incident Reporting Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication and account management
+  - name: users
+    description: User profile management
+  - name: groups
+    description: Group creation and management
+  - name: members
+    description: Group membership management
+  - name: incident-types
+    description: Custom incident type management per group
+  - name: reports
+    description: Incident report management
+  - name: push
+    description: Web Push notification subscriptions
+  - name: billing
+    description: Stripe subscription and billing
+  - name: admin
+    description: Super-admin platform management
+
 paths:
+  # ─── Health ────────────────────────────────────────────────────────────────
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +42,1987 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ─── Auth ──────────────────────────────────────────────────────────────────
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: Registered and logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "409":
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Log in with email and password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Log out (clears session)
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get the currently authenticated user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/password-reset/request:
+    post:
+      operationId: requestPasswordReset
+      tags: [auth]
+      summary: Request a password reset email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetRequest"
+      responses:
+        "200":
+          description: Reset email sent (always returns 200 to prevent enumeration)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/password-reset/confirm:
+    post:
+      operationId: confirmPasswordReset
+      tags: [auth]
+      summary: Confirm a password reset with the token from the email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordResetConfirm"
+      responses:
+        "200":
+          description: Password updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Users ─────────────────────────────────────────────────────────────────
+  /users/me:
+    get:
+      operationId: getMyProfile
+      tags: [users]
+      summary: Get authenticated user's profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateMyProfile
+      tags: [users]
+      summary: Update authenticated user's profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/me/groups:
+    get:
+      operationId: getMyGroups
+      tags: [users]
+      summary: List all groups the current user belongs to
+      responses:
+        "200":
+          description: List of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupSummary"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Groups ────────────────────────────────────────────────────────────────
+  /groups:
+    post:
+      operationId: createGroup
+      tags: [groups]
+      summary: Create a new group (activates 1-month free trial)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateGroupRequest"
+      responses:
+        "201":
+          description: Group created with trial activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Slug already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}:
+    get:
+      operationId: getGroup
+      tags: [groups]
+      summary: Get a group's public profile by slug
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Group profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "404":
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updateGroup
+      tags: [groups]
+      summary: Update group settings (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateGroupRequest"
+      responses:
+        "200":
+          description: Updated group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/join-link:
+    get:
+      operationId: getJoinLink
+      tags: [groups]
+      summary: Get the group's unique shareable join link (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Join link info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JoinLinkResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/join/{token}:
+    post:
+      operationId: joinViaLink
+      tags: [groups]
+      summary: Join a group using a shareable join link token
+      parameters:
+        - name: token
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Joined group (or join request submitted)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "400":
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/setup-progress:
+    get:
+      operationId: getSetupProgress
+      tags: [groups]
+      summary: Get the onboarding setup checklist progress for a group (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Setup progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetupProgress"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Group Members ─────────────────────────────────────────────────────────
+  /groups/{groupSlug}/members:
+    get:
+      operationId: listMembers
+      tags: [members]
+      summary: List all members of a group
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Member list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupMember"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a member of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/members/invite:
+    post:
+      operationId: inviteMember
+      tags: [members]
+      summary: Invite a user to the group by email (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InviteMemberRequest"
+      responses:
+        "200":
+          description: Invitation sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/members/join-requests:
+    get:
+      operationId: listJoinRequests
+      tags: [members]
+      summary: List pending join requests (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Pending join requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JoinRequest"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/members/join-requests/{requestId}:
+    post:
+      operationId: respondToJoinRequest
+      tags: [members]
+      summary: Approve or reject a join request (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - name: requestId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JoinRequestResponse"
+      responses:
+        "200":
+          description: Request actioned
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/members/{userId}:
+    patch:
+      operationId: updateMember
+      tags: [members]
+      summary: Update a member's role, permissions, or responder status (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - $ref: "#/components/parameters/userId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMemberRequest"
+      responses:
+        "200":
+          description: Updated member
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupMember"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: removeMember
+      tags: [members]
+      summary: Remove a member from the group (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - $ref: "#/components/parameters/userId"
+      responses:
+        "200":
+          description: Member removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Incident Types ─────────────────────────────────────────────────────────
+  /groups/{groupSlug}/incident-types:
+    get:
+      operationId: listIncidentTypes
+      tags: [incident-types]
+      summary: List all incident types for a group
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: List of incident types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IncidentType"
+        "404":
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createIncidentType
+      tags: [incident-types]
+      summary: Create a new incident type for a group (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateIncidentTypeRequest"
+      responses:
+        "201":
+          description: Incident type created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IncidentType"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/incident-types/{typeId}:
+    patch:
+      operationId: updateIncidentType
+      tags: [incident-types]
+      summary: Update an incident type (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - name: typeId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateIncidentTypeRequest"
+      responses:
+        "200":
+          description: Updated incident type
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/IncidentType"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Reports ───────────────────────────────────────────────────────────────
+  /groups/{groupSlug}/reports:
+    get:
+      operationId: listReports
+      tags: [reports]
+      summary: List reports for a group (responders/admins with dashboard access)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, in_progress, escalated, resolved]
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, emergency]
+        - name: incidentTypeId
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: Paginated report list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportListResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: No dashboard access
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createReport
+      tags: [reports]
+      summary: Submit a new incident report
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateReportRequest"
+      responses:
+        "201":
+          description: Report created with reference number
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Report"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/reports/{referenceNumber}:
+    get:
+      operationId: getReport
+      tags: [reports]
+      summary: Get a single report with its full activity timeline
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - name: referenceNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Full report with timeline
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportDetail"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /groups/{groupSlug}/reports/{referenceNumber}/updates:
+    post:
+      operationId: addReportUpdate
+      tags: [reports]
+      summary: Add a status update, note, or action to a report (responders/admins)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+        - name: referenceNumber
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddReportUpdateRequest"
+      responses:
+        "201":
+          description: Update added to timeline
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportUpdate"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/me/reports:
+    get:
+      operationId: getMyReports
+      tags: [reports]
+      summary: Get all reports submitted by the current user
+      responses:
+        "200":
+          description: List of the user's submitted reports
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReportSummary"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Push Notifications ────────────────────────────────────────────────────
+  /push/vapid-public-key:
+    get:
+      operationId: getVapidPublicKey
+      tags: [push]
+      summary: Get the VAPID public key for Web Push subscription
+      responses:
+        "200":
+          description: VAPID public key
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VapidKeyResponse"
+
+  /push/subscribe:
+    post:
+      operationId: subscribePush
+      tags: [push]
+      summary: Register a Web Push subscription for the current user's device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PushSubscribeRequest"
+      responses:
+        "201":
+          description: Push subscription registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /push/unsubscribe:
+    post:
+      operationId: unsubscribePush
+      tags: [push]
+      summary: Remove a Web Push subscription for the current user's device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PushUnsubscribeRequest"
+      responses:
+        "200":
+          description: Subscription removed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  # ─── Billing ───────────────────────────────────────────────────────────────
+  /billing/{groupSlug}/checkout:
+    post:
+      operationId: createCheckoutSession
+      tags: [billing]
+      summary: Create a Stripe Checkout session for subscribing (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckoutRequest"
+      responses:
+        "200":
+          description: Stripe Checkout session URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /billing/{groupSlug}/portal:
+    post:
+      operationId: createBillingPortalSession
+      tags: [billing]
+      summary: Create a Stripe billing portal session (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Stripe billing portal URL
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingPortalResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /billing/{groupSlug}/status:
+    get:
+      operationId: getBillingStatus
+      tags: [billing]
+      summary: Get subscription status for a group (admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Billing status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingStatus"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not an admin of this group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /billing/webhooks:
+    post:
+      operationId: stripeWebhook
+      tags: [billing]
+      summary: Stripe webhook handler
+      responses:
+        "200":
+          description: Webhook processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  # ─── Super Admin ───────────────────────────────────────────────────────────
+  /admin/groups:
+    get:
+      operationId: adminListGroups
+      tags: [admin]
+      summary: List all groups on the platform (super-admin only)
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [trial, active, past_due, cancelled, all]
+      responses:
+        "200":
+          description: Paginated list of all groups
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminGroupListResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a super-admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/groups/{groupSlug}/activate:
+    post:
+      operationId: adminActivateGroup
+      tags: [admin]
+      summary: Manually activate a group subscription (super-admin only)
+      parameters:
+        - $ref: "#/components/parameters/groupSlug"
+      responses:
+        "200":
+          description: Group activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a super-admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/platform-settings:
+    get:
+      operationId: getPlatformSettings
+      tags: [admin]
+      summary: Get global platform settings (super-admin only)
+      responses:
+        "200":
+          description: Platform settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformSettings"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a super-admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    patch:
+      operationId: updatePlatformSettings
+      tags: [admin]
+      summary: Update global platform settings (super-admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePlatformSettingsRequest"
+      responses:
+        "200":
+          description: Updated settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformSettings"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a super-admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /admin/revenue:
+    get:
+      operationId: getRevenueOverview
+      tags: [admin]
+      summary: Get platform revenue overview (super-admin only)
+      responses:
+        "200":
+          description: Revenue overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RevenueOverview"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "403":
+          description: Not a super-admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+# ─── Reusable Parameters ─────────────────────────────────────────────────────
 components:
+  parameters:
+    groupSlug:
+      name: groupSlug
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The unique slug identifying the group
+    userId:
+      name: userId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The user's ID
+
   schemas:
+    # ── Core utility schemas ──────────────────────────────────────────────────
     HealthStatus:
       type: object
       properties:
         status:
           type: string
-      required:
-        - status
+      required: [status]
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+      required: [error]
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    # ── Auth ─────────────────────────────────────────────────────────────────
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+      required: [name, email, password]
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        message:
+          type: string
+      required: [user]
+
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required: [email]
+
+    PasswordResetConfirm:
+      type: object
+      properties:
+        token:
+          type: string
+        password:
+          type: string
+          minLength: 8
+      required: [token, password]
+
+    # ── Users ─────────────────────────────────────────────────────────────────
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        isSuperAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, isSuperAdmin, createdAt]
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        isPublic:
+          type: boolean
+        isSuperAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, isPublic, isSuperAdmin, createdAt]
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        displayName:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        isPublic:
+          type: boolean
+
+    # ── Groups ────────────────────────────────────────────────────────────────
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        groupType:
+          type: string
+        description:
+          type: string
+          nullable: true
+        logoUrl:
+          type: string
+          nullable: true
+        coverImageUrl:
+          type: string
+          nullable: true
+        brandColour:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        contactEmail:
+          type: string
+          nullable: true
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        publicHotspotMapEnabled:
+          type: boolean
+        subscriptionStatus:
+          type: string
+          enum: [trial, active, past_due, cancelled]
+        trialEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        memberCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, slug, groupType, publicHotspotMapEnabled, subscriptionStatus, memberCount, createdAt]
+
+    GroupSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        groupType:
+          type: string
+        logoUrl:
+          type: string
+          nullable: true
+        brandColour:
+          type: string
+          nullable: true
+        subscriptionStatus:
+          type: string
+          enum: [trial, active, past_due, cancelled]
+        myRole:
+          type: string
+          enum: [admin, responder, member]
+        myPermissions:
+          $ref: "#/components/schemas/MemberPermissions"
+      required: [id, name, slug, groupType, subscriptionStatus, myRole, myPermissions]
+
+    CreateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+        slug:
+          type: string
+          minLength: 2
+          maxLength: 60
+          pattern: "^[a-z0-9-]+$"
+        groupType:
+          type: string
+          minLength: 2
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        contactEmail:
+          type: string
+          format: email
+          nullable: true
+      required: [name, slug, groupType]
+
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+        groupType:
+          type: string
+        description:
+          type: string
+          nullable: true
+        brandColour:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        contactEmail:
+          type: string
+          nullable: true
+        socialLinks:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        publicHotspotMapEnabled:
+          type: boolean
+
+    JoinLinkResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        url:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+          nullable: true
+      required: [token, url]
+
+    SetupProgress:
+      type: object
+      properties:
+        profileComplete:
+          type: boolean
+        incidentTypesAdded:
+          type: boolean
+        responderAssigned:
+          type: boolean
+        mapBoundariesDrawn:
+          type: boolean
+        escalationContactsAdded:
+          type: boolean
+        shareLinkViewed:
+          type: boolean
+        completedSteps:
+          type: integer
+        totalSteps:
+          type: integer
+        dismissed:
+          type: boolean
+      required: [profileComplete, incidentTypesAdded, responderAssigned, mapBoundariesDrawn, escalationContactsAdded, shareLinkViewed, completedSteps, totalSteps, dismissed]
+
+    # ── Members ───────────────────────────────────────────────────────────────
+    MemberPermissions:
+      type: object
+      properties:
+        canReceiveNotifications:
+          type: boolean
+        canViewDashboard:
+          type: boolean
+        canActionReports:
+          type: boolean
+        canFileReports:
+          type: boolean
+      required: [canReceiveNotifications, canViewDashboard, canActionReports, canFileReports]
+
+    GroupMember:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        displayName:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        role:
+          type: string
+          enum: [admin, responder, member]
+        roleTitle:
+          type: string
+          nullable: true
+        permissions:
+          $ref: "#/components/schemas/MemberPermissions"
+        isActive:
+          type: boolean
+        joinedAt:
+          type: string
+          format: date-time
+      required: [userId, name, email, role, permissions, isActive, joinedAt]
+
+    InviteMemberRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [member, responder, admin]
+          default: member
+      required: [email]
+
+    JoinRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        requestedAt:
+          type: string
+          format: date-time
+      required: [id, userId, name, email, requestedAt]
+
+    JoinRequestResponse:
+      type: object
+      properties:
+        action:
+          type: string
+          enum: [approve, reject]
+      required: [action]
+
+    UpdateMemberRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [admin, responder, member]
+        roleTitle:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        permissions:
+          $ref: "#/components/schemas/MemberPermissions"
+
+    # ── Incident Types ────────────────────────────────────────────────────────
+    IncidentType:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        colour:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, sortOrder, isActive, createdAt]
+
+    CreateIncidentTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+        colour:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+      required: [name]
+
+    UpdateIncidentTypeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        colour:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    # ── Reports ───────────────────────────────────────────────────────────────
+    ReportSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        referenceNumber:
+          type: string
+        groupSlug:
+          type: string
+        groupName:
+          type: string
+        incidentTypeName:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, emergency]
+        status:
+          type: string
+          enum: [open, in_progress, escalated, resolved]
+        isAnonymous:
+          type: boolean
+        submittedAt:
+          type: string
+          format: date-time
+      required: [id, referenceNumber, groupSlug, groupName, incidentTypeName, severity, status, isAnonymous, submittedAt]
+
+    Report:
+      type: object
+      properties:
+        id:
+          type: string
+        referenceNumber:
+          type: string
+        groupSlug:
+          type: string
+        incidentTypeId:
+          type: string
+        incidentTypeName:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, emergency]
+        description:
+          type: string
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        status:
+          type: string
+          enum: [open, in_progress, escalated, resolved]
+        isAnonymous:
+          type: boolean
+        claimedByUserId:
+          type: string
+          nullable: true
+        claimedByName:
+          type: string
+          nullable: true
+        submittedAt:
+          type: string
+          format: date-time
+        photoCount:
+          type: integer
+      required: [id, referenceNumber, groupSlug, incidentTypeId, incidentTypeName, severity, description, status, isAnonymous, submittedAt, photoCount]
+
+    ReportDetail:
+      type: object
+      properties:
+        report:
+          $ref: "#/components/schemas/Report"
+        photos:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportPhoto"
+        updates:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportUpdate"
+        reporter:
+          $ref: "#/components/schemas/ReporterInfo"
+      required: [report, photos, updates]
+
+    ReporterInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        userId:
+          type: string
+          nullable: true
+      required: [name]
+
+    ReportPhoto:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        exifTakenAt:
+          type: string
+          format: date-time
+          nullable: true
+        exifLatitude:
+          type: number
+          nullable: true
+        exifLongitude:
+          type: number
+          nullable: true
+        uploadedAt:
+          type: string
+          format: date-time
+      required: [id, url, uploadedAt]
+
+    ReportUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        updateType:
+          type: string
+          enum: [claim, status_change, note, photo_added, escalation, auto_claim]
+        actorName:
+          type: string
+        note:
+          type: string
+          nullable: true
+        newStatus:
+          type: string
+          nullable: true
+        escalatedTo:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, updateType, actorName, createdAt]
+
+    CreateReportRequest:
+      type: object
+      properties:
+        incidentTypeId:
+          type: string
+        severity:
+          type: string
+          enum: [low, medium, high, emergency]
+        description:
+          type: string
+          minLength: 10
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        isAnonymous:
+          type: boolean
+          default: false
+        photoUrls:
+          type: array
+          items:
+            type: string
+          default: []
+      required: [incidentTypeId, severity, description]
+
+    AddReportUpdateRequest:
+      type: object
+      properties:
+        updateType:
+          type: string
+          enum: [claim, status_change, note, escalation]
+        note:
+          type: string
+          nullable: true
+        newStatus:
+          type: string
+          enum: [open, in_progress, escalated, resolved]
+          nullable: true
+        escalationContactId:
+          type: string
+          nullable: true
+      required: [updateType]
+
+    ReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: "#/components/schemas/Report"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [reports, total, page, limit, totalPages]
+
+    # ── Push Notifications ────────────────────────────────────────────────────
+    VapidKeyResponse:
+      type: object
+      properties:
+        publicKey:
+          type: string
+      required: [publicKey]
+
+    PushSubscribeRequest:
+      type: object
+      properties:
+        endpoint:
+          type: string
+        p256dh:
+          type: string
+        auth:
+          type: string
+        userAgent:
+          type: string
+          nullable: true
+      required: [endpoint, p256dh, auth]
+
+    PushUnsubscribeRequest:
+      type: object
+      properties:
+        endpoint:
+          type: string
+      required: [endpoint]
+
+    # ── Billing ───────────────────────────────────────────────────────────────
+    CheckoutRequest:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum: [monthly, annual]
+      required: [plan]
+
+    CheckoutResponse:
+      type: object
+      properties:
+        url:
+          type: string
+      required: [url]
+
+    BillingPortalResponse:
+      type: object
+      properties:
+        url:
+          type: string
+      required: [url]
+
+    BillingStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [trial, active, past_due, cancelled]
+        plan:
+          type: string
+          enum: [monthly, annual]
+          nullable: true
+        trialEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        currentPeriodEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        cancelAtPeriodEnd:
+          type: boolean
+      required: [status, cancelAtPeriodEnd]
+
+    # ── Admin ─────────────────────────────────────────────────────────────────
+    AdminGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        groupType:
+          type: string
+        subscriptionStatus:
+          type: string
+          enum: [trial, active, past_due, cancelled]
+        trialEndsAt:
+          type: string
+          format: date-time
+          nullable: true
+        memberCount:
+          type: integer
+        reportCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        adminEmail:
+          type: string
+      required: [id, name, slug, groupType, subscriptionStatus, memberCount, reportCount, createdAt, adminEmail]
+
+    AdminGroupListResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminGroup"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+      required: [groups, total, page, limit, totalPages]
+
+    PlatformSettings:
+      type: object
+      properties:
+        reportingEnabled:
+          type: boolean
+        maintenanceMode:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      required: [reportingEnabled, maintenanceMode, updatedAt]
+
+    UpdatePlatformSettingsRequest:
+      type: object
+      properties:
+        reportingEnabled:
+          type: boolean
+        maintenanceMode:
+          type: boolean
+
+    RevenueOverview:
+      type: object
+      properties:
+        activeMonthly:
+          type: integer
+        activeAnnual:
+          type: integer
+        trialGroups:
+          type: integer
+        estimatedMrrEuros:
+          type: number
+        totalGroups:
+          type: integer
+      required: [activeMonthly, activeAnnual, trialGroups, estimatedMrrEuros, totalGroups]
