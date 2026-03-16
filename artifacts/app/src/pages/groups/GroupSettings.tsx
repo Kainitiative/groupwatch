@@ -220,7 +220,7 @@ export default function GroupSettings() {
   const { toast } = useToast();
 
   const { data: group, isLoading } = useGetGroup(slug);
-  const { data: user } = useGetMe();
+  const { data: user, isLoading: userLoading, isError: userError } = useGetMe();
   const updateGroup = useUpdateGroup();
 
   const [profileForm, setProfileForm] = useState({
@@ -233,6 +233,7 @@ export default function GroupSettings() {
 
   const { data: members = [] } = useListMembers(slug);
   const { data: types = [] } = useListIncidentTypes(slug);
+  const queryClient = useQueryClient();
   const createIncidentType = useCreateIncidentType();
   const { data: billing } = useGetBillingStatus(slug);
   const checkout = useCreateCheckoutSession();
@@ -241,8 +242,15 @@ export default function GroupSettings() {
   const [newTypeName, setNewTypeName] = useState("");
   const [newTypeColour, setNewTypeColour] = useState("#10b981");
 
+  const [, navigate] = useLocation();
+
   if (isLoading) {
     return <SidebarLayout><div className="flex items-center justify-center h-64"><div className="w-6 h-6 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" /></div></SidebarLayout>;
+  }
+
+  if (!userLoading && (userError || !user)) {
+    navigate(`/login?next=/g/${slug}/settings`);
+    return null;
   }
 
   if (!group) {
@@ -266,9 +274,14 @@ export default function GroupSettings() {
         data: { name: newTypeName.trim(), colour: newTypeColour },
       });
       setNewTypeName("");
+      queryClient.invalidateQueries({ queryKey: [`/api/groups/${slug}/incident-types`] });
+      queryClient.invalidateQueries({ queryKey: [`/api/groups/${slug}/setup-progress`] });
       toast({ title: "Added", description: `Incident type "${newTypeName}" added` });
-    } catch {
-      toast({ title: "Error", description: "Failed to add incident type", variant: "destructive" });
+    } catch (err: any) {
+      console.error("[handleAddType] error:", err);
+      const status = err?.status ?? err?.response?.status;
+      const msg = err?.data?.error ?? err?.message ?? "Unknown error";
+      toast({ title: `Error${status ? ` (${status})` : ""}`, description: msg || "Failed to add incident type", variant: "destructive" });
     }
   };
 

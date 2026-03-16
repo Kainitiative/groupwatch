@@ -34,48 +34,57 @@ router.get("/groups/:groupSlug/incident-types", async (req, res): Promise<void> 
 });
 
 router.post("/groups/:groupSlug/incident-types", requireAuth, async (req, res): Promise<void> => {
-  const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
-  const group = await getGroupBySlug(slug);
-  if (!group) { res.status(404).json({ error: "Group not found" }); return; }
+  try {
+    const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
+    const group = await getGroupBySlug(slug);
+    if (!group) { res.status(404).json({ error: "Group not found" }); return; }
 
-  const member = await getMemberRecord(group.id, req.session.userId!);
-  if (!member || member.role !== "admin") {
-    res.status(403).json({ error: "Only group admins can manage incident types" });
-    return;
+    const member = await getMemberRecord(group.id, req.session.userId!);
+    if (!member || member.role !== "admin") {
+      res.status(403).json({ error: "Only group admins can manage incident types" });
+      return;
+    }
+
+    const { name, description, colour, icon } = req.body;
+    if (!name) { res.status(422).json({ error: "Incident type name is required" }); return; }
+
+    // Get current max sort order
+    const existing = await db
+      .select()
+      .from(incidentTypesTable)
+      .where(eq(incidentTypesTable.groupId, group.id));
+
+    const sortOrder = existing.length;
+
+    const [type] = await db
+      .insert(incidentTypesTable)
+      .values({ groupId: group.id, name, description, colour, icon, sortOrder })
+      .returning();
+
+    // Update setup progress (best-effort, don't fail if table doesn't exist)
+    try {
+      await db
+        .update(setupProgressTable)
+        .set({ incidentTypesAdded: true })
+        .where(eq(setupProgressTable.groupId, group.id));
+    } catch (progressErr) {
+      console.warn("[incident-types] setup_progress update failed (non-fatal):", progressErr);
+    }
+
+    res.status(201).json({
+      id: type.id,
+      name: type.name,
+      description: type.description,
+      colour: type.colour,
+      icon: type.icon,
+      sortOrder: type.sortOrder,
+      isActive: type.isActive,
+      createdAt: type.createdAt,
+    });
+  } catch (err) {
+    console.error("[incident-types] POST error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
-
-  const { name, description, colour, icon } = req.body;
-  if (!name) { res.status(422).json({ error: "Incident type name is required" }); return; }
-
-  // Get current max sort order
-  const existing = await db
-    .select()
-    .from(incidentTypesTable)
-    .where(eq(incidentTypesTable.groupId, group.id));
-
-  const sortOrder = existing.length;
-
-  const [type] = await db
-    .insert(incidentTypesTable)
-    .values({ groupId: group.id, name, description, colour, icon, sortOrder })
-    .returning();
-
-  // Update setup progress
-  await db
-    .update(setupProgressTable)
-    .set({ incidentTypesAdded: true })
-    .where(eq(setupProgressTable.groupId, group.id));
-
-  res.status(201).json({
-    id: type.id,
-    name: type.name,
-    description: type.description,
-    colour: type.colour,
-    icon: type.icon,
-    sortOrder: type.sortOrder,
-    isActive: type.isActive,
-    createdAt: type.createdAt,
-  });
 });
 
 router.patch("/groups/:groupSlug/incident-types/:typeId", requireAuth, async (req, res): Promise<void> => {

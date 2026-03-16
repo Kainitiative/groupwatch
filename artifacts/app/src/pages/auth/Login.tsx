@@ -20,10 +20,12 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const loginMutation = useLogin();
+
+  const nextPath = new URLSearchParams(location.split("?")[1] ?? "").get("next") || "/dashboard";
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -34,7 +36,7 @@ export default function Login() {
     try {
       await loginMutation.mutateAsync({ data });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-      setLocation("/dashboard");
+      setLocation(nextPath);
     } catch (error: any) {
       toast({
         variant: "destructive",
