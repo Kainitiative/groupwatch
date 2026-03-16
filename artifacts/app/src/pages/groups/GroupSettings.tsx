@@ -343,8 +343,8 @@ export default function GroupSettings() {
     <SidebarLayout>
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">{group.name} Settings</h1>
-          <p className="text-slate-400 text-sm mt-1">Manage your group's configuration</p>
+          <h1 className="text-2xl font-bold text-foreground">{group.name} Settings</h1>
+          <p className="text-muted-foreground text-sm mt-1">Manage your group's configuration</p>
         </div>
 
         <SetupChecklist groupSlug={slug} />

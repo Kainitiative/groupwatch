@@ -185,13 +185,13 @@ export default function MapBoundaries() {
     <SidebarLayout>
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">Map Boundaries</h1>
-          <p className="text-slate-400 text-sm mt-1">Draw boundaries for your group's area — lakes, parks, reserves, patrol routes</p>
+          <h1 className="text-2xl font-bold text-foreground">Map Boundaries</h1>
+          <p className="text-muted-foreground text-sm mt-1">Draw boundaries for your group's area — lakes, parks, reserves, patrol routes</p>
         </div>
 
-        <div className="bg-blue-950/30 border border-blue-700/40 rounded-2xl p-4 mb-6 flex items-start gap-3">
-          <Info className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
-          <p className="text-sm text-blue-300">
+        <div className="bg-accent/10 border border-accent/30 rounded-2xl p-4 mb-6 flex items-start gap-3">
+          <Info className="w-4 h-4 text-accent mt-0.5 shrink-0" />
+          <p className="text-sm text-foreground/80">
             Use the polygon tool on the map to draw a boundary, then name it and save. Boundaries help organise incidents by location and can be used to filter your dashboard.
           </p>
         </div>

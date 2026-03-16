@@ -92,8 +92,8 @@ export default function Analytics() {
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-white">Analytics</h1>
-            <p className="text-slate-400 text-sm mt-1">Incident trends and response performance</p>
+            <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
+            <p className="text-muted-foreground text-sm mt-1">Incident trends and response performance</p>
           </div>
           <div className="flex items-center gap-2">
             {/* Period filter */}
