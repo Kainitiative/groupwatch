@@ -25,13 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(createSessionMiddleware());
 
-app.use((req, _res, next) => {
-  if (req.method !== "GET") {
-    console.log(`[API] ${req.method} ${req.path}`, req.body ?? {});
-  }
-  next();
-});
-
 app.use("/api", router);
 
 export default app;

@@ -187,6 +187,29 @@ router.patch("/groups/:groupSlug/members/:userId", requireAuth, async (req, res)
 
   const { role, roleTitle, isActive, permissions } = req.body;
 
+  // Prevent demoting the last admin
+  if (role && role !== "admin") {
+    const targetMember = await db
+      .select()
+      .from(groupMembersTable)
+      .where(and(eq(groupMembersTable.groupId, group.id), eq(groupMembersTable.userId, targetUserId)))
+      .limit(1);
+    if (targetMember[0]?.role === "admin") {
+      const allAdmins = await db
+        .select()
+        .from(groupMembersTable)
+        .where(and(
+          eq(groupMembersTable.groupId, group.id),
+          eq(groupMembersTable.role, "admin"),
+          eq(groupMembersTable.status, "active")
+        ));
+      if (allAdmins.length <= 1) {
+        res.status(422).json({ error: "Cannot demote the last admin. Promote another member to admin first." });
+        return;
+      }
+    }
+  }
+
   if (role || roleTitle !== undefined || isActive !== undefined) {
     const memberUpdates: Record<string, unknown> = {};
     if (role) memberUpdates.role = role;

@@ -133,15 +133,6 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
         <span className={`text-xs px-2.5 py-1 rounded-full font-medium flex-shrink-0 ${roleBadge(member.role)}`}>
           {member.roleTitle || member.role}
         </span>
-        {isMe && member.role === "admin" && (
-          <button
-            onClick={handleQuickResponder}
-            disabled={updateMember.isPending}
-            className="text-xs px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50 flex-shrink-0"
-          >
-            + Make me Responder
-          </button>
-        )}
         <button onClick={() => setExpanded(!expanded)} className="text-slate-500 hover:text-white transition-colors flex-shrink-0">
           {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </button>
@@ -173,9 +164,9 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
             </div>
           </div>
 
-          {role === "responder" && (
+          {role !== "member" && (
             <div>
-              <p className="text-xs text-slate-400 mb-2 font-medium">Responder Permissions</p>
+              <p className="text-xs text-slate-400 mb-2 font-medium">Notification & Access Permissions</p>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { key: "canReceiveNotifications", icon: Bell, label: "Receive push notifications" },
