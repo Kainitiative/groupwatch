@@ -73,9 +73,11 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             <span className="text-xs font-semibold text-sidebar-foreground/50 uppercase tracking-wider">
               My Groups
             </span>
-            <Link href="/groups/new" className="text-sidebar-foreground/50 hover:text-accent transition-colors">
-              <Plus className="w-4 h-4" />
-            </Link>
+            {!groups?.some(g => g.myRole === "admin") && (
+              <Link href="/groups/new" className="text-sidebar-foreground/50 hover:text-accent transition-colors">
+                <Plus className="w-4 h-4" />
+              </Link>
+            )}
           </div>
           <div className="space-y-4 mt-3">
             {groups.map((group) => (

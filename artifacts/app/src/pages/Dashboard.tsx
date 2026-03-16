@@ -41,11 +41,13 @@ export default function Dashboard() {
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">Here's an overview of your groups and recent activity.</p>
         </div>
-        <Link href="/groups/new">
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-xl font-semibold">
-            <Plus className="w-4 h-4 mr-2" /> Create Group
-          </Button>
-        </Link>
+        {!groups?.some(g => g.myRole === "admin") && (
+          <Link href="/groups/new">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 rounded-xl font-semibold">
+              <Plus className="w-4 h-4 mr-2" /> Create Group
+            </Button>
+          </Link>
+        )}
       </div>
 
       <div className="mb-10">
@@ -64,11 +66,13 @@ export default function Dashboard() {
               <p className="text-muted-foreground max-w-sm mb-6">
                 Create a group to start managing incident reports for your community, or ask an admin for a join link.
               </p>
-              <Link href="/groups/new">
-                <Button className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-xl shadow-lg">
-                  Create a New Group
-                </Button>
-              </Link>
+              {!groups?.some(g => g.myRole === "admin") && (
+                <Link href="/groups/new">
+                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-xl shadow-lg">
+                    Create a New Group
+                  </Button>
+                </Link>
+              )}
             </CardContent>
           </Card>
         ) : (
