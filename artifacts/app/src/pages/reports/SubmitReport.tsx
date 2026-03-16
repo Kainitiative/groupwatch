@@ -67,7 +67,7 @@ export default function SubmitReport() {
     try {
       const report = await createReport.mutateAsync({
         groupSlug: slug,
-        createReportRequest: data,
+        data: data,
       });
       setSubmittedRef(report.referenceNumber);
       setSubmitted(true);

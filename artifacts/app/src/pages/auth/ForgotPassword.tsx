@@ -12,7 +12,7 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await resetRequest.mutateAsync({ passwordResetRequest: { email } });
+    await resetRequest.mutateAsync({ data: { email } });
     setSubmitted(true);
   };
 

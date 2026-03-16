@@ -24,7 +24,7 @@ export default function ResetPassword() {
     if (password.length < 8) { setErr("Password must be at least 8 characters"); return; }
 
     try {
-      await confirmReset.mutateAsync({ passwordResetConfirm: { token, password } });
+      await confirmReset.mutateAsync({ data: { token, password } });
       setDone(true);
     } catch (e: any) {
       setErr(e?.response?.data?.error ?? "This reset link has expired or is invalid");

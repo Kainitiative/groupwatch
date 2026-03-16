@@ -89,7 +89,7 @@ export default function GroupSettings() {
 
   const handleSaveProfile = async () => {
     try {
-      await updateGroup.mutateAsync({ groupSlug: slug, updateGroupRequest: profileForm });
+      await updateGroup.mutateAsync({ groupSlug: slug, data: profileForm });
       toast({ title: "Saved", description: "Group profile updated" });
     } catch {
       toast({ title: "Error", description: "Failed to save changes", variant: "destructive" });
@@ -101,7 +101,7 @@ export default function GroupSettings() {
     try {
       await createIncidentType.mutateAsync({
         groupSlug: slug,
-        createIncidentTypeRequest: { name: newTypeName.trim(), colour: newTypeColour },
+        data: { name: newTypeName.trim(), colour: newTypeColour },
       });
       setNewTypeName("");
       toast({ title: "Added", description: `Incident type "${newTypeName}" added` });
