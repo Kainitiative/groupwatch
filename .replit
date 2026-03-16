@@ -29,3 +29,4 @@ timeoutMs = 20000
 
 [userenv.shared]
 STRIPE_MONTHLY_PRICE_ID = "price_1T70FyDStywT1EFF0k5Xw4aH"
+VAPID_PUBLIC_KEY = "BAKeVDd9fhUqZJNFGoWbpOVALUp2QoiQ1ghrUGrp3AnemwZIlcsxX5fgMzfXxsuiNDiLiJb-GVI0dfpUAJT8vBU"
