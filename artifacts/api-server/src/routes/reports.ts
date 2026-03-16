@@ -9,7 +9,7 @@ import {
   groupMemberPermissionsTable,
   usersTable,
 } from "@workspace/db";
-import { eq, and, desc, count } from "drizzle-orm";
+import { eq, and, desc, count, gte } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
 import { getGroupBySlug, getMemberRecord, getMemberPermissions, generateReferenceNumber } from "../lib/groups";
 import { sendReportNotificationEmail } from "../lib/email";
@@ -119,6 +119,50 @@ router.get("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise<
     page,
     limit,
     totalPages: Math.ceil(total / limit),
+  });
+});
+
+router.get("/groups/:groupSlug/reports/stats", requireAuth, async (req, res): Promise<void> => {
+  const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
+  const group = await getGroupBySlug(slug);
+  if (!group) { res.status(404).json({ error: "Group not found" }); return; }
+
+  const member = await getMemberRecord(group.id, req.session.userId!);
+  if (!member) { res.status(403).json({ error: "Not a member" }); return; }
+  const perms = await getMemberPermissions(group.id, req.session.userId!);
+  if (!perms?.canViewDashboard && member.role !== "admin") {
+    res.status(403).json({ error: "No dashboard access" }); return;
+  }
+
+  const periodParam = req.query.period as string | undefined;
+  const periodConditions: any[] = [eq(incidentReportsTable.groupId, group.id)];
+  if (periodParam && periodParam !== "all") {
+    const now = new Date();
+    const cutoffs: Record<string, Date> = {
+      today: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+      week: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000),
+      month: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000),
+      year: new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000),
+    };
+    if (cutoffs[periodParam]) periodConditions.push(gte(incidentReportsTable.submittedAt, cutoffs[periodParam]));
+  }
+
+  const [total, open, inProgress, escalated, resolved, emergency] = await Promise.all([
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions)),
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions, eq(incidentReportsTable.status, "open"))),
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions, eq(incidentReportsTable.status, "in_progress"))),
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions, eq(incidentReportsTable.status, "escalated"))),
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions, eq(incidentReportsTable.status, "resolved"))),
+    db.select({ c: count() }).from(incidentReportsTable).where(and(...periodConditions, eq(incidentReportsTable.severity, "emergency"))),
+  ]);
+
+  res.json({
+    total: Number(total[0]?.c ?? 0),
+    open: Number(open[0]?.c ?? 0),
+    inProgress: Number(inProgress[0]?.c ?? 0),
+    escalated: Number(escalated[0]?.c ?? 0),
+    resolved: Number(resolved[0]?.c ?? 0),
+    emergency: Number(emergency[0]?.c ?? 0),
   });
 });
 

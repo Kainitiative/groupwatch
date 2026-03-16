@@ -17,6 +17,8 @@ import GroupSettings from "@/pages/groups/GroupSettings";
 import SubmitReport from "@/pages/reports/SubmitReport";
 import MyReports from "@/pages/reports/MyReports";
 import SuperAdmin from "@/pages/admin/SuperAdmin";
+import ReportsDashboard from "@/pages/groups/ReportsDashboard";
+import ReportDetail from "@/pages/groups/ReportDetail";
 import PwaPrompts from "@/components/PwaPrompts";
 // Public content pages
 import Pricing from "@/pages/Pricing";
@@ -72,6 +74,8 @@ function Router() {
       {/* Protected */}
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/groups/new" component={CreateGroup} />
+      <Route path="/g/:slug/reports/:ref" component={ReportDetail} />
+      <Route path="/g/:slug/reports" component={ReportsDashboard} />
       <Route path="/g/:slug/settings" component={GroupSettings} />
       <Route path="/my-reports" component={MyReports} />
       <Route path="/admin" component={SuperAdmin} />
