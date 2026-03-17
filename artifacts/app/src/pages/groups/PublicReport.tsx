@@ -190,7 +190,7 @@ export default function PublicReport() {
           </p>
         </div>
         <div className="absolute bottom-4 left-0 right-0 text-center">
-          <p className="text-xs text-gray-300">Powered by <span className="font-semibold">IncidentIQ</span></p>
+          <p className="text-xs text-gray-300">Powered by <span className="font-semibold">GroupWatch Platform</span></p>
         </div>
       </div>
     );
@@ -376,7 +376,7 @@ export default function PublicReport() {
 
       {/* Footer */}
       <div className="text-center py-3 border-t border-gray-100 bg-white">
-        <p className="text-xs text-gray-300">Powered by <span className="font-semibold text-gray-400">IncidentIQ</span></p>
+        <p className="text-xs text-gray-300">Powered by <span className="font-semibold text-gray-400">GroupWatch Platform</span></p>
       </div>
     </div>
   );

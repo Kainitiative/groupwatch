@@ -17,7 +17,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mb-2">1. Who we are</h3>
               <p className="leading-relaxed">
-                IncidentIQ is a Software-as-a-Service platform operated from Ireland. We provide incident reporting tools to organised groups including clubs, neighbourhood associations, and community organisations. References to "we", "us", or "our" mean the operator of IncidentIQ.
+                GroupWatch is a Software-as-a-Service platform operated from Ireland. We provide incident reporting tools to organised groups including clubs, neighbourhood associations, and community organisations. References to "we", "us", or "our" mean the operator of GroupWatch.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">2. What data we collect</h3>
@@ -46,7 +46,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">5. Your rights (GDPR)</h3>
               <p className="leading-relaxed">
-                You have the right to access, correct, or delete your personal data. You may request a data export or deletion by emailing <a href="mailto:hello@incidentiq.ie" className="text-accent hover:underline">hello@incidentiq.ie</a>. We will respond within 30 days.
+                You have the right to access, correct, or delete your personal data. You may request a data export or deletion by emailing <a href="mailto:hello@groupwatch.io" className="text-accent hover:underline">hello@groupwatch.io</a>. We will respond within 30 days.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">6. Third-party services</h3>
@@ -64,12 +64,12 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mb-2">1. Acceptance</h3>
               <p className="leading-relaxed">
-                By registering a group on IncidentIQ you agree to these terms. The group administrator accepts these terms on behalf of the group and its members.
+                By registering a group on GroupWatch you agree to these terms. The group administrator accepts these terms on behalf of the group and its members.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">2. Permitted use</h3>
               <p className="leading-relaxed">
-                IncidentIQ is provided for legitimate incident reporting by organised groups. You must not use the platform to file false reports, harass individuals, or for any unlawful purpose.
+                GroupWatch is provided for legitimate incident reporting by organised groups. You must not use the platform to file false reports, harass individuals, or for any unlawful purpose.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">3. Subscription and billing</h3>
@@ -89,7 +89,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">6. Limitation of liability</h3>
               <p className="leading-relaxed">
-                IncidentIQ is a reporting tool. We make no warranty that use of the platform will lead to any particular outcome in legal, regulatory, or enforcement proceedings. The platform is provided as-is. Our liability is limited to the amount paid for the subscription in the preceding 12 months.
+                GroupWatch is a reporting tool. We make no warranty that use of the platform will lead to any particular outcome in legal, regulatory, or enforcement proceedings. The platform is provided as-is. Our liability is limited to the amount paid for the subscription in the preceding 12 months.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">7. Changes to these terms</h3>
@@ -104,7 +104,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">9. Contact</h3>
               <p className="leading-relaxed">
-                Questions about these terms: <a href="mailto:hello@incidentiq.ie" className="text-accent hover:underline">hello@incidentiq.ie</a>
+                Questions about these terms: <a href="mailto:hello@groupwatch.io" className="text-accent hover:underline">hello@groupwatch.io</a>
               </p>
             </section>
           </div>

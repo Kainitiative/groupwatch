@@ -20,10 +20,10 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
           <div className="flex justify-between items-center h-20">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="bg-primary/90 p-1.5 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="IncidentIQ" className="h-6 w-6" />
+                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-6 w-6" />
               </div>
               <span className={`font-display font-bold text-xl tracking-tight ${transparentHeader ? "text-white" : "text-foreground"}`}>
-                IncidentIQ
+                GroupWatch
               </span>
             </Link>
             
@@ -66,11 +66,11 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
             <div className="md:col-span-1">
               <Link href="/" className="flex items-center gap-2 mb-4">
-                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="IncidentIQ" className="h-6 w-6 opacity-90" />
-                <span className="font-display font-bold text-xl tracking-tight text-white">IncidentIQ</span>
+                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-6 w-6 opacity-90" />
+                <span className="font-display font-bold text-xl tracking-tight text-white">GroupWatch</span>
               </Link>
               <p className="text-primary-foreground/60 text-sm leading-relaxed">
-                The incident reporting platform for organised groups, communities, and field workers.
+                Real-time visibility of what's happening in your area, using your own members as eyes and ears on the ground.
               </p>
             </div>
             
@@ -104,7 +104,7 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
             </div>
           </div>
           <div className="border-t border-primary-foreground/10 mt-12 pt-8 text-center md:text-left text-sm text-primary-foreground/50 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p>© {new Date().getFullYear()} IncidentIQ. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} GroupWatch Platform. All rights reserved.</p>
             <p>Made for the field.</p>
           </div>
         </div>

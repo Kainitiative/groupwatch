@@ -19,7 +19,7 @@ export default function OfflinePwa() {
               No signal? <br className="hidden md:block" />Still works.
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              IncidentIQ is a Progressive Web App — it installs on your phone like a native app and continues working when there's no internet connection.
+              GroupWatch is a Progressive Web App — it installs on your phone like a native app and continues working when there's no internet connection.
             </p>
           </div>
 
@@ -28,7 +28,7 @@ export default function OfflinePwa() {
               {
                 icon: Download,
                 title: "Install on Your Home Screen",
-                description: "Add IncidentIQ to your home screen on Android or iOS. It opens full-screen with no browser chrome — just like a native app, without the App Store.",
+                description: "Add GroupWatch to your home screen on Android or iOS. It opens full-screen with no browser chrome — just like a native app, without the App Store.",
               },
               {
                 icon: WifiOff,
@@ -72,7 +72,7 @@ export default function OfflinePwa() {
               <div>
                 <h4 className="font-semibold text-white mb-3">Android (Chrome)</h4>
                 <ol className="space-y-2 text-sm text-primary-foreground/80 list-decimal list-inside">
-                  <li>Open IncidentIQ in Chrome</li>
+                  <li>Open GroupWatch in Chrome</li>
                   <li>Tap the three-dot menu (⋮)</li>
                   <li>Tap "Add to Home screen"</li>
                   <li>Tap "Add" to confirm</li>
@@ -81,7 +81,7 @@ export default function OfflinePwa() {
               <div>
                 <h4 className="font-semibold text-white mb-3">iPhone / iPad (Safari)</h4>
                 <ol className="space-y-2 text-sm text-primary-foreground/80 list-decimal list-inside">
-                  <li>Open IncidentIQ in Safari</li>
+                  <li>Open GroupWatch in Safari</li>
                   <li>Tap the Share icon (□↑)</li>
                   <li>Scroll and tap "Add to Home Screen"</li>
                   <li>Tap "Add" to confirm</li>

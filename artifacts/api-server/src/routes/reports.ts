@@ -253,7 +253,7 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
   });
 
   // Fire notifications asynchronously (do not block response)
-  const reportUrl = `${process.env.APP_URL || "https://incidentiq.io"}/g/${slug}/reports/${referenceNumber}`;
+  const reportUrl = `${process.env.APP_URL || "https://groupwatch.io"}/g/${slug}/reports/${referenceNumber}`;
   const notifTitle = `New ${incidentType.name} — ${severity.toUpperCase()}`;
   const notifBody = `${group.name} · ${referenceNumber}`;
 

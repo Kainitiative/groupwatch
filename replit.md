@@ -1,4 +1,4 @@
-# IncidentIQ
+# GroupWatch Platform
 
 A general-purpose group incident reporting SaaS platform. Any organised group (angling clubs, environmental groups, neighbourhood watch, HOAs, football clubs, animal welfare) can subscribe to manage incident reporting for their members.
 
@@ -129,8 +129,8 @@ Deployment files in project root:
 ```bash
 # 1. Install Docker + Docker Compose
 # 2. Install Certbot: apt install certbot
-# 3. Get TLS cert: certbot certonly --standalone -d app.incidentiq.io
-# 4. Copy .env.example to /opt/incidentiq/.env and fill in values
+# 3. Get TLS cert: certbot certonly --standalone -d app.groupwatch.io
+# 4. Copy .env.example to /opt/groupwatch/.env and fill in values
 # 5. docker compose up -d
 ```
 

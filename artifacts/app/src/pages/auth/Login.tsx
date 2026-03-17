@@ -113,7 +113,7 @@ export default function Login() {
                   <div className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-card text-muted-foreground">New to IncidentIQ?</span>
+                  <span className="px-2 bg-card text-muted-foreground">New to GroupWatch?</span>
                 </div>
               </div>
 

@@ -74,7 +74,7 @@ export default function PwaPrompts() {
                 <Download className="w-6 h-6" />
               </div>
               <div>
-                <h4 className="font-semibold text-foreground text-sm">Install IncidentIQ</h4>
+                <h4 className="font-semibold text-foreground text-sm">Install GroupWatch</h4>
                 <p className="text-xs text-muted-foreground mt-0.5">For faster reporting in the field.</p>
               </div>
             </div>
@@ -98,7 +98,7 @@ export default function PwaPrompts() {
             </button>
           </div>
           <p className="text-sm text-muted-foreground">
-            Install IncidentIQ to your home screen for offline access and faster reporting.
+            Install GroupWatch to your home screen for offline access and faster reporting.
           </p>
           <div className="bg-secondary p-3 rounded-xl flex items-center justify-center gap-3 text-sm text-secondary-foreground font-medium border border-border/50">
             Tap <Share className="w-4 h-4 text-accent" /> then 'Add to Home Screen'

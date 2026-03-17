@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    image: ghcr.io/${GITHUB_REPOSITORY:-incidentiq/incidentiq}:latest
+    image: ghcr.io/${GITHUB_REPOSITORY:-groupwatch/groupwatch}:latest
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8080"
@@ -15,12 +15,12 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       STRIPE_MONTHLY_PRICE_ID: ${STRIPE_MONTHLY_PRICE_ID}
       STRIPE_ANNUAL_PRICE_ID: ${STRIPE_ANNUAL_PRICE_ID}
-      APP_URL: ${APP_URL:-https://app.incidentiq.io}
+      APP_URL: ${APP_URL:-https://app.groupwatch.io}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER}
       SMTP_PASS: ${SMTP_PASS}
-      EMAIL_FROM: ${EMAIL_FROM:-noreply@incidentiq.io}
+      EMAIL_FROM: ${EMAIL_FROM:-noreply@groupwatch.io}
       VAPID_PUBLIC_KEY: ${VAPID_PUBLIC_KEY}
       VAPID_PRIVATE_KEY: ${VAPID_PRIVATE_KEY}
       VAPID_EMAIL: ${VAPID_EMAIL}

@@ -275,7 +275,7 @@ function ApiKeysTab({ slug }: { slug: string }) {
     }
   };
 
-  const baseUrl = typeof window !== "undefined" ? `${window.location.origin}/api/v1` : "https://app.incidentiq.io/api/v1";
+  const baseUrl = typeof window !== "undefined" ? `${window.location.origin}/api/v1` : "https://app.groupwatch.io/api/v1";
 
   return (
     <div className="space-y-6">
@@ -285,7 +285,7 @@ function ApiKeysTab({ slug }: { slug: string }) {
           <div>
             <h3 className="font-semibold text-white mb-1">API Keys</h3>
             <p className="text-sm text-slate-400">
-              Use API keys to access IncidentIQ data programmatically from your own systems or integrations.
+              Use API keys to access GroupWatch data programmatically from your own systems or integrations.
               Keys are scoped to this group only.
             </p>
           </div>

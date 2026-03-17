@@ -1,8 +1,8 @@
-# IncidentIQ — Complete Project Handover
+# GroupWatch Platform — Complete Project Handover
 
 ## 1. What It Is
 
-IncidentIQ is a **general-purpose group incident reporting SaaS platform** for any organised group — angling clubs, environmental groups, neighbourhood watch, HOAs, sports clubs, etc. Groups sign up, customise their incident categories, and members (or the public) can submit geo-tagged, photo-attached incident reports. Responders claim and resolve reports from a dashboard. Everything is self-contained per group.
+GroupWatch Platform is a **general-purpose group incident reporting SaaS platform** for any organised group — angling clubs, environmental groups, neighbourhood watch, HOAs, sports clubs, etc. Groups sign up, customise their incident categories, and members (or the public) can submit geo-tagged, photo-attached incident reports. Responders claim and resolve reports from a dashboard. Everything is self-contained per group.
 
 **Pricing:** €20/month or €200/year. One-month free trial, no card required.  
 **Target infrastructure:** LetsHost VPS, Dublin — 2 CPU / 4 GB RAM — Docker + Nginx + Let's Encrypt + PostgreSQL.
@@ -403,7 +403,7 @@ Create a `.env` file (see `.env.example` in the repo root):
 
 ```env
 # Required
-DATABASE_URL=postgresql://user:pass@localhost:5432/incidentiq
+DATABASE_URL=postgresql://user:pass@localhost:5432/groupwatch
 SESSION_SECRET=<random 64-char string>
 NODE_ENV=production
 PORT=8080
@@ -481,7 +481,7 @@ The deployment is fully scripted. See `/deploy/` and `Dockerfile`.
 ```bash
 apt install docker.io docker-compose nginx certbot
 certbot certonly --standalone -d yourdomain.com
-# Copy deploy/nginx/nginx.conf → /etc/nginx/sites-available/incidentiq
+# Copy deploy/nginx/nginx.conf → /etc/nginx/sites-available/groupwatch
 # Update domain name in nginx.conf
 ```
 

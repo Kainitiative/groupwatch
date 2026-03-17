@@ -95,7 +95,7 @@ export default function EnvironmentalGroups() {
               {
                 step: "1",
                 title: "Volunteer spots an incident",
-                description: "On a nature walk, during a clean-up, or from a car. They open IncidentIQ — or scan the QR code — and tap Report.",
+                description: "On a nature walk, during a clean-up, or from a car. They open GroupWatch — or scan the QR code — and tap Report.",
               },
               {
                 step: "2",

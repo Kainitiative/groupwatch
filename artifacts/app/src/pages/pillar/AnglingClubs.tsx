@@ -148,7 +148,7 @@ export default function AnglingClubs() {
             <div className="bg-primary text-primary-foreground rounded-2xl p-8">
               <h3 className="font-bold text-white text-lg mb-3">Evidence for Proceedings</h3>
               <p className="text-sm text-primary-foreground/80 leading-relaxed mb-4">
-                Every report submitted through IncidentIQ can be exported as a court-admissible PDF including:
+                Every report submitted through GroupWatch can be exported as a court-admissible PDF including:
               </p>
               <ul className="space-y-2">
                 {[

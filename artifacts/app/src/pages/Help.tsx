@@ -16,7 +16,7 @@ const sections = [
     articles: [
       {
         title: "Creating a group and starting your free trial",
-        content: `To create a group, sign in to your IncidentIQ account and click "Create Group" on your dashboard. Give your group a name, select a group type (or leave it as General), and add a short description. Your 1-month free trial begins immediately — no credit card required.
+        content: `To create a group, sign in to your GroupWatch account and click "Create Group" on your dashboard. Give your group a name, select a group type (or leave it as General), and add a short description. Your 1-month free trial begins immediately — no credit card required.
 
 After creating your group, you'll be taken to the Settings page where you can add your logo, contact email, and website. These details appear in your group's public profile and on exported PDFs.`,
       },
@@ -30,7 +30,7 @@ You can add as many types as you need, and rename or delete them at any time. De
         title: "Inviting members by email or share link",
         content: `In Settings → Profile, you'll find your group's unique join link and a printable QR code. Copy the link and share it by email, WhatsApp, or post it on a notice board.
 
-When someone follows the link, they'll be prompted to create a free IncidentIQ account and will automatically join your group as a Member. You can then change their role to Responder or Admin from the Members tab.`,
+When someone follows the link, they'll be prompted to create a free GroupWatch account and will automatically join your group as a Member. You can then change their role to Responder or Admin from the Members tab.`,
       },
       {
         title: "Setting up responders and permissions",
@@ -63,7 +63,7 @@ When a responder escalates a report, they'll see a list of your escalation conta
         title: "Enabling push notifications on your device",
         content: `After logging in, open the app on your phone. You'll be prompted to allow notifications. Tap Allow to enable push notifications for new reports.
 
-If you missed the prompt, go to your phone's Settings → Notifications → IncidentIQ and enable notifications there. On iOS you may need to install the app first (see the PWA installation guide below). On Android, notifications work directly in the browser without installation.`,
+If you missed the prompt, go to your phone's Settings → Notifications → GroupWatch and enable notifications there. On iOS you may need to install the app first (see the PWA installation guide below). On Android, notifications work directly in the browser without installation.`,
       },
       {
         title: "Claiming and actioning a report",
@@ -110,7 +110,7 @@ Photos are stored at full resolution and their EXIF metadata (including GPS coor
       },
       {
         title: "Submitting a report without internet",
-        content: `IncidentIQ is a Progressive Web App — it caches the report form and submits it even without a network connection. Complete the form as normal and tap Submit. The report is stored on your device and uploaded automatically the moment connectivity returns.
+        content: `GroupWatch is a Progressive Web App — it caches the report form and submits it even without a network connection. Complete the form as normal and tap Submit. The report is stored on your device and uploaded automatically the moment connectivity returns.
 
 You'll see a confirmation message that the report has been queued for upload. No data is lost even if you close the browser tab before connectivity returns.`,
       },
@@ -149,7 +149,7 @@ The CSV is suitable for import into Excel or Google Sheets for further analysis,
         title: "Understanding the immutability footer",
         content: `Every exported PDF includes an immutability footer at the bottom of the page. This states that the report was submitted at a specific timestamp and that the original record cannot be altered after submission.
 
-IncidentIQ stores reports in a write-once format — once a report is submitted, its core fields (type, severity, GPS, description, photos) are locked. Any changes appear as timestamped update records in the audit trail, not as modifications to the original. This is by design for evidential integrity.`,
+GroupWatch stores reports in a write-once format — once a report is submitted, its core fields (type, severity, GPS, description, photos) are locked. Any changes appear as timestamped update records in the audit trail, not as modifications to the original. This is by design for evidential integrity.`,
       },
     ],
   },
@@ -159,20 +159,20 @@ IncidentIQ stores reports in a write-once format — once a report is submitted,
     description: "Installing the app on your phone and using it without a connection.",
     articles: [
       {
-        title: "Installing IncidentIQ on Android",
-        content: `Open IncidentIQ in Chrome on your Android device. Tap the three-dot menu in the top-right corner and select "Add to Home Screen" (or "Install App" if it appears as a banner at the bottom).
+        title: "Installing GroupWatch on Android",
+        content: `Open GroupWatch in Chrome on your Android device. Tap the three-dot menu in the top-right corner and select "Add to Home Screen" (or "Install App" if it appears as a banner at the bottom).
 
-Once installed, IncidentIQ appears on your home screen as a full-screen app with offline support. Push notifications work on Android without installation, but installing the app gives you faster launch times and a better full-screen experience.`,
+Once installed, GroupWatch appears on your home screen as a full-screen app with offline support. Push notifications work on Android without installation, but installing the app gives you faster launch times and a better full-screen experience.`,
       },
       {
-        title: "Installing IncidentIQ on iPhone",
-        content: `Open IncidentIQ in Safari on your iPhone (it must be Safari — Chrome on iOS does not support PWA installation). Tap the Share button at the bottom of the screen (the box with an arrow pointing up), then tap "Add to Home Screen".
+        title: "Installing GroupWatch on iPhone",
+        content: `Open GroupWatch in Safari on your iPhone (it must be Safari — Chrome on iOS does not support PWA installation). Tap the Share button at the bottom of the screen (the box with an arrow pointing up), then tap "Add to Home Screen".
 
-Once installed, IncidentIQ appears on your home screen. Push notifications on iPhone require iOS 16.4 or later. After installation, open the app and allow notifications when prompted.`,
+Once installed, GroupWatch appears on your home screen. Push notifications on iPhone require iOS 16.4 or later. After installation, open the app and allow notifications when prompted.`,
       },
       {
         title: "How offline queuing works",
-        content: `When you submit a report without internet, IncidentIQ stores the complete report — including photos — in your browser's local storage. You'll see a confirmation that the report has been queued.
+        content: `When you submit a report without internet, GroupWatch stores the complete report — including photos — in your browser's local storage. You'll see a confirmation that the report has been queued.
 
 When connectivity returns (even briefly), the queued report uploads automatically in the background. You don't need to reopen the app or take any action. If you have multiple queued reports, they all upload in order.`,
       },

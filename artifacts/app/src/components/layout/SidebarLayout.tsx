@@ -195,8 +195,8 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
       <aside className="hidden lg:flex w-72 flex-col bg-sidebar border-r border-sidebar-border shadow-xl shadow-black/5 shrink-0 z-10">
         <div className="p-6">
           <Link href="/dashboard" className="flex items-center gap-2 text-sidebar-foreground">
-            <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="IncidentIQ" className="h-8 w-8" />
-            <span className="font-display font-bold text-xl tracking-tight">IncidentIQ</span>
+            <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-8 w-8" />
+            <span className="font-display font-bold text-xl tracking-tight">GroupWatch</span>
           </Link>
         </div>
         
@@ -212,8 +212,8 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
         {/* Mobile Header */}
         <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-card border-b border-border z-20">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="IncidentIQ" className="h-7 w-7 bg-primary rounded-md p-1" />
-            <span className="font-display font-bold text-lg text-foreground tracking-tight">IncidentIQ</span>
+            <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-7 w-7 bg-primary rounded-md p-1" />
+            <span className="font-display font-bold text-lg text-foreground tracking-tight">GroupWatch</span>
           </Link>
           
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -225,8 +225,8 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
             <SheetContent side="left" className="w-[80vw] max-w-sm p-0 bg-sidebar border-r-sidebar-border flex flex-col">
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sidebar-foreground">
-                  <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="IncidentIQ" className="h-8 w-8" />
-                  <span className="font-display font-bold text-xl tracking-tight">IncidentIQ</span>
+                  <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-8 w-8" />
+                  <span className="font-display font-bold text-xl tracking-tight">GroupWatch</span>
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto px-4 py-2">

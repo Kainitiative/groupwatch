@@ -70,7 +70,7 @@ export default function Features() {
               Not the office.
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Every feature in IncidentIQ was designed around one scenario: a member on the ground, possibly without signal, needing to record what they just witnessed.
+              Every feature in GroupWatch was designed around one scenario: a member on the ground, possibly without signal, needing to record what they just witnessed.
             </p>
           </div>
 
