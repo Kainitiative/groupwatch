@@ -148,6 +148,65 @@ router.patch("/admin/platform-settings", requireAuth, async (req, res): Promise<
   res.json({ reportingEnabled: result.reportingEnabled, maintenanceMode: result.maintenanceMode, updatedAt: result.updatedAt });
 });
 
+router.get("/admin/users", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  const page = parseInt(String(req.query.page || "1"));
+  const limit = Math.min(parseInt(String(req.query.limit || "50")), 200);
+  const offset = (page - 1) * limit;
+  const search = String(req.query.search || "").trim().toLowerCase();
+
+  const allUsers = await db
+    .select({
+      id: usersTable.id,
+      name: usersTable.name,
+      email: usersTable.email,
+      isSuperAdmin: usersTable.isSuperAdmin,
+      createdAt: usersTable.createdAt,
+    })
+    .from(usersTable)
+    .orderBy(desc(usersTable.createdAt));
+
+  const filtered = search
+    ? allUsers.filter(u => u.email.toLowerCase().includes(search) || (u.name ?? "").toLowerCase().includes(search))
+    : allUsers;
+
+  const memberCounts = await db
+    .select({ userId: groupMembersTable.userId, count: count() })
+    .from(groupMembersTable)
+    .where(eq(groupMembersTable.status, "active"))
+    .groupBy(groupMembersTable.userId);
+  const memberCountMap = Object.fromEntries(memberCounts.map(m => [m.userId, Number(m.count)]));
+
+  const paginated = filtered.slice(offset, offset + limit);
+
+  res.json({
+    users: paginated.map(u => ({ ...u, groupCount: memberCountMap[u.id] ?? 0 })),
+    total: filtered.length,
+    page,
+    limit,
+    totalPages: Math.ceil(filtered.length / limit),
+  });
+});
+
+router.patch("/admin/users/:userId", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  const { isSuperAdmin } = req.body;
+  if (typeof isSuperAdmin !== "boolean") {
+    res.status(400).json({ error: "isSuperAdmin (boolean) is required" }); return;
+  }
+
+  const [updated] = await db
+    .update(usersTable)
+    .set({ isSuperAdmin })
+    .where(eq(usersTable.id, req.params.userId))
+    .returning({ id: usersTable.id, email: usersTable.email, isSuperAdmin: usersTable.isSuperAdmin });
+
+  if (!updated) { res.status(404).json({ error: "User not found" }); return; }
+  res.json(updated);
+});
+
 router.get("/admin/revenue", requireAuth, async (req, res): Promise<void> => {
   if (!await requireSuperAdmin(req, res)) return;
 
