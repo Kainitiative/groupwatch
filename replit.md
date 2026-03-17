@@ -70,6 +70,14 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - `GET /api/groups/:slug/analytics?period=week|month|year|all` — analytics data
 - `GET /api/groups/:slug/reports/export/csv` — CSV export
 - `GET/POST/PATCH/DELETE /api/groups/:slug/boundaries` — map boundaries
+- `GET /api/widget/:slug` — public widget info (no auth, group must have publicReportingEnabled)
+- `POST /api/widget/:slug/report` — submit public report (no auth, 10/IP/hour rate limit)
+- `GET /api/groups/:slug/api-keys` — list API keys (admin)
+- `POST /api/groups/:slug/api-keys` — create API key (admin, returns key once)
+- `DELETE /api/groups/:slug/api-keys/:keyId` — revoke API key (admin)
+- `GET /api/v1/groups/:slug/incident-types` — list incident types (API key auth)
+- `GET /api/v1/groups/:slug/incidents` — list incidents (API key auth)
+- `POST /api/v1/groups/:slug/incidents` — create incident (API key auth)
 
 ## Frontend Pages
 
@@ -78,11 +86,12 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - `/dashboard` — user's groups dashboard
 - `/groups/new` — group creation wizard
 - `/g/:slug` — public group profile page
-- `/g/:slug/settings` — group admin settings (tabs: Profile, Members, Incident Types, Escalation, Billing)
+- `/g/:slug/settings` — group admin settings (tabs: Profile, Members, Incident Types, Escalation, Public Widget, API Keys, Billing)
 - `/g/:slug/analytics` — analytics charts (reports over time, by type, by severity, day-of-week, KPIs)
 - `/g/:slug/map` — map boundary drawing (Leaflet Draw — polygon boundaries)
 - `/g/:slug/reports/:ref/print` — print-to-PDF individual report (court-quality, auto-triggers print)
-- `/report/:slug` — mobile-first incident report submission
+- `/report/:slug` — mobile-first incident report submission (members)
+- `/r/:slug` — public report widget embed page (no auth required)
 - `/my-reports` — user's submitted reports
 - `/admin` — super admin dashboard
 
@@ -107,14 +116,23 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 
 VPS: LetsHost, Dublin, 2 CPU / 4GB RAM / 40GB disk
 
-Deployment files in `deployment/`:
-- `docker-compose.yml` — PostgreSQL, API, frontend app, Nginx, Certbot
-- `Dockerfile.api` — API server container
-- `Dockerfile.app` — Frontend static site container
-- `nginx.conf` — Reverse proxy with TLS, rate limiting
-- `.env.example` — Environment variable template
-- `backup.sh` — Daily database backup script (30-day retention)
-- `.github/workflows/deploy.yml` — GitHub Actions CI/CD
+Deployment files in project root:
+- `Dockerfile` — multi-stage build; Node 20 Alpine; builds frontend + API server, serves static files in prod
+- `docker-compose.yml` — `app` (API+static) + `nginx` services; uploads volume; healthcheck
+- `deploy/nginx/nginx.conf` — TLS, HTTP→HTTPS, gzip, security headers, 10 MB upload limit
+- `.env.example` — all required environment variables with comments
+- `.github/workflows/deploy.yml` — CI: build Docker image, push to GHCR; CD: SCP files + SSH restart on VPS
+
+**GitHub Actions secrets required:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
+
+**First-time VPS setup:**
+```bash
+# 1. Install Docker + Docker Compose
+# 2. Install Certbot: apt install certbot
+# 3. Get TLS cert: certbot certonly --standalone -d app.incidentiq.io
+# 4. Copy .env.example to /opt/incidentiq/.env and fill in values
+# 5. docker compose up -d
+```
 
 ## Development Commands
 
@@ -155,9 +173,18 @@ pnpm --filter @workspace/api-server run typecheck
 - 2 new pillar pages: Neighbourhood Watch (`/for/neighbourhood-watch`), HOA/Residents (`/for/residents`)
 - Footer "Use Cases" updated to include all 5 pillar pages
 
-**Phase 5 (not started):** API keys, public REST API, embeddable widget
+**Phase 5 (COMPLETE):**
+- Public reporting widget (`/r/:slug`) — standalone embed form, no auth, GPS, photos, severity selector
+- Widget management in GroupSettings (Public Widget tab — toggle, embed code, QR code, preview link)
+- API Keys management (GroupSettings API Keys tab — create/revoke, 10-key limit, SHA-256 hashed)
+- Public REST API v1 (`/api/v1/...`) — Bearer token auth, group-scoped, list/create incidents + list types
 
-**Deployment (not started):** Dockerfile, docker-compose, Nginx config, GitHub Actions CI/CD
+**Deployment (COMPLETE):**
+- `Dockerfile` — multi-stage build (frontend + API), Node 20 Alpine, serves static files in production
+- `docker-compose.yml` — app + nginx services, volume for uploads, healthcheck
+- `deploy/nginx/nginx.conf` — TLS termination, HTTP→HTTPS redirect, gzip, security headers
+- `.github/workflows/deploy.yml` — Docker build+push to GHCR, SSH deploy to VPS
+- `.env.example` — all required environment variables documented
 
 ## User Preferences
 

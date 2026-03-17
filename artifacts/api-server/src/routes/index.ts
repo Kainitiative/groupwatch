@@ -13,6 +13,8 @@ import escalationRouter from "./escalation";
 import analyticsRouter from "./analytics";
 import boundariesRouter from "./boundaries";
 import widgetRouter from "./widget";
+import apiKeysRouter from "./api-keys";
+import v1Router from "./v1";
 
 const router: IRouter = Router();
 
@@ -30,5 +32,7 @@ router.use(escalationRouter);
 router.use(analyticsRouter);
 router.use(boundariesRouter);
 router.use(widgetRouter);
+router.use(apiKeysRouter);
+router.use(v1Router);
 
 export default router;
