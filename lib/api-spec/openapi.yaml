@@ -1375,6 +1375,8 @@ components:
           nullable: true
         publicHotspotMapEnabled:
           type: boolean
+        publicReportingEnabled:
+          type: boolean
         subscriptionStatus:
           type: string
           enum: [trial, active, past_due, cancelled]
@@ -1387,7 +1389,7 @@ components:
         createdAt:
           type: string
           format: date-time
-      required: [id, name, slug, groupType, publicHotspotMapEnabled, subscriptionStatus, memberCount, createdAt]
+      required: [id, name, slug, groupType, publicHotspotMapEnabled, publicReportingEnabled, subscriptionStatus, memberCount, createdAt]
 
     GroupSummary:
       type: object
@@ -1728,6 +1730,14 @@ components:
           nullable: true
         claimedByName:
           type: string
+          nullable: true
+        claimedAt:
+          type: string
+          format: date-time
+          nullable: true
+        resolvedAt:
+          type: string
+          format: date-time
           nullable: true
         submittedAt:
           type: string

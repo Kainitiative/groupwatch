@@ -104,6 +104,7 @@ export interface Group {
   contactEmail?: string | null;
   socialLinks?: GroupSocialLinks;
   publicHotspotMapEnabled: boolean;
+  publicReportingEnabled: boolean;
   subscriptionStatus: GroupSubscriptionStatus;
   trialEndsAt?: string | null;
   memberCount: number;
@@ -371,6 +372,8 @@ export interface Report {
   isAnonymous: boolean;
   claimedByUserId?: string | null;
   claimedByName?: string | null;
+  claimedAt?: string | null;
+  resolvedAt?: string | null;
   submittedAt: string;
   photoCount: number;
 }

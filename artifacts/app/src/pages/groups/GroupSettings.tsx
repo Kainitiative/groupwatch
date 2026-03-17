@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useRoute, useLocation, Link } from "wouter";
-import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUpdateMember, useListIncidentTypes, useCreateIncidentType, useGetBillingStatus, useCreateCheckoutSession, useGetJoinLink } from "@workspace/api-client-react";
+import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUpdateMember, useListIncidentTypes, useCreateIncidentType, useGetBillingStatus, useCreateCheckoutSession, useGetJoinLink, UpdateMemberRequestRole } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
@@ -77,7 +77,7 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
   const queryClient = useQueryClient();
   const updateMember = useUpdateMember();
   const [expanded, setExpanded] = useState(false);
-  const [role, setRole] = useState(member.role);
+  const [role, setRole] = useState(member.role as UpdateMemberRequestRole);
   const [roleTitle, setRoleTitle] = useState(member.roleTitle ?? "");
   const [perms, setPerms] = useState({ ...member.permissions });
   const isMe = member.userId === currentUserId;
@@ -148,7 +148,7 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
               <label className="text-xs text-slate-400 mb-1.5 block font-medium">Role</label>
               <select
                 value={role}
-                onChange={(e) => setRole(e.target.value)}
+                onChange={(e) => setRole(e.target.value as UpdateMemberRequestRole)}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 <option value="member">Member</option>
@@ -444,7 +444,7 @@ export default function GroupSettings() {
   const createIncidentType = useCreateIncidentType();
   const { data: billing } = useGetBillingStatus(slug);
   const checkout = useCreateCheckoutSession();
-  const { data: joinLink } = useGetJoinLink(slug, { enabled: activeTab === "profile" });
+  const { data: joinLink } = useGetJoinLink(slug, { query: { enabled: activeTab === "profile" } as any });
 
   const [newTypeName, setNewTypeName] = useState("");
   const [newTypeColour, setNewTypeColour] = useState("#10b981");
@@ -1031,7 +1031,7 @@ export default function GroupSettings() {
               {(billing?.status === "trial" || billing?.status === "cancelled") && (
                 <div className="grid grid-cols-2 gap-3">
                   <button
-                    onClick={() => checkout.mutate({ groupSlug: slug, checkoutRequest: { plan: "monthly" } }, {
+                    onClick={() => checkout.mutate({ groupSlug: slug, data: { plan: "monthly" } }, {
                       onSuccess: (data) => data.url && window.location.replace(data.url),
                     })}
                     className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-left transition-colors"
@@ -1040,7 +1040,7 @@ export default function GroupSettings() {
                     <p className="text-xs text-slate-400 mt-1">Billed monthly</p>
                   </button>
                   <button
-                    onClick={() => checkout.mutate({ groupSlug: slug, checkoutRequest: { plan: "annual" } }, {
+                    onClick={() => checkout.mutate({ groupSlug: slug, data: { plan: "annual" } }, {
                       onSuccess: (data) => data.url && window.location.replace(data.url),
                     })}
                     className="p-4 bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-700/50 rounded-xl text-left transition-colors relative"

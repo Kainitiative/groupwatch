@@ -35,11 +35,7 @@ export default function CreateGroup() {
   const createMutation = useCreateGroup();
   
   // ensure auth
-  useGetMe({
-    query: {
-      retry: false,
-    }
-  });
+  useGetMe();
 
   const form = useForm<CreateGroupFormValues>({
     resolver: zodResolver(createGroupSchema),
