@@ -12,6 +12,7 @@ import adminRouter from "./admin";
 import escalationRouter from "./escalation";
 import analyticsRouter from "./analytics";
 import boundariesRouter from "./boundaries";
+import widgetRouter from "./widget";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use(adminRouter);
 router.use(escalationRouter);
 router.use(analyticsRouter);
 router.use(boundariesRouter);
+router.use(widgetRouter);
 
 export default router;

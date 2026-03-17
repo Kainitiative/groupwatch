@@ -4,11 +4,11 @@ import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUp
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
-import { Settings, Users, List, CreditCard, Share2, CheckCircle2, Circle, Copy, ExternalLink, ChevronDown, ChevronUp, Shield, Bell, Eye, Wrench, Download, PhoneCall, Trash2, Pencil, X, Check } from "lucide-react";
+import { Settings, Users, List, CreditCard, Share2, CheckCircle2, Circle, Copy, ExternalLink, ChevronDown, ChevronUp, Shield, Bell, Eye, Wrench, Download, PhoneCall, Trash2, Pencil, X, Check, Globe, Code2, ToggleLeft, ToggleRight } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useToast } from "@/hooks/use-toast";
 
-type Tab = "profile" | "members" | "incident-types" | "escalation" | "billing";
+type Tab = "profile" | "members" | "incident-types" | "escalation" | "billing" | "widget";
 
 function SetupChecklist({ groupSlug }: { groupSlug: string }) {
   const { data: progress } = useGetSetupProgress(groupSlug);
@@ -343,6 +343,7 @@ export default function GroupSettings() {
     { id: "members", label: "Members", icon: Users },
     { id: "incident-types", label: "Incident Types", icon: List },
     { id: "escalation", label: "Escalation", icon: PhoneCall },
+    { id: "widget", label: "Public Widget", icon: Globe },
     { id: "billing", label: "Billing", icon: CreditCard },
   ];
 
@@ -676,6 +677,106 @@ export default function GroupSettings() {
                 </button>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Widget Tab */}
+        {activeTab === "widget" && (
+          <div className="space-y-6">
+            {/* Enable toggle */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h3 className="font-semibold text-white mb-1">Public Reporting Widget</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    Allow anyone to submit a report to your group without creating an account. 
+                    Ideal for embedding on your website or sharing a QR code with the public.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    updateGroup.mutate(
+                      { groupSlug: slug, data: { publicReportingEnabled: !group.publicReportingEnabled } as any },
+                      { onSuccess: () => toast({ title: group.publicReportingEnabled ? "Public reporting disabled" : "Public reporting enabled" }) }
+                    );
+                  }}
+                  className="shrink-0 flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-700 text-sm font-medium transition-colors"
+                  style={group.publicReportingEnabled ? { background: "#10b981", borderColor: "#10b981", color: "white" } : {}}
+                >
+                  {group.publicReportingEnabled
+                    ? <><ToggleRight className="w-4 h-4" /> Enabled</>
+                    : <><ToggleLeft className="w-4 h-4 text-slate-400" /> <span className="text-slate-300">Disabled</span></>
+                  }
+                </button>
+              </div>
+
+              {!group.publicReportingEnabled && (
+                <div className="mt-4 bg-slate-800/50 rounded-xl p-4">
+                  <p className="text-xs text-slate-500">Enable public reporting above to get your embed code and share link.</p>
+                </div>
+              )}
+            </div>
+
+            {group.publicReportingEnabled && (() => {
+              const publicUrl = `${window.location.origin}/r/${slug}`;
+              const embedCode = `<iframe\n  src="${publicUrl}"\n  width="100%"\n  height="600"\n  frameborder="0"\n  style="border-radius:16px;border:1px solid #e5e7eb;"\n  title="Report an Incident"\n></iframe>`;
+              return (
+                <>
+                  {/* Direct link + QR */}
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Globe className="w-4 h-4 text-emerald-400" />
+                      <h3 className="font-semibold text-white text-sm">Public Report Link</h3>
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-start gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl px-3 py-2.5">
+                          <span className="text-sm text-slate-300 truncate flex-1">{publicUrl}</span>
+                          <button
+                            onClick={() => { navigator.clipboard.writeText(publicUrl); toast({ title: "Link copied!" }); }}
+                            className="text-slate-400 hover:text-white transition-colors shrink-0"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <p className="text-xs text-slate-500 mt-2">Share this link directly with members of the public — no account required.</p>
+                        <a href={publicUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 mt-2">
+                          <ExternalLink className="w-3 h-3" /> Preview the form
+                        </a>
+                      </div>
+                      <div className="shrink-0">
+                        <div className="bg-white p-3 rounded-xl">
+                          <QRCodeSVG value={publicUrl} size={100} level="H" />
+                        </div>
+                        <p className="text-xs text-slate-500 text-center mt-1.5">Scan to report</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Embed code */}
+                  <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <Code2 className="w-4 h-4 text-emerald-400" />
+                        <h3 className="font-semibold text-white text-sm">Embed on Your Website</h3>
+                      </div>
+                      <button
+                        onClick={() => { navigator.clipboard.writeText(embedCode); toast({ title: "Embed code copied!" }); }}
+                        className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white transition-colors px-3 py-1.5 bg-slate-800 rounded-lg"
+                      >
+                        <Copy className="w-3.5 h-3.5" /> Copy code
+                      </button>
+                    </div>
+                    <pre className="bg-slate-950 border border-slate-800 rounded-xl p-4 text-xs text-emerald-300 overflow-x-auto font-mono leading-relaxed">
+                      {embedCode}
+                    </pre>
+                    <p className="text-xs text-slate-500 mt-3">
+                      Paste this snippet into any page on your website. The form adjusts to fit the iframe width automatically.
+                    </p>
+                  </div>
+                </>
+              );
+            })()}
           </div>
         )}
 

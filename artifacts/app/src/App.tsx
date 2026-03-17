@@ -20,6 +20,7 @@ import SuperAdmin from "@/pages/admin/SuperAdmin";
 import ReportsDashboard from "@/pages/groups/ReportsDashboard";
 import ReportDetail from "@/pages/groups/ReportDetail";
 import ReportPrint from "@/pages/groups/ReportPrint";
+import PublicReport from "@/pages/groups/PublicReport";
 import Analytics from "@/pages/groups/Analytics";
 import MapBoundaries from "@/pages/groups/MapBoundaries";
 import PwaPrompts from "@/components/PwaPrompts";
@@ -77,6 +78,7 @@ function Router() {
       {/* Group public pages */}
       <Route path="/g/:slug" component={GroupProfile} />
       <Route path="/report/:slug" component={SubmitReport} />
+      <Route path="/r/:slug" component={PublicReport} />
 
       {/* Protected */}
       <Route path="/dashboard" component={Dashboard} />

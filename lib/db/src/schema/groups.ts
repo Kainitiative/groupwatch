@@ -16,6 +16,7 @@ export const groupsTable = pgTable("groups", {
   contactEmail: text("contact_email"),
   socialLinks: jsonb("social_links").$type<Record<string, string>>(),
   publicHotspotMapEnabled: boolean("public_hotspot_map_enabled").notNull().default(false),
+  publicReportingEnabled: boolean("public_reporting_enabled").notNull().default(false),
   joinToken: text("join_token").notNull().unique(),
   ownerUserId: uuid("owner_user_id").notNull().references(() => usersTable.id),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

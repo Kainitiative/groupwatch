@@ -133,7 +133,7 @@ router.patch("/groups/:groupSlug", requireAuth, async (req, res): Promise<void> 
 
   const allowedFields = [
     "name", "slug", "groupType", "description", "brandColour",
-    "website", "contactEmail", "socialLinks", "publicHotspotMapEnabled", "logoUrl", "coverImageUrl",
+    "website", "contactEmail", "socialLinks", "publicHotspotMapEnabled", "publicReportingEnabled", "logoUrl", "coverImageUrl",
   ];
 
   const updates: Record<string, unknown> = {};
