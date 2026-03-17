@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: Api
   version: 1.0.0
-  description: IncidentIQ - Group Incident Reporting Platform API
+  description: GroupWatch Platform - Group Incident Reporting Platform API
 servers:
   - url: /api
     description: Base API path
