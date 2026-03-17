@@ -62,8 +62,9 @@ export async function sendPushToGroupResponders(
       webpush.sendNotification(
         { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
         pushPayload
-      ).catch(async (err: any) => {
-        if (err.statusCode === 410 || err.statusCode === 404) {
+      ).catch(async (err: unknown) => {
+        const statusCode = (err as { statusCode?: number })?.statusCode;
+        if (statusCode === 410 || statusCode === 404) {
           await db.delete(pushSubscriptionsTable).where(eq(pushSubscriptionsTable.endpoint, sub.endpoint));
         }
       })

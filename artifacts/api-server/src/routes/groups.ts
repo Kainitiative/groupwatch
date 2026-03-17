@@ -25,21 +25,6 @@ router.post("/groups", requireAuth, async (req, res): Promise<void> => {
     return;
   }
 
-  const existingAdminGroup = await db
-    .select({ id: groupMembersTable.groupId })
-    .from(groupMembersTable)
-    .where(and(
-      eq(groupMembersTable.userId, req.session.userId!),
-      eq(groupMembersTable.role, "admin"),
-      eq(groupMembersTable.status, "active")
-    ))
-    .limit(1);
-
-  if (existingAdminGroup.length > 0) {
-    res.status(403).json({ error: "You have already created a group. Each account can only manage one group." });
-    return;
-  }
-
   const existing = await getGroupBySlug(slug);
   if (existing) {
     res.status(409).json({ error: "This URL is already taken. Please choose a different one." });

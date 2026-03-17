@@ -1,4 +1,5 @@
-import session from "express-session";
+import session, { type SessionOptions } from "express-session";
+import type { Request, Response, NextFunction } from "express";
 import connectPgSimple from "connect-pg-simple";
 import { pool } from "@workspace/db";
 
@@ -17,7 +18,13 @@ export function createSessionMiddleware() {
       tableName: "session",
       createTableIfMissing: true,
     }),
-    secret: process.env.SESSION_SECRET || "dev-session-secret-change-in-production",
+    secret: (() => {
+      const s = process.env.SESSION_SECRET;
+      if (!s && process.env.NODE_ENV === "production") {
+        throw new Error("SESSION_SECRET environment variable must be set in production");
+      }
+      return s ?? "dev-session-secret-change-in-production";
+    })(),
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -30,7 +37,7 @@ export function createSessionMiddleware() {
   });
 }
 
-export function requireAuth(req: any, res: any, next: any): void {
+export function requireAuth(req: Request, res: Response, next: NextFunction): void {
   if (!req.session?.userId) {
     res.status(401).json({ error: "Authentication required" });
     return;

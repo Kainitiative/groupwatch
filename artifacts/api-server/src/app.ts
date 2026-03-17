@@ -47,7 +47,8 @@ if (isProduction) {
 
 // Global error handler — captures unhandled route errors into error_logs
 app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
-  const status = (err as any)?.status ?? (err as any)?.statusCode ?? 500;
+  const errObj = err as { status?: number; statusCode?: number } | null;
+  const status = errObj?.status ?? errObj?.statusCode ?? 500;
   const message = err instanceof Error ? err.message : "Internal server error";
 
   // Only persist 5xx errors (don't log 4xx user mistakes)

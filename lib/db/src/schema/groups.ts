@@ -33,6 +33,7 @@ export const subscriptionsTable = pgTable("subscriptions", {
   trialEndsAt: timestamp("trial_ends_at", { withTimezone: true }),
   currentPeriodEndsAt: timestamp("current_period_ends_at", { withTimezone: true }),
   cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  trialReminderSentAt: timestamp("trial_reminder_sent_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

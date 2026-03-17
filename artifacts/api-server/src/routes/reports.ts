@@ -9,6 +9,7 @@ import {
   groupMemberPermissionsTable,
   usersTable,
   escalationContactsTable,
+  subscriptionsTable,
 } from "@workspace/db";
 import { eq, and, desc, count, gte, SQL } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
@@ -171,6 +172,20 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
   const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
   const group = await getGroupBySlug(slug);
   if (!group) { res.status(404).json({ error: "Group not found" }); return; }
+
+  // Enforce subscription: trial must be active, or subscription must be paid/active
+  const [subscription] = await db
+    .select({ status: subscriptionsTable.status, trialEndsAt: subscriptionsTable.trialEndsAt })
+    .from(subscriptionsTable)
+    .where(eq(subscriptionsTable.groupId, group.id));
+
+  const now = new Date();
+  const trialExpired = subscription?.status === "trial" && subscription.trialEndsAt && subscription.trialEndsAt < now;
+  const subscriptionLapsed = subscription?.status === "past_due" || subscription?.status === "cancelled";
+  if (trialExpired || subscriptionLapsed) {
+    res.status(402).json({ error: "Reporting is paused — your trial has ended or subscription is inactive. Please upgrade to continue." });
+    return;
+  }
 
   const { incidentTypeId, severity, description, latitude, longitude, isAnonymous = false } = req.body;
 
