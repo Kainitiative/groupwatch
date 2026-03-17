@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useRoute, useLocation, Link } from "wouter";
-import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUpdateMember, useListIncidentTypes, useCreateIncidentType, useGetBillingStatus, useCreateCheckoutSession, useGetJoinLink, UpdateMemberRequestRole } from "@workspace/api-client-react";
+import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUpdateMember, useListIncidentTypes, useCreateIncidentType, useGetBillingStatus, useCreateCheckoutSession, useGetJoinLink, getGetJoinLinkQueryKey, UpdateMemberRequestRole } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
@@ -37,7 +37,7 @@ function SetupChecklist({ groupSlug }: { groupSlug: string }) {
       </div>
       <div className="space-y-2">
         {steps.map((step) => {
-          const done = (progress as any)[step.key];
+          const done = (progress as unknown as Record<string, boolean>)[step.key];
           return (
             <Link key={step.key} href={done ? "#" : step.href}>
               <div className={`flex items-center gap-2 rounded-lg px-1 py-0.5 ${!done ? "hover:bg-emerald-800/30 cursor-pointer transition-colors" : ""}`}>
@@ -444,7 +444,7 @@ export default function GroupSettings() {
   const createIncidentType = useCreateIncidentType();
   const { data: billing } = useGetBillingStatus(slug);
   const checkout = useCreateCheckoutSession();
-  const { data: joinLink } = useGetJoinLink(slug, { query: { enabled: activeTab === "profile" } as any });
+  const { data: joinLink } = useGetJoinLink(slug, { query: { queryKey: getGetJoinLinkQueryKey(slug), enabled: activeTab === "profile" } });
 
   const [newTypeName, setNewTypeName] = useState("");
   const [newTypeColour, setNewTypeColour] = useState("#10b981");
@@ -906,7 +906,7 @@ export default function GroupSettings() {
                 <button
                   onClick={() => {
                     updateGroup.mutate(
-                      { groupSlug: slug, data: { publicReportingEnabled: !group.publicReportingEnabled } as any },
+                      { groupSlug: slug, data: { publicReportingEnabled: !group.publicReportingEnabled } },
                       { onSuccess: () => toast({ title: group.publicReportingEnabled ? "Public reporting disabled" : "Public reporting enabled" }) }
                     );
                   }}

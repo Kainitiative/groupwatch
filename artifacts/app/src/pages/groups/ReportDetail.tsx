@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRoute, Link } from "wouter";
 import { useGetReport, useAddReportUpdate, useGetMe } from "@workspace/api-client-react";
+import { AddReportUpdateRequestUpdateType, AddReportUpdateRequestNewStatus } from "@workspace/api-client-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { getGetReportQueryKey } from "@workspace/api-client-react";
 import SidebarLayout from "@/components/layout/SidebarLayout";
@@ -175,7 +176,7 @@ export default function ReportDetail() {
     try {
       await addUpdate.mutateAsync({
         groupSlug: slug, referenceNumber: ref,
-        data: { updateType: "status_change", newStatus: newStatus as any },
+        data: { updateType: AddReportUpdateRequestUpdateType.status_change, newStatus: newStatus as AddReportUpdateRequestNewStatus },
       });
       invalidate();
       setNewStatus("");
@@ -208,10 +209,10 @@ export default function ReportDetail() {
       await addUpdate.mutateAsync({
         groupSlug: slug, referenceNumber: ref,
         data: {
-          updateType: "escalation" as any,
+          updateType: AddReportUpdateRequestUpdateType.escalation,
           escalationContactId: selectedContactId,
           note: escalationNote.trim() || undefined,
-        } as any,
+        },
       });
       invalidate();
       setSelectedContactId("");

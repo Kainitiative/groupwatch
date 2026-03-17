@@ -57,7 +57,7 @@ async function requireApiKey(req: Request, res: Response, next: NextFunction): P
     .where(eq(apiKeysTable.id, keyRow.id))
     .catch(() => {});
 
-  (req as any).apiKeyGroupId = keyRow.groupId;
+  res.locals["apiKeyGroupId"] = keyRow.groupId;
   next();
 }
 
@@ -66,7 +66,7 @@ async function resolveGroup(req: Request, res: Response): Promise<typeof groupsT
   const group = await getGroupBySlug(slug);
   if (!group) { res.status(404).json({ error: "Group not found" }); return null; }
 
-  if ((req as any).apiKeyGroupId !== group.id) {
+  if (res.locals["apiKeyGroupId"] !== group.id) {
     res.status(403).json({ error: "This API key does not belong to the requested group" });
     return null;
   }
@@ -101,12 +101,19 @@ router.get("/v1/groups/:slug/incidents", requireApiKey, async (req, res): Promis
 
   const limit = Math.min(parseInt(String(req.query.limit ?? "50")), 200);
   const offset = parseInt(String(req.query.offset ?? "0"));
-  const status = String(req.query.status ?? "");
-  const severity = String(req.query.severity ?? "");
+  const statusParam = String(req.query.status ?? "");
+  const severityParam = String(req.query.severity ?? "");
+
+  type IncidentStatus = "open" | "in_progress" | "escalated" | "resolved";
+  type IncidentSeverity = "low" | "medium" | "high" | "emergency";
+  const validStatuses: IncidentStatus[] = ["open", "in_progress", "escalated", "resolved"];
+  const validSeverities: IncidentSeverity[] = ["low", "medium", "high", "emergency"];
+  const status = validStatuses.includes(statusParam as IncidentStatus) ? (statusParam as IncidentStatus) : null;
+  const severity = validSeverities.includes(severityParam as IncidentSeverity) ? (severityParam as IncidentSeverity) : null;
 
   const conditions = [eq(incidentReportsTable.groupId, group.id)];
-  if (status) conditions.push(eq(incidentReportsTable.status, status as any));
-  if (severity) conditions.push(eq(incidentReportsTable.severity, severity as any));
+  if (status) conditions.push(eq(incidentReportsTable.status, status));
+  if (severity) conditions.push(eq(incidentReportsTable.severity, severity));
 
   const rows = await db
     .select({

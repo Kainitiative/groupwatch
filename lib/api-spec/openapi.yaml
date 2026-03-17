@@ -1475,6 +1475,8 @@ components:
           nullable: true
         publicHotspotMapEnabled:
           type: boolean
+        publicReportingEnabled:
+          type: boolean
 
     JoinLinkResponse:
       type: object

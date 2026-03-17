@@ -184,6 +184,7 @@ export interface UpdateGroupRequest {
   contactEmail?: string | null;
   socialLinks?: UpdateGroupRequestSocialLinks;
   publicHotspotMapEnabled?: boolean;
+  publicReportingEnabled?: boolean;
 }
 
 export interface JoinLinkResponse {

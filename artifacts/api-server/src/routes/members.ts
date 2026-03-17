@@ -6,10 +6,13 @@ import {
   usersTable,
   joinRequestsTable,
   setupProgressTable,
+  memberInvitesTable,
 } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
+import crypto from "crypto";
 import { requireAuth } from "../lib/session";
 import { getGroupBySlug, getMemberRecord } from "../lib/groups";
+import { sendMemberInviteEmail } from "../lib/email";
 
 const router = Router();
 
@@ -68,22 +71,28 @@ router.post("/groups/:groupSlug/members/invite", requireAuth, async (req, res): 
     return;
   }
 
+  const [caller] = await db.select({ name: usersTable.name }).from(usersTable).where(eq(usersTable.id, req.session.userId!));
+
   const { email, role = "member" } = req.body;
   if (!email) { res.status(422).json({ error: "Email is required" }); return; }
 
+  const normalizedEmail = email.toLowerCase().trim();
+  const validRoles = ["admin", "responder", "member"] as const;
+  const memberRole = validRoles.includes(role) ? (role as typeof validRoles[number]) : "member";
+
   // Check if user already a member by email
-  const [existingUser] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase()));
+  const [existingUser] = await db.select().from(usersTable).where(eq(usersTable.email, normalizedEmail));
   if (existingUser) {
     const existingMember = await getMemberRecord(group.id, existingUser.id);
     if (existingMember) {
       res.status(409).json({ error: "This user is already a member of the group" });
       return;
     }
-    // Auto-add if user exists
+    // Auto-add existing user and send notification
     await db.insert(groupMembersTable).values({
       groupId: group.id,
       userId: existingUser.id,
-      role,
+      role: memberRole,
       status: "active",
     }).onConflictDoNothing();
 
@@ -92,9 +101,46 @@ router.post("/groups/:groupSlug/members/invite", requireAuth, async (req, res): 
       userId: existingUser.id,
       canFileReports: true,
     }).onConflictDoNothing();
+
+    const appUrl = process.env.APP_URL || "https://groupwatch.io";
+    const inviteUrl = `${appUrl}/dashboard`;
+    sendMemberInviteEmail(normalizedEmail, group.name, caller?.name ?? "Group Admin", inviteUrl).catch(() => {});
+    res.json({ message: `${existingUser.name} has been added to the group` });
+    return;
   }
 
-  res.json({ message: `Invitation sent to ${email}` });
+  // User does not exist — create a pending invite token and send email
+  const existingInvite = await db
+    .select({ id: memberInvitesTable.id })
+    .from(memberInvitesTable)
+    .where(and(
+      eq(memberInvitesTable.groupId, group.id),
+      eq(memberInvitesTable.email, normalizedEmail)
+    ))
+    .limit(1);
+
+  if (existingInvite.length > 0) {
+    res.status(409).json({ error: "An invitation has already been sent to this email" });
+    return;
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+  await db.insert(memberInvitesTable).values({
+    groupId: group.id,
+    email: normalizedEmail,
+    role: memberRole,
+    invitedByUserId: req.session.userId!,
+    token,
+    expiresAt,
+  });
+
+  const appUrl = process.env.APP_URL || "https://groupwatch.io";
+  const inviteUrl = `${appUrl}/register?invite=${token}`;
+  sendMemberInviteEmail(normalizedEmail, group.name, caller?.name ?? "Group Admin", inviteUrl).catch(() => {});
+
+  res.json({ message: `Invitation sent to ${normalizedEmail}` });
 });
 
 router.get("/groups/:groupSlug/members/join-requests", requireAuth, async (req, res): Promise<void> => {

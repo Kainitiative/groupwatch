@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import { Download, Share, X, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
+}
+
 export default function PwaPrompts() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showAndroid, setShowAndroid] = useState(false);
   const [showIos, setShowIos] = useState(false);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
@@ -19,7 +24,7 @@ export default function PwaPrompts() {
     // Android/Chrome Install Prompt
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       if (!sessionStorage.getItem('pwa-prompt-dismissed')) {
         setShowAndroid(true);
       }

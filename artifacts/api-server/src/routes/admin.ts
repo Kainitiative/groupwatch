@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { db } from "@workspace/db";
 import {
   groupsTable,
@@ -14,7 +14,7 @@ import { requireAuth } from "../lib/session";
 
 const router = Router();
 
-async function requireSuperAdmin(req: any, res: any): Promise<boolean> {
+async function requireSuperAdmin(req: Request, res: Response): Promise<boolean> {
   const [user] = await db
     .select()
     .from(usersTable)
