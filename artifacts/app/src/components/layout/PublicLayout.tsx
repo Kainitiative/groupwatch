@@ -18,13 +18,12 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="bg-primary/90 p-1.5 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300">
-                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-6 w-6" />
-              </div>
-              <span className={`font-display font-bold text-xl tracking-tight ${transparentHeader ? "text-white" : "text-foreground"}`}>
-                GroupWatch
-              </span>
+            <Link href="/" className="flex items-center group-hover:opacity-90 transition-opacity">
+              <img
+                src={`${import.meta.env.BASE_URL}images/logo-banner.png`}
+                alt="GroupWatch Platform"
+                className="h-10 w-auto object-contain rounded-lg"
+              />
             </Link>
             
             <nav className="hidden md:flex items-center gap-8">
@@ -66,8 +65,7 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
             <div className="md:col-span-1">
               <Link href="/" className="flex items-center gap-2 mb-4">
-                <img src={`${import.meta.env.BASE_URL}images/logo-icon.png`} alt="GroupWatch" className="h-6 w-6 opacity-90" />
-                <span className="font-display font-bold text-xl tracking-tight text-white">GroupWatch</span>
+                <img src={`${import.meta.env.BASE_URL}images/logo-transparent.png`} alt="GroupWatch Platform" className="h-8 w-auto object-contain opacity-90" />
               </Link>
               <p className="text-primary-foreground/60 text-sm leading-relaxed">
                 Real-time visibility of what's happening in your area, using your own members as eyes and ears on the ground.
