@@ -1,10 +1,11 @@
-import express, { type Express } from "express";
+import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
 import fs from "fs";
 import router from "./routes";
 import { createSessionMiddleware } from "./lib/session";
+import { logError } from "./lib/logError";
 
 const app: Express = express();
 
@@ -43,5 +44,20 @@ if (isProduction) {
     });
   }
 }
+
+// Global error handler — captures unhandled route errors into error_logs
+app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
+  const status = (err as any)?.status ?? (err as any)?.statusCode ?? 500;
+  const message = err instanceof Error ? err.message : "Internal server error";
+
+  // Only persist 5xx errors (don't log 4xx user mistakes)
+  if (status >= 500) {
+    logError(err, { req, statusCode: status }).catch(() => {});
+  }
+
+  if (!res.headersSent) {
+    res.status(status).json({ error: message });
+  }
+});
 
 export default app;

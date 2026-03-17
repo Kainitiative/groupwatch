@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { format, differenceInDays, isPast } from "date-fns";
+import { format, differenceInDays, isPast, formatDistanceToNow } from "date-fns";
 import {
   ShieldCheck, Activity, Users, CreditCard, CheckCircle2, Search,
   ExternalLink, ToggleLeft, ToggleRight, AlertTriangle, Settings,
-  TrendingUp, Clock, Globe, X,
+  TrendingUp, Clock, Globe, X, AlertCircle, Trash2, RefreshCw,
 } from "lucide-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import { useToast } from "@/hooks/use-toast";
 
-type AdminTab = "overview" | "groups" | "users" | "settings";
+type AdminTab = "overview" | "groups" | "users" | "settings" | "errors";
 
 type AdminGroup = {
   id: string;
@@ -46,6 +46,19 @@ type PlatformSettings = {
   reportingEnabled: boolean;
   maintenanceMode: boolean;
   updatedAt: string;
+};
+
+type ErrorLog = {
+  id: string;
+  level: string;
+  message: string;
+  stack: string | null;
+  path: string | null;
+  method: string | null;
+  statusCode: number | null;
+  userId: string | null;
+  meta: string | null;
+  createdAt: string;
 };
 
 async function adminFetch<T>(path: string, options?: RequestInit): Promise<T> {
@@ -121,6 +134,30 @@ export default function SuperAdmin() {
     queryKey: ["admin-platform-settings"],
     queryFn: () => adminFetch("/admin/platform-settings"),
     enabled: !!user?.isSuperAdmin && activeTab === "settings",
+  });
+
+  const [expandedError, setExpandedError] = useState<string | null>(null);
+
+  const { data: errorsData, isLoading: errorsLoading, refetch: refetchErrors } = useQuery<{ errors: ErrorLog[]; total: number }>({
+    queryKey: ["admin-errors"],
+    queryFn: () => adminFetch("/admin/errors?limit=100"),
+    enabled: !!user?.isSuperAdmin && activeTab === "errors",
+    refetchInterval: activeTab === "errors" ? 15000 : false,
+  });
+
+  const deleteOneError = useMutation({
+    mutationFn: (id: string) => adminFetch(`/admin/errors/${id}`, { method: "DELETE" }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-errors"] }),
+    onError: (e: any) => toast({ variant: "destructive", title: "Delete failed", description: e.message }),
+  });
+
+  const clearAllErrors = useMutation({
+    mutationFn: () => adminFetch("/admin/errors", { method: "DELETE" }),
+    onSuccess: () => {
+      toast({ title: "All error logs cleared" });
+      qc.invalidateQueries({ queryKey: ["admin-errors"] });
+    },
+    onError: (e: any) => toast({ variant: "destructive", title: "Failed", description: e.message }),
   });
 
   const activateMutation = useMutation({
@@ -201,11 +238,12 @@ export default function SuperAdmin() {
     );
   }
 
-  const tabs: { id: AdminTab; label: string; icon: any }[] = [
+  const tabs: { id: AdminTab; label: string; icon: any; badge?: number }[] = [
     { id: "overview", label: "Overview", icon: TrendingUp },
     { id: "groups", label: "Groups", icon: Globe },
     { id: "users", label: "Users", icon: Users },
     { id: "settings", label: "Platform", icon: Settings },
+    { id: "errors", label: "Errors", icon: AlertCircle, badge: errorsData?.total && errorsData.total > 0 ? errorsData.total : undefined },
   ];
 
   return (
@@ -233,6 +271,11 @@ export default function SuperAdmin() {
             >
               <t.icon className="w-4 h-4" />
               {t.label}
+              {t.badge !== undefined && (
+                <span className="ml-0.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">
+                  {t.badge > 99 ? "99+" : t.badge}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -560,6 +603,126 @@ export default function SuperAdmin() {
                 ))}
               </div>
             </div>
+          </div>
+        )}
+
+        {/* ── ERRORS ── */}
+        {activeTab === "errors" && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-sm font-semibold text-foreground">Server Error Log</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {errorsData?.total ?? 0} entr{(errorsData?.total ?? 0) === 1 ? "y" : "ies"} — auto-refreshes every 15 seconds
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => refetchErrors()}
+                  disabled={errorsLoading}
+                  className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-border hover:bg-muted transition-colors text-muted-foreground hover:text-foreground disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${errorsLoading ? "animate-spin" : ""}`} /> Refresh
+                </button>
+                {(errorsData?.total ?? 0) > 0 && (
+                  <button
+                    onClick={() => { if (confirm("Clear all error logs?")) clearAllErrors.mutate(); }}
+                    disabled={clearAllErrors.isPending}
+                    className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" /> Clear all
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {errorsLoading ? (
+              <div className="animate-pulse space-y-2">
+                {[1, 2, 3].map(i => <div key={i} className="h-16 bg-muted rounded-xl" />)}
+              </div>
+            ) : !errorsData?.errors.length ? (
+              <div className="bg-card border border-border/50 rounded-2xl p-12 text-center">
+                <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <ShieldCheck className="w-6 h-6 text-emerald-500" />
+                </div>
+                <p className="text-sm font-medium text-foreground">No errors logged</p>
+                <p className="text-xs text-muted-foreground mt-1">Server errors will appear here automatically</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {errorsData.errors.map(err => (
+                  <div
+                    key={err.id}
+                    className={`bg-card border rounded-xl overflow-hidden transition-all ${
+                      err.level === "error" ? "border-red-100" : err.level === "warn" ? "border-amber-100" : "border-border/50"
+                    }`}
+                  >
+                    {/* Row */}
+                    <button
+                      className="w-full text-left px-4 py-3 hover:bg-muted/20 transition-colors"
+                      onClick={() => setExpandedError(expandedError === err.id ? null : err.id)}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start gap-3 min-w-0">
+                          <span className={`shrink-0 mt-0.5 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                            err.level === "error" ? "bg-red-500/15 text-red-600" :
+                            err.level === "warn" ? "bg-amber-500/15 text-amber-600" :
+                            "bg-blue-500/15 text-blue-600"
+                          }`}>
+                            {err.level}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-foreground truncate">{err.message}</p>
+                            <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground flex-wrap">
+                              {err.method && err.path && (
+                                <span className="font-mono bg-muted px-1.5 py-0.5 rounded">{err.method} {err.path}</span>
+                              )}
+                              {err.statusCode && (
+                                <span className={`font-mono px-1.5 py-0.5 rounded ${
+                                  err.statusCode >= 500 ? "bg-red-100 text-red-600" : "bg-muted"
+                                }`}>{err.statusCode}</span>
+                              )}
+                              <span>{formatDistanceToNow(new Date(err.createdAt), { addSuffix: true })}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <button
+                          onClick={e => { e.stopPropagation(); deleteOneError.mutate(err.id); }}
+                          disabled={deleteOneError.isPending}
+                          className="shrink-0 p-1.5 rounded-lg text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
+                          title="Delete this entry"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </button>
+
+                    {/* Expanded stack trace */}
+                    {expandedError === err.id && (err.stack || err.meta) && (
+                      <div className="border-t border-border/50 bg-slate-950 px-4 py-3">
+                        {err.stack && (
+                          <pre className="text-xs text-slate-300 font-mono whitespace-pre-wrap overflow-x-auto leading-relaxed max-h-64 overflow-y-auto">
+                            {err.stack}
+                          </pre>
+                        )}
+                        {err.meta && (
+                          <div className="mt-2 pt-2 border-t border-slate-800">
+                            <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Meta</p>
+                            <pre className="text-xs text-slate-400 font-mono whitespace-pre-wrap">
+                              {JSON.stringify(JSON.parse(err.meta), null, 2)}
+                            </pre>
+                          </div>
+                        )}
+                        <p className="text-[10px] text-slate-500 mt-2">
+                          {format(new Date(err.createdAt), "dd MMM yyyy HH:mm:ss")}
+                          {err.userId && ` · user ${err.userId}`}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

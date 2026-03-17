@@ -1,4 +1,4 @@
-import { pgTable, text, boolean, timestamp, uuid, serial } from "drizzle-orm/pg-core";
+import { pgTable, text, boolean, timestamp, uuid, serial, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { groupsTable } from "./groups";
@@ -30,3 +30,16 @@ export type PlatformSettings = typeof platformSettingsTable.$inferSelect;
 export const insertApiKeySchema = createInsertSchema(apiKeysTable).omit({ id: true, createdAt: true });
 export type InsertApiKey = z.infer<typeof insertApiKeySchema>;
 export type ApiKey = typeof apiKeysTable.$inferSelect;
+
+export const errorLogsTable = pgTable("error_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  level: text("level").notNull().default("error"),
+  message: text("message").notNull(),
+  stack: text("stack"),
+  path: text("path"),
+  method: text("method"),
+  statusCode: integer("status_code").default(500),
+  userId: uuid("user_id").references(() => usersTable.id, { onDelete: "set null" }),
+  meta: text("meta"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});

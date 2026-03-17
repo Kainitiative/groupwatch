@@ -7,8 +7,9 @@ import {
   subscriptionsTable,
   incidentReportsTable,
   platformSettingsTable,
+  errorLogsTable,
 } from "@workspace/db";
-import { eq, count, and, desc } from "drizzle-orm";
+import { eq, count, desc, lt } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
 
 const router = Router();
@@ -228,6 +229,53 @@ router.get("/admin/revenue", requireAuth, async (req, res): Promise<void> => {
     estimatedMrrEuros: Math.round(estimatedMrrEuros * 100) / 100,
     totalGroups: Number(totalResult?.count ?? 0),
   });
+});
+
+router.get("/admin/errors", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  const page = parseInt(String(req.query.page || "1"));
+  const limit = Math.min(parseInt(String(req.query.limit || "50")), 200);
+  const offset = (page - 1) * limit;
+  const level = req.query.level ? String(req.query.level) : undefined;
+
+  const [totalResult] = await db
+    .select({ count: count() })
+    .from(errorLogsTable);
+
+  const query = db
+    .select()
+    .from(errorLogsTable)
+    .orderBy(desc(errorLogsTable.createdAt))
+    .limit(limit)
+    .offset(offset);
+
+  const rows = await query;
+
+  const filtered = level ? rows.filter(r => r.level === level) : rows;
+
+  res.json({
+    errors: filtered,
+    total: Number(totalResult?.count ?? 0),
+    page,
+    limit,
+    totalPages: Math.ceil(Number(totalResult?.count ?? 0) / limit),
+  });
+});
+
+router.delete("/admin/errors", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  // Delete all errors older than 0 seconds (i.e. all)
+  await db.delete(errorLogsTable);
+  res.json({ message: "All error logs cleared" });
+});
+
+router.delete("/admin/errors/:id", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  await db.delete(errorLogsTable).where(eq(errorLogsTable.id, req.params.id));
+  res.json({ message: "Error log entry deleted" });
 });
 
 export default router;
