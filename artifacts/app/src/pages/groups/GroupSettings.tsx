@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useRoute, useLocation } from "wouter";
+import { useRoute, useLocation, Link } from "wouter";
 import { useGetGroup, useUpdateGroup, useGetSetupProgress, useListMembers, useUpdateMember, useListIncidentTypes, useCreateIncidentType, useGetBillingStatus, useCreateCheckoutSession, useGetJoinLink } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
@@ -15,12 +15,12 @@ function SetupChecklist({ groupSlug }: { groupSlug: string }) {
   if (!progress || progress.dismissed || progress.completedSteps === progress.totalSteps) return null;
 
   const steps = [
-    { key: "profileComplete", label: "Complete group profile" },
-    { key: "incidentTypesAdded", label: "Add incident types" },
-    { key: "responderAssigned", label: "Assign a responder" },
-    { key: "mapBoundariesDrawn", label: "Draw map boundaries" },
-    { key: "escalationContactsAdded", label: "Add escalation contacts" },
-    { key: "shareLinkViewed", label: "Share your join link" },
+    { key: "profileComplete", label: "Complete group profile", href: `/g/${groupSlug}/settings?tab=profile` },
+    { key: "incidentTypesAdded", label: "Add incident types", href: `/g/${groupSlug}/settings?tab=incident-types` },
+    { key: "responderAssigned", label: "Assign a responder", href: `/g/${groupSlug}/settings?tab=members` },
+    { key: "mapBoundariesDrawn", label: "Draw map boundaries", href: `/g/${groupSlug}/map` },
+    { key: "escalationContactsAdded", label: "Add escalation contacts", href: `/g/${groupSlug}/settings?tab=escalation` },
+    { key: "shareLinkViewed", label: "Share your join link", href: `/g/${groupSlug}/settings?tab=profile` },
   ];
 
   return (
@@ -39,13 +39,16 @@ function SetupChecklist({ groupSlug }: { groupSlug: string }) {
         {steps.map((step) => {
           const done = (progress as any)[step.key];
           return (
-            <div key={step.key} className="flex items-center gap-2">
-              {done
-                ? <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                : <Circle className="w-4 h-4 text-slate-600 flex-shrink-0" />
-              }
-              <span className={`text-sm ${done ? "text-slate-400 line-through" : "text-slate-200"}`}>{step.label}</span>
-            </div>
+            <Link key={step.key} href={done ? "#" : step.href}>
+              <div className={`flex items-center gap-2 rounded-lg px-1 py-0.5 ${!done ? "hover:bg-emerald-800/30 cursor-pointer transition-colors" : ""}`}>
+                {done
+                  ? <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  : <Circle className="w-4 h-4 text-slate-500 flex-shrink-0" />
+                }
+                <span className={`text-sm ${done ? "text-slate-400 line-through" : "text-slate-200 hover:text-white"}`}>{step.label}</span>
+                {!done && <span className="ml-auto text-xs text-emerald-500 opacity-70">→</span>}
+              </div>
+            </Link>
           );
         })}
       </div>
@@ -207,7 +210,11 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
 export default function GroupSettings() {
   const [, params] = useRoute("/g/:slug/settings");
   const slug = params?.slug ?? "";
-  const [activeTab, setActiveTab] = useState<Tab>("profile");
+  const [activeTab, setActiveTab] = useState<Tab>(() => {
+    const search = new URLSearchParams(window.location.search);
+    const t = search.get("tab") as Tab;
+    return ["profile", "members", "incident-types", "escalation", "billing"].includes(t) ? t : "profile";
+  });
   const { toast } = useToast();
 
   const { data: group, isLoading } = useGetGroup(slug);

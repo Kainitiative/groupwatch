@@ -87,8 +87,10 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
               <h4 className="font-semibold text-white mb-4">Use Cases</h4>
               <ul className="space-y-3 text-sm text-primary-foreground/70">
                 <li><Link href="/for/angling" className="hover:text-accent transition-colors">Angling Clubs</Link></li>
-                <li><Link href="/for/environment" className="hover:text-accent transition-colors">Environmental</Link></li>
+                <li><Link href="/for/environment" className="hover:text-accent transition-colors">Environmental Groups</Link></li>
                 <li><Link href="/for/sports" className="hover:text-accent transition-colors">Sports Clubs</Link></li>
+                <li><Link href="/for/neighbourhood-watch" className="hover:text-accent transition-colors">Neighbourhood Watch</Link></li>
+                <li><Link href="/for/residents" className="hover:text-accent transition-colors">Residents Associations</Link></li>
               </ul>
             </div>
             

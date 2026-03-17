@@ -7,6 +7,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from "recharts";
 import { TrendingUp, Clock, CheckCircle2, BarChart2, Download, Loader2, AlertTriangle } from "lucide-react";
+import { HelpTooltip } from "@/components/ui/HelpTooltip";
 
 type Period = "week" | "month" | "year" | "all";
 
@@ -37,14 +38,17 @@ function fmtMinutes(mins: number | null): string {
   return m ? `${h}h ${m}m` : `${h}h`;
 }
 
-function StatCard({ label, value, sub, icon: Icon, colour }: { label: string; value: string; sub?: string; icon: any; colour: string }) {
+function StatCard({ label, value, sub, icon: Icon, colour, tooltip }: { label: string; value: string; sub?: string; icon: any; colour: string; tooltip?: string }) {
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
       <div className="flex items-center gap-3 mb-3">
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${colour}`}>
           <Icon className="w-4 h-4" />
         </div>
-        <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">{label}</span>
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="text-xs text-slate-400 font-medium uppercase tracking-wider leading-tight">{label}</span>
+          {tooltip && <HelpTooltip content={tooltip} iconClassName="text-slate-600 hover:text-slate-400" />}
+        </div>
       </div>
       <p className="text-3xl font-bold text-white">{value}</p>
       {sub && <p className="text-xs text-slate-500 mt-1">{sub}</p>}
@@ -144,6 +148,7 @@ export default function Analytics() {
                 value={String(data.total)}
                 icon={BarChart2}
                 colour="bg-emerald-500/20 text-emerald-400"
+                tooltip="Total number of incidents filed by members of your group in the selected period."
               />
               <StatCard
                 label="Resolved"
@@ -151,6 +156,7 @@ export default function Analytics() {
                 sub={data.total > 0 ? `${Math.round((data.byStatus?.find((s: any) => s.status === "resolved")?.count ?? 0) / data.total * 100)}% resolution rate` : undefined}
                 icon={CheckCircle2}
                 colour="bg-emerald-500/20 text-emerald-400"
+                tooltip="Reports with a status of 'Resolved'. The percentage shows how many of all reports in the period reached resolution."
               />
               <StatCard
                 label="Avg Response Time"
@@ -158,6 +164,7 @@ export default function Analytics() {
                 sub="Submission to claim"
                 icon={Clock}
                 colour="bg-blue-500/20 text-blue-400"
+                tooltip="Average time from when a report was submitted to when a responder first claimed it. Shows how quickly your team picks up new incidents."
               />
               <StatCard
                 label="Avg Resolution Time"
@@ -165,6 +172,7 @@ export default function Analytics() {
                 sub="Claim to resolved"
                 icon={TrendingUp}
                 colour="bg-violet-500/20 text-violet-400"
+                tooltip="Average time from when a responder claimed a report to when it was marked resolved. Shows how efficiently your team works through incidents."
               />
             </div>
 

@@ -143,6 +143,22 @@ pnpm --filter @workspace/api-server run typecheck
 - Online/offline connectivity banner
 - Direct native camera capture (`capture="camera"` on file inputs)
 
+## Completed Features
+
+**Phase 1–3 (Core Platform):** Auth, groups, report submission (offline/PWA), photo upload + EXIF, voice-to-text, member management, roles + permissions, push notifications, incident types, onboarding checklist, Stripe billing (monthly/annual), escalation contacts, analytics (charts + KPIs + CSV export), individual report print/PDF, map boundaries (Leaflet + leaflet-draw).
+
+**Phase 4 (UX Polish + Content):**
+- `HelpTooltip` component (`components/ui/HelpTooltip.tsx`) — wraps Radix tooltip with a `?` icon; deployed on Analytics KPI cards
+- Onboarding checklist steps are now clickable links (deep-link to the relevant settings tab or map page)
+- GroupSettings supports `?tab=xxx` URL search params for deep-linking from the checklist
+- Help centre (`/help`) rewritten with real article content in expandable accordions (6 sections, 28 articles)
+- 2 new pillar pages: Neighbourhood Watch (`/for/neighbourhood-watch`), HOA/Residents (`/for/residents`)
+- Footer "Use Cases" updated to include all 5 pillar pages
+
+**Phase 5 (not started):** API keys, public REST API, embeddable widget
+
+**Deployment (not started):** Dockerfile, docker-compose, Nginx config, GitHub Actions CI/CD
+
 ## User Preferences
 
 - Platform is general-purpose — no fishing/sport-specific terminology

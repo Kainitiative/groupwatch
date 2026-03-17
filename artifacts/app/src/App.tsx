@@ -34,6 +34,8 @@ import Contact from "@/pages/Contact";
 import AnglingClubs from "@/pages/pillar/AnglingClubs";
 import EnvironmentalGroups from "@/pages/pillar/EnvironmentalGroups";
 import SportsClubs from "@/pages/pillar/SportsClubs";
+import NeighbourhoodWatch from "@/pages/pillar/NeighbourhoodWatch";
+import HOA from "@/pages/pillar/HOA";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +68,8 @@ function Router() {
       <Route path="/for/angling" component={AnglingClubs} />
       <Route path="/for/environment" component={EnvironmentalGroups} />
       <Route path="/for/sports" component={SportsClubs} />
+      <Route path="/for/neighbourhood-watch" component={NeighbourhoodWatch} />
+      <Route path="/for/residents" component={HOA} />
 
       {/* /demo → redirect to register */}
       <Route path="/demo" component={Register} />
