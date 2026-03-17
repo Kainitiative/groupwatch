@@ -96,7 +96,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /^https:\/\/{s}\.tile\.openstreetmap\.org\/.*/i,
+            urlPattern: /^https:\/\/[abc]\.tile\.openstreetmap\.org\/.*/i,
             handler: "CacheFirst",
             options: {
               cacheName: "map-tiles-cache",

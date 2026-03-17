@@ -3,7 +3,7 @@ import { db } from "@workspace/db";
 import { incidentReportsTable, incidentTypesTable } from "@workspace/db";
 import { eq, and, gte, sql } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
-import { getGroupBySlug, getMemberRecord } from "../lib/groups";
+import { getGroupBySlug, getMemberRecord, getMemberPermissions } from "../lib/groups";
 
 const router = Router();
 
@@ -15,7 +15,9 @@ router.get("/groups/:groupSlug/analytics", requireAuth, async (req, res): Promis
   if (!group) { res.status(404).json({ error: "Group not found" }); return; }
 
   const member = await getMemberRecord(group.id, req.session.userId!);
-  if (!member || (member.role !== "admin" && !member.canViewDashboard)) {
+  if (!member) { res.status(403).json({ error: "Access denied" }); return; }
+  const perms = await getMemberPermissions(group.id, req.session.userId!);
+  if (member.role !== "admin" && !perms?.canViewDashboard) {
     res.status(403).json({ error: "Access denied" }); return;
   }
 
@@ -160,7 +162,9 @@ router.get("/groups/:groupSlug/reports/export/csv", requireAuth, async (req, res
   if (!group) { res.status(404).json({ error: "Group not found" }); return; }
 
   const member = await getMemberRecord(group.id, req.session.userId!);
-  if (!member || (member.role !== "admin" && !member.canViewDashboard)) {
+  if (!member) { res.status(403).json({ error: "Access denied" }); return; }
+  const perms = await getMemberPermissions(group.id, req.session.userId!);
+  if (member.role !== "admin" && !perms?.canViewDashboard) {
     res.status(403).json({ error: "Access denied" }); return;
   }
 

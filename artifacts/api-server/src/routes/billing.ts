@@ -153,61 +153,72 @@ router.post("/billing/webhooks", async (req, res): Promise<void> => {
   }
 
   try {
-    // Use 'any' for event data to avoid Stripe SDK version-specific type issues
-    const obj = event.data.object as any;
-
     switch (event.type) {
       case "checkout.session.completed": {
-        const groupId = obj.metadata?.groupId;
-        const subscriptionId = obj.subscription;
+        const session = event.data.object as Stripe.Checkout.Session;
+        const groupId = session.metadata?.groupId;
+        const subscriptionId = session.subscription;
         if (groupId && subscriptionId) {
           const stripe = getStripe();
-          const sub = await stripe.subscriptions.retrieve(subscriptionId as string) as any;
+          const sub = await stripe.subscriptions.retrieve(
+            typeof subscriptionId === "string" ? subscriptionId : subscriptionId.id
+          );
           const plan = sub.items.data[0]?.price.recurring?.interval === "year" ? "annual" : "monthly";
+          const periodEnd = sub.items.data[0]?.current_period_end;
           await db.update(subscriptionsTable).set({
             stripeSubscriptionId: sub.id,
             status: "active",
             plan,
-            currentPeriodEndsAt: new Date(sub.current_period_end * 1000),
+            ...(periodEnd ? { currentPeriodEndsAt: new Date(periodEnd * 1000) } : {}),
           }).where(eq(subscriptionsTable.groupId, groupId));
         }
         break;
       }
       case "invoice.paid": {
-        const subscriptionId = obj.subscription;
+        const invoice = event.data.object as Stripe.Invoice;
+        const subscriptionId = invoice.parent?.subscription_details?.subscription;
         if (subscriptionId) {
           const stripe = getStripe();
-          const sub = await stripe.subscriptions.retrieve(subscriptionId as string) as any;
+          const sub = await stripe.subscriptions.retrieve(
+            typeof subscriptionId === "string" ? subscriptionId : subscriptionId.id
+          );
+          const periodEnd = sub.items.data[0]?.current_period_end;
           await db.update(subscriptionsTable).set({
             status: "active",
-            currentPeriodEndsAt: new Date(sub.current_period_end * 1000),
+            ...(periodEnd ? { currentPeriodEndsAt: new Date(periodEnd * 1000) } : {}),
           }).where(eq(subscriptionsTable.stripeSubscriptionId, sub.id));
         }
         break;
       }
       case "invoice.payment_failed": {
-        const subscriptionId = obj.subscription;
+        const invoice = event.data.object as Stripe.Invoice;
+        const subscriptionId = invoice.parent?.subscription_details?.subscription;
         if (subscriptionId) {
+          const subId = typeof subscriptionId === "string" ? subscriptionId : subscriptionId.id;
           await db.update(subscriptionsTable)
             .set({ status: "past_due" })
-            .where(eq(subscriptionsTable.stripeSubscriptionId, subscriptionId as string));
+            .where(eq(subscriptionsTable.stripeSubscriptionId, subId));
         }
         break;
       }
       case "customer.subscription.updated": {
-        const plan = obj.items?.data[0]?.price.recurring?.interval === "year" ? "annual" : "monthly";
+        const sub = event.data.object as Stripe.Subscription;
+        const plan = sub.items.data[0]?.price.recurring?.interval === "year" ? "annual" : "monthly";
+        const status = sub.status === "active" ? "active" : sub.status === "past_due" ? "past_due" : "cancelled";
+        const periodEnd = sub.items.data[0]?.current_period_end;
         await db.update(subscriptionsTable).set({
-          status: obj.status === "active" ? "active" : obj.status === "past_due" ? "past_due" : "cancelled",
+          status,
           plan,
-          cancelAtPeriodEnd: obj.cancel_at_period_end,
-          currentPeriodEndsAt: new Date(obj.current_period_end * 1000),
-        }).where(eq(subscriptionsTable.stripeSubscriptionId, obj.id));
+          cancelAtPeriodEnd: sub.cancel_at_period_end,
+          ...(periodEnd ? { currentPeriodEndsAt: new Date(periodEnd * 1000) } : {}),
+        }).where(eq(subscriptionsTable.stripeSubscriptionId, sub.id));
         break;
       }
       case "customer.subscription.deleted": {
+        const sub = event.data.object as Stripe.Subscription;
         await db.update(subscriptionsTable)
           .set({ status: "cancelled" })
-          .where(eq(subscriptionsTable.stripeSubscriptionId, obj.id));
+          .where(eq(subscriptionsTable.stripeSubscriptionId, sub.id));
         break;
       }
     }

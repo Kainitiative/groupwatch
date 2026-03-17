@@ -62,7 +62,7 @@ async function requireApiKey(req: Request, res: Response, next: NextFunction): P
 }
 
 async function resolveGroup(req: Request, res: Response): Promise<typeof groupsTable.$inferSelect | null> {
-  const slug = req.params.slug;
+  const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
   const group = await getGroupBySlug(slug);
   if (!group) { res.status(404).json({ error: "Group not found" }); return null; }
 
@@ -118,13 +118,13 @@ router.get("/v1/groups/:slug/incidents", requireApiKey, async (req, res): Promis
       description: incidentReportsTable.description,
       latitude: incidentReportsTable.latitude,
       longitude: incidentReportsTable.longitude,
-      reportedAt: incidentReportsTable.reportedAt,
-      reporterName: incidentReportsTable.reporterName,
+      submittedAt: incidentReportsTable.submittedAt,
+      reporterNameSnapshot: incidentReportsTable.reporterNameSnapshot,
       isAnonymous: incidentReportsTable.isAnonymous,
     })
     .from(incidentReportsTable)
     .where(and(...conditions))
-    .orderBy(desc(incidentReportsTable.reportedAt))
+    .orderBy(desc(incidentReportsTable.submittedAt))
     .limit(limit)
     .offset(offset);
 
@@ -156,7 +156,7 @@ router.post("/v1/groups/:slug/incidents", requireApiKey, async (req, res): Promi
     res.status(400).json({ error: "Incident type not found for this group" }); return;
   }
 
-  const referenceNumber = generateReferenceNumber(group.slug);
+  const referenceNumber = generateReferenceNumber();
 
   const [report] = await db
     .insert(incidentReportsTable)
@@ -168,18 +168,15 @@ router.post("/v1/groups/:slug/incidents", requireApiKey, async (req, res): Promi
       description: description.trim(),
       latitude: latitude ? parseFloat(latitude) : null,
       longitude: longitude ? parseFloat(longitude) : null,
-      reporterName: reporterName ?? null,
-      reporterEmail: reporterEmail ?? null,
-      reportedAt: new Date(),
+      reporterNameSnapshot: reporterName ?? null,
       referenceNumber,
       isAnonymous: !reporterName,
-      source: "api",
-    } as any)
+    })
     .returning({
       id: incidentReportsTable.id,
       referenceNumber: incidentReportsTable.referenceNumber,
       status: incidentReportsTable.status,
-      reportedAt: incidentReportsTable.reportedAt,
+      submittedAt: incidentReportsTable.submittedAt,
     });
 
   res.status(201).json({ data: report });

@@ -86,6 +86,12 @@ jobs:
 
             # Pull latest image and restart services
             GITHUB_REPOSITORY=${{ github.repository }} docker compose pull app
+
+            # Run DB schema migrations before bringing up new container
+            GITHUB_REPOSITORY=${{ github.repository }} docker compose run --rm \
+              -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+              app sh -c 'pnpm --filter @workspace/db drizzle-kit push --force'
+
             GITHUB_REPOSITORY=${{ github.repository }} docker compose up -d --remove-orphans
 
             # Wait for health check

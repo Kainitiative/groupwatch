@@ -538,8 +538,10 @@ router.get("/photos/:photoId", requireAuth, async (req, res): Promise<void> => {
   const photoId = Array.isArray(req.params.photoId) ? req.params.photoId[0] : req.params.photoId;
   const [photo] = await db.select().from(reportPhotosTable).where(eq(reportPhotosTable.id, photoId));
   if (!photo) { res.status(404).json({ error: "Photo not found" }); return; }
-  if (!fs.existsSync(photo.filePath)) { res.status(404).json({ error: "File not found" }); return; }
-  res.setHeader("Content-Type", photo.mimeType || "image/jpeg");
+  if (!photo.filePath || !fs.existsSync(photo.filePath)) { res.status(404).json({ error: "File not found" }); return; }
+  const ext = path.extname(photo.filePath).toLowerCase();
+  const mimeType = ext === ".png" ? "image/png" : ext === ".gif" ? "image/gif" : ext === ".webp" ? "image/webp" : "image/jpeg";
+  res.setHeader("Content-Type", mimeType);
   res.setHeader("Cache-Control", "private, max-age=86400");
   fs.createReadStream(photo.filePath).pipe(res);
 });

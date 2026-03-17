@@ -124,7 +124,7 @@ router.post("/widget/:slug/report", photoUpload.array("photos", 5), async (req, 
     return;
   }
 
-  const referenceNumber = await generateReferenceNumber(group.id);
+  const referenceNumber = generateReferenceNumber();
   const nameSnapshot = reporterName?.trim() || "Public Reporter";
 
   const [report] = await db
@@ -172,7 +172,7 @@ router.post("/widget/:slug/report", photoUpload.array("photos", 5), async (req, 
       let exifTakenAt: Date | null = null;
 
       try {
-        const exif = await exifr.parse(file.path, { gps: true, DateTimeOriginal: true });
+        const exif = await exifr.parse(file.path, { gps: true, tiff: true });
         if (exif?.latitude) exifLat = exif.latitude;
         if (exif?.longitude) exifLng = exif.longitude;
         if (exif?.DateTimeOriginal) exifTakenAt = new Date(exif.DateTimeOriginal);
