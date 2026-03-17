@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "BLpUrZz9zzzw7-UY4RU4r"
+uri = "file://HANDOVER.md"
+type = "text"
+title = "IncidentIQ — Complete Project Handover"
