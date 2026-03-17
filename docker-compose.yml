@@ -15,7 +15,7 @@ services:
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
       STRIPE_MONTHLY_PRICE_ID: ${STRIPE_MONTHLY_PRICE_ID}
       STRIPE_ANNUAL_PRICE_ID: ${STRIPE_ANNUAL_PRICE_ID}
-      APP_URL: ${APP_URL:-https://app.groupwatch.io}
+      APP_URL: ${APP_URL:-https://groupwatch.io}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER}
@@ -27,7 +27,7 @@ services:
     volumes:
       - uploads:/app/artifacts/api-server/uploads
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/health"]
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/api/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -38,11 +38,8 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - ./deploy/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /var/www/certbot:/var/www/certbot:ro
     depends_on:
       - app
 

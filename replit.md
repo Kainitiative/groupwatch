@@ -125,13 +125,17 @@ Deployment files in project root:
 
 **GitHub Actions secrets required:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
 
+**SSL: Cloudflare (free)**
+- Add your domain to Cloudflare (free account)
+- Point your domain registrar nameservers to Cloudflare's
+- In Cloudflare dashboard: SSL/TLS → set mode to **Full**
+- Cloudflare handles HTTPS — Nginx only listens on port 80
+
 **First-time VPS setup:**
 ```bash
 # 1. Install Docker + Docker Compose
-# 2. Install Certbot: apt install certbot
-# 3. Get TLS cert: certbot certonly --standalone -d app.groupwatch.io
-# 4. Copy .env.example to /opt/groupwatch/.env and fill in values
-# 5. docker compose up -d
+# 2. Copy .env.example to /opt/groupwatch/.env and fill in values
+# 3. docker compose up -d
 ```
 
 ## Development Commands
