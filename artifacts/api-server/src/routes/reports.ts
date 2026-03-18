@@ -187,7 +187,7 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
     return;
   }
 
-  const { incidentTypeId, severity, description, latitude, longitude, isAnonymous = false } = req.body;
+  const { incidentTypeId, severity, description, latitude, longitude, isAnonymous = false, assignToSelf = true } = req.body;
 
   if (!incidentTypeId || !severity || !description) {
     res.status(422).json({ error: "Incident type, severity and description are required" });
@@ -214,6 +214,9 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
   const member = await getMemberRecord(group.id, req.session.userId!);
   const isResponder = member?.role === "responder" || member?.role === "admin";
 
+  // Auto-claim only if the user is a responder AND they chose to assign it to themselves
+  const shouldAutoClaim = isResponder && assignToSelf !== false;
+
   const referenceNumber = generateReferenceNumber();
 
   const [reporterUser] = await db
@@ -235,8 +238,8 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
       longitude: longitude ?? null,
       isAnonymous,
       status: "open",
-      claimedByUserId: isResponder ? req.session.userId! : null,
-      claimedAt: isResponder ? new Date() : null,
+      claimedByUserId: shouldAutoClaim ? req.session.userId! : null,
+      claimedAt: shouldAutoClaim ? new Date() : null,
     })
     .returning();
 
@@ -245,8 +248,8 @@ router.post("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise
     reportId: report.id,
     actorId: req.session.userId!,
     actorNameSnapshot: reporterUser?.name ?? "Unknown",
-    updateType: isResponder ? "auto_claim" : "note",
-    note: isResponder ? "Report filed and auto-assigned" : "Report submitted",
+    updateType: shouldAutoClaim ? "auto_claim" : "note",
+    note: shouldAutoClaim ? "Report filed and auto-assigned" : "Report filed — open for a responder to claim",
   });
 
   res.status(201).json({

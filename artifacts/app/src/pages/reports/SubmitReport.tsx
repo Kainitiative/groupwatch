@@ -98,6 +98,7 @@ export default function SubmitReport() {
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
   const [isListening, setIsListening] = useState(false);
   const [speechAvailable] = useState(() => "SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+  const [assignToSelf, setAssignToSelf] = useState(true);
   const recognitionRef = useRef<any>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
 
@@ -206,7 +207,7 @@ export default function SubmitReport() {
     }
 
     try {
-      const report = await createReport.mutateAsync({ groupSlug: slug, data });
+      const report = await createReport.mutateAsync({ groupSlug: slug, data: { ...data, assignToSelf } });
 
       if (photos.length > 0) {
         const fd = new FormData();
@@ -514,6 +515,24 @@ export default function SubmitReport() {
               </div>
             </label>
           </div>
+
+          {/* Assign to self — only shown if already logged in (responders/admins) */}
+          {user && (
+            <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-4">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={assignToSelf}
+                  onChange={e => setAssignToSelf(e.target.checked)}
+                  className="w-5 h-5 rounded bg-slate-700 border-slate-600 text-emerald-500 focus:ring-emerald-500"
+                />
+                <div>
+                  <span className="text-sm font-medium text-slate-200">Assign this report to me</span>
+                  <p className="text-xs text-slate-500 mt-0.5">Uncheck to leave it open for another responder to claim.</p>
+                </div>
+              </label>
+            </div>
+          )}
 
           {/* Auth section — only shown if not logged in */}
           {!user && (

@@ -5,7 +5,7 @@ import { useListReports, useGetGroup, useGetMe } from "@workspace/api-client-rea
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowUpRight, Filter,
-  ChevronLeft, ChevronRight, Loader2, FileText, Flame, TrendingUp
+  ChevronLeft, ChevronRight, Loader2, FileText, Flame, TrendingUp, UserCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -141,6 +141,29 @@ export default function ReportsDashboard() {
             <StatCard label="Escalated" value={stats.escalated} icon={ArrowUpRight} accent="border-orange-500/40" />
             <StatCard label="Resolved" value={stats.resolved} icon={CheckCircle2} accent="border-emerald-500/40" />
             <StatCard label="Emergency" value={stats.emergency} icon={Flame} accent="border-red-500/40" />
+          </div>
+        )}
+
+        {/* Needs a Responder banner */}
+        {stats && stats.open > 0 && statusFilter !== "open" && (
+          <div className="flex items-center justify-between gap-4 bg-sky-500/10 border border-sky-500/30 rounded-2xl px-5 py-4">
+            <div className="flex items-center gap-3">
+              <UserCheck className="w-5 h-5 text-sky-400 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-sky-300">
+                  {stats.open} open {stats.open === 1 ? "report needs" : "reports need"} a responder
+                </p>
+                <p className="text-xs text-sky-400/70 mt-0.5">These reports have not been claimed yet.</p>
+              </div>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-sky-500/40 text-sky-300 hover:bg-sky-500/10 hover:text-sky-200 shrink-0 text-xs"
+              onClick={() => { setStatusFilter("open"); setPage(1); }}
+            >
+              View open reports
+            </Button>
           </div>
         )}
 
