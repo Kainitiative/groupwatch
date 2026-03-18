@@ -290,6 +290,43 @@ Implementation: a `useGroupTerminology(groupType)` hook in the frontend that ret
 
 - **Tidy Towns committees** — community groups responsible for local environmental upkeep; good fit for reporting litter, dumping, vandalism, and maintenance issues within a defined area.
 
+## Planned Feature: Optional Self-Assignment When Filing a Report
+
+### Problem
+When an admin files a report today, they are automatically claimed as the responder on it (`auto_claim`). There is no way to just log the incident and leave it open for another responder to pick up.
+
+### What exists today
+- Reports have a `status` field: `open`, `in_progress`, `escalated`, `resolved`
+- Report updates track actions including `claim` and `auto_claim`
+- When an admin submits a report, an `auto_claim` update is logged and status moves to `in_progress`
+
+---
+
+### Plan
+
+**Report submission form — one small addition:**
+Add a checkbox or toggle on the submission form, visible only to admins/responders:
+
+> ☑ Assign this report to me
+> (uncheck to leave it open for another responder)
+
+Checked by default to preserve existing behaviour. If unchecked, the report is submitted with status `open` and no `auto_claim` update is created.
+
+**API change — conditional auto-claim:**
+The report creation route currently writes an `auto_claim` report update and sets status to `in_progress` whenever the submitter is an admin/responder. Add an optional `assignToSelf: boolean` field to the submission payload. If `false`, skip the auto-claim step and leave status as `open`.
+
+**Responder dashboard — surface unassigned reports:**
+Unassigned `open` reports should be clearly visible on the responder dashboard with a prominent "Take it" / "Claim" button. This already partially exists since the claim flow is built — it just needs the unassigned open reports to be surfaced more prominently, perhaps as their own section: "Needs a Responder".
+
+**No data model changes needed** — the existing `status` and report update types (`claim`, `auto_claim`) already support this. It's purely a behaviour change on submission and a UI change on the dashboard.
+
+---
+
+### Files that will need changes
+- `artifacts/app/src/pages/reports/SubmitReport.tsx` — add "Assign to me" toggle (admin-only)
+- `artifacts/api-server/src/routes/reports.ts` — make auto-claim conditional on `assignToSelf`
+- `artifacts/app/src/pages/groups/ReportsDashboard.tsx` — add "Needs a Responder" section for open unassigned reports
+
 ## Future Development (Logged)
 
 - **Frontend error capture** — Add Sentry to capture React/JavaScript crashes in the browser. Server-side errors are already captured in the Super Admin error log. Frontend capture is low priority until active user base grows. 30-minute job when needed.
