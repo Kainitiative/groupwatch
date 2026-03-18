@@ -327,6 +327,95 @@ Unassigned `open` reports should be clearly visible on the responder dashboard w
 - `artifacts/api-server/src/routes/reports.ts` — make auto-claim conditional on `assignToSelf`
 - `artifacts/app/src/pages/groups/ReportsDashboard.tsx` — add "Needs a Responder" section for open unassigned reports
 
+## Planned Feature: Zone-Based Responder Routing
+
+### Goal
+Allow group admins to assign responders to one or more named map boundaries (zones). Responders assigned to specific zones see **only** the reports that fall within their zones. Responders not assigned to any zone retain the current behaviour — they see all reports.
+
+### Problem
+A group with a large area (e.g. a river divided into North Beat, South Beat, Lake Zone) currently shows every responder every report across the whole area. As groups scale, responders get overwhelmed with irrelevant incidents outside their patch.
+
+### What exists today
+- `map_boundaries` table — named polygon/line boundaries per group, with `geometry` (GeoJSON stored as JSONB)
+- `map_sections` table — sub-divisions of a boundary
+- `group_members` + `group_member_permissions` — per-member role and permission flags
+- No link between a member and a boundary exists yet
+- Reports have `latitude` / `longitude` but are not tagged with a boundary ID
+
+---
+
+### Data model changes
+
+**New join table: `boundary_responders`**
+```
+boundary_responders
+  id          uuid  PK
+  boundary_id uuid  FK → map_boundaries.id  (cascade delete)
+  member_id   uuid  FK → group_members.id   (cascade delete)
+  group_id    uuid  FK → groups.id          (cascade delete — belt + braces index)
+  created_at  timestamp
+```
+One row per (boundary, member) pair. A responder can have many rows (multiple zones). No row = unzoned (sees everything).
+
+**`incident_reports` table — new nullable column:**
+```
+boundary_id  uuid  FK → map_boundaries.id  nullable
+```
+Populated at report creation by a point-in-polygon check against the group's active boundaries. If the report has no GPS or falls outside all drawn zones, `boundary_id` stays null and the report is visible to all responders.
+
+---
+
+### Backend changes
+
+1. **Point-in-polygon on report creation** (`routes/reports.ts`)
+   - After inserting a report, load the group's active boundaries
+   - Run a point-in-polygon test (`@turf/boolean-point-in-polygon`) against each boundary's GeoJSON geometry
+   - Write the matched `boundary_id` (or null) back to the report row
+   - This happens synchronously before the 201 response
+
+2. **Report list filter** (`routes/reports.ts` — `GET /groups/:slug/reports`)
+   - After auth, look up whether the requesting user has any `boundary_responder` rows for this group
+   - If they do → add a `WHERE boundary_id IN (...)` filter to the reports query
+   - If they don't (or they're an admin) → no filter, see everything as today
+
+3. **New boundary member endpoints** (`routes/boundaries.ts`)
+   - `GET  /groups/:slug/boundaries/:boundaryId/responders` — list assigned responders
+   - `POST /groups/:slug/boundaries/:boundaryId/responders` — assign a member `{ memberId }`
+   - `DELETE /groups/:slug/boundaries/:boundaryId/responders/:memberId` — remove assignment
+   - All require admin auth
+
+---
+
+### Frontend changes
+
+**Map Boundaries page (`/g/:slug/map`)**
+- For each saved boundary in the sidebar list, add an "Assign Responders" expandable panel
+- Panel shows current assignees (avatar + name + remove button)
+- Dropdown/search to add a member (filtered to members with responder role)
+
+**Reports Dashboard filter behaviour**
+- If the logged-in user is a zone-restricted responder, a subtle info banner: "Showing reports in your assigned zones"
+- Admin users always see all reports; no change for them
+
+---
+
+### What this does NOT include
+- Auto-routing notifications by zone (can follow as a separate feature)
+- Members (non-responders) being zone-restricted
+- Sub-zone nesting beyond the existing boundary → sections hierarchy
+
+---
+
+### Files that will need changes
+- `lib/db/src/schema/boundaries.ts` — add `boundary_responders` table; add `boundaryId` nullable FK to `incident_reports`
+- `artifacts/api-server/src/routes/reports.ts` — point-in-polygon tagging on create; zone filter on list
+- `artifacts/api-server/src/routes/boundaries.ts` — three new responder assignment endpoints
+- `lib/api-spec/openapi.yaml` — document new endpoints + new `boundaryId` field on report
+- `artifacts/app/src/pages/groups/MapBoundaries.tsx` — "Assign Responders" panel per boundary
+- `artifacts/app/src/pages/groups/ReportsDashboard.tsx` — zone-restricted info banner
+
+---
+
 ## Future Development (Logged)
 
 - **Frontend error capture** — Add Sentry to capture React/JavaScript crashes in the browser. Server-side errors are already captured in the Super Admin error log. Frontend capture is low priority until active user base grows. 30-minute job when needed.
