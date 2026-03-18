@@ -5,10 +5,68 @@ import {
   groupMembersTable,
   subscriptionsTable,
   setupProgressTable,
+  incidentTypesTable,
 } from "@workspace/db";
 import { eq, count, and } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
 import { getGroupBySlug, createGroupWithTrial, getMemberRecord } from "../lib/groups";
+
+const DEFAULT_INCIDENT_TYPES: Record<string, string[]> = {
+  angling_club: [
+    "Illegal Netting / Poaching",
+    "Water Pollution",
+    "Dead Fish / Fish Kill",
+    "Illegal Dumping at Riverbank",
+    "Invasive Species Spotted",
+    "Suspicious Activity",
+  ],
+  neighbourhood_watch: [
+    "Suspicious Activity",
+    "Vandalism",
+    "Theft",
+    "Anti-Social Behaviour",
+    "Fly-Tipping",
+    "Noise Complaint",
+  ],
+  hoa: [
+    "Noise Complaint",
+    "Parking Violation",
+    "Property Damage",
+    "Maintenance Issue",
+    "Security Concern",
+    "Fly-Tipping",
+  ],
+  sports_club: [
+    "Pitch / Surface Damage",
+    "Vandalism or Graffiti",
+    "Equipment Theft",
+    "Unsafe Fixture or Structure",
+    "Anti-Social Behaviour",
+    "Injury Report",
+  ],
+  tidy_towns: [
+    "Litter",
+    "Illegal Dumping",
+    "Graffiti",
+    "Overgrown Verge",
+    "Pothole",
+    "Damaged Street Furniture",
+  ],
+  environmental: [
+    "Illegal Dumping / Fly-tipping",
+    "Water Pollution",
+    "Air Quality / Burning",
+    "Invasive Species",
+    "Habitat Destruction",
+    "Wildlife Injury / Death",
+  ],
+  other: [
+    "Incident",
+    "Suspicious Activity",
+    "Damage",
+    "Safety Concern",
+  ],
+};
 
 const router = Router();
 
@@ -36,6 +94,25 @@ router.post("/groups", requireAuth, async (req, res): Promise<void> => {
     website,
     contactEmail,
   });
+
+  const typesToSeed = DEFAULT_INCIDENT_TYPES[groupType] ?? DEFAULT_INCIDENT_TYPES.other;
+  if (typesToSeed.length > 0) {
+    try {
+      await db.insert(incidentTypesTable).values(
+        typesToSeed.map((name, i) => ({
+          groupId: group.id,
+          name,
+          sortOrder: i,
+        }))
+      );
+      await db
+        .update(setupProgressTable)
+        .set({ incidentTypesAdded: true })
+        .where(eq(setupProgressTable.groupId, group.id));
+    } catch (seedErr) {
+      console.warn("[groups] incident type seeding failed (non-fatal):", seedErr);
+    }
+  }
 
   const [subscription] = await db
     .select()

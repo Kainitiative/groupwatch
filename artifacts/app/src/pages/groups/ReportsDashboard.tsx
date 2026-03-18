@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useListReports, useGetGroup, useGetMe } from "@workspace/api-client-react";
+import { useGroupTerminology } from "@/hooks/useGroupTerminology";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowUpRight, Filter,
@@ -83,6 +84,7 @@ export default function ReportsDashboard() {
 
   const { data: group } = useGetGroup(slug);
   const { data: me } = useGetMe();
+  const terms = useGroupTerminology((group as any)?.groupType);
 
   const [period, setPeriod] = useState<Period>("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
@@ -107,7 +109,7 @@ export default function ReportsDashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Reports</h1>
+            <h1 className="text-2xl font-bold text-foreground">{terms.dashboardHeading}</h1>
             <p className="text-sm text-muted-foreground mt-0.5">{group?.name}</p>
           </div>
           <div className="flex items-center gap-2">
@@ -151,7 +153,7 @@ export default function ReportsDashboard() {
               <UserCheck className="w-5 h-5 text-sky-400 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-sky-300">
-                  {stats.open} open {stats.open === 1 ? "report needs" : "reports need"} a responder
+                  {stats.open} open {stats.open === 1 ? `${terms.reportNoun} needs` : `${terms.reportNounPlural} need`} a responder
                 </p>
                 <p className="text-xs text-sky-400/70 mt-0.5">These reports have not been claimed yet.</p>
               </div>
@@ -215,7 +217,7 @@ export default function ReportsDashboard() {
           ) : reports.length === 0 ? (
             <div className="text-center py-20">
               <AlertTriangle className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-              <p className="text-sm text-muted-foreground">No reports found</p>
+              <p className="text-sm text-muted-foreground">{statusFilter !== "all" || severityFilter !== "all" ? "No results match your filters" : terms.emptyState}</p>
               {(statusFilter !== "all" || severityFilter !== "all") && (
                 <p className="text-xs text-muted-foreground mt-1">Try clearing the filters</p>
               )}

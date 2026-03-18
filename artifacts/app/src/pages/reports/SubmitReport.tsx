@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useGetGroup, useListIncidentTypes, useCreateReport, useGetMe } from "@workspace/api-client-react";
+import { useGroupTerminology } from "@/hooks/useGroupTerminology";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Camera, MapPin, Shield, CheckCircle2, ChevronDown, Mic, MicOff, X, Image, Map, Eye, EyeOff } from "lucide-react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
@@ -89,6 +90,7 @@ export default function SubmitReport() {
   const { data: incidentTypes = [], isLoading: typesLoading } = useListIncidentTypes(slug);
   const { data: user } = useGetMe();
   const createReport = useCreateReport();
+  const terms = useGroupTerminology((group as any)?.groupType);
 
   const [submitted, setSubmitted] = useState(false);
   const [submittedRef, setSubmittedRef] = useState("");
@@ -257,8 +259,8 @@ export default function SubmitReport() {
           <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-8 h-8 text-emerald-400" />
           </div>
-          <h2 className="text-2xl font-bold text-white mb-2">Report Submitted</h2>
-          <p className="text-slate-400 mb-4">Your incident has been reported to {group.name}.</p>
+          <h2 className="text-2xl font-bold text-white mb-2">{terms.reportNoun.charAt(0).toUpperCase() + terms.reportNoun.slice(1)} Submitted</h2>
+          <p className="text-slate-400 mb-4">Your {terms.reportNoun} has been sent to {group.name}.</p>
           <div className="bg-slate-800 rounded-lg p-4 mb-6">
             <p className="text-sm text-slate-400 mb-1">Reference Number</p>
             <p className="text-xl font-mono font-bold text-emerald-400">{submittedRef}</p>
@@ -303,7 +305,7 @@ export default function SubmitReport() {
           )}
           <div>
             <h1 className="font-bold text-white text-sm">{group.name}</h1>
-            <p className="text-xs text-slate-400">Incident Report</p>
+            <p className="text-xs text-slate-400">{terms.reportNoun.charAt(0).toUpperCase() + terms.reportNoun.slice(1)} Form</p>
           </div>
         </div>
       </div>
@@ -314,7 +316,7 @@ export default function SubmitReport() {
           {/* Incident Type */}
           <div>
             <label className="block text-sm font-semibold text-slate-200 mb-2">
-              Incident Type <span className="text-red-400">*</span>
+              {terms.reportNoun.charAt(0).toUpperCase() + terms.reportNoun.slice(1)} Type <span className="text-red-400">*</span>
             </label>
             {typesLoading ? (
               <div className="h-12 bg-slate-800 rounded-xl animate-pulse" />
@@ -610,7 +612,7 @@ export default function SubmitReport() {
                 <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Submitting...
               </span>
-            ) : "Submit Report"}
+            ) : terms.submitButtonLabel}
           </button>
 
           <p className="text-xs text-center text-slate-500">

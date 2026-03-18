@@ -200,7 +200,7 @@ pnpm --filter @workspace/api-server run typecheck
 - `.github/workflows/deploy.yml` — Docker build+push to GHCR, SSH deploy to VPS
 - `.env.example` — all required environment variables documented
 
-## Planned Feature: groupType-Driven Terminology & Defaults
+## Completed Feature: groupType-Driven Terminology & Defaults
 
 ### Goal
 Keep one platform, one codebase. Use the group's `groupType` to adapt language, default categories, and UI copy so each organisation feels like the product was built for them — without building separate apps.

@@ -10,9 +10,11 @@ import SidebarLayout from "@/components/layout/SidebarLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { GROUP_TYPE_OPTIONS } from "@/lib/groupTypeConfig";
 
 const createGroupSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
@@ -158,9 +160,20 @@ export default function CreateGroup() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-base font-semibold">Group Type</FormLabel>
-                        <FormControl>
-                          <Input placeholder="e.g. Angling Club, Neighbourhood Watch" {...field} className="h-12 rounded-xl bg-background" />
-                        </FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="h-12 rounded-xl bg-background">
+                              <SelectValue placeholder="Select your group type" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {GROUP_TYPE_OPTIONS.map((opt) => (
+                              <SelectItem key={opt.value} value={opt.value}>
+                                {opt.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
