@@ -45,7 +45,7 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
                     Sign In
                   </Link>
                   <Link href="/register">
-                    <Button className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl shadow-lg shadow-accent/25 hover:-translate-y-0.5 transition-all">
+                    <Button className="bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:-translate-y-0.5 transition-all">
                       Get Started
                     </Button>
                   </Link>

@@ -20,13 +20,13 @@ export default function Landing() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-dark mb-8 animate-in slide-in-from-bottom-4 duration-700">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-sm font-medium tracking-wide">The standard for organised groups</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8 leading-[1.1] animate-in slide-in-from-bottom-8 duration-700 delay-150">
             Incident Reporting, <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-emerald-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-accent">
               Built for the Field.
             </span>
           </h1>
@@ -37,7 +37,7 @@ export default function Landing() {
           
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-in slide-in-from-bottom-16 duration-700 delay-500">
             <Link href="/groups/new">
-              <Button size="lg" className="w-full sm:w-auto h-14 px-8 text-base bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl shadow-xl shadow-accent/25 hover:shadow-accent/40 hover:-translate-y-1 transition-all">
+              <Button size="lg" className="w-full sm:w-auto h-14 px-8 text-base bg-amber-500 hover:bg-amber-400 text-white rounded-xl shadow-xl shadow-amber-500/30 hover:shadow-amber-400/40 hover:-translate-y-1 transition-all font-semibold">
                 Register Your Group
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -79,8 +79,8 @@ export default function Landing() {
             </div>
             
             <div className="bg-card p-8 rounded-3xl shadow-xl shadow-black/5 border border-border/50 hover:shadow-2xl hover:border-border transition-all duration-300 group">
-              <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-accent/20 transition-all">
-                <FileText className="w-7 h-7 text-accent" />
+              <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-amber-500/20 transition-all">
+                <FileText className="w-7 h-7 text-amber-500" />
               </div>
               <h3 className="text-xl font-bold mb-3">Funding Applications</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -110,7 +110,7 @@ export default function Landing() {
               <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-border -z-0" />
             </div>
             <div className="relative">
-              <div className="w-16 h-16 mx-auto rounded-full bg-accent text-accent-foreground flex items-center justify-center text-2xl font-bold mb-6 shadow-lg shadow-accent/25 z-10 relative">3</div>
+              <div className="w-16 h-16 mx-auto rounded-full bg-amber-500 text-white flex items-center justify-center text-2xl font-bold mb-6 shadow-lg shadow-amber-500/30 z-10 relative">3</div>
               <h4 className="font-bold text-lg mb-2">Members Report</h4>
               <p className="text-sm text-muted-foreground">Anyone scans it and reports instantly from the field.</p>
               <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-[2px] bg-border -z-0" />
