@@ -190,6 +190,10 @@ pnpm --filter @workspace/api-server run typecheck
 - `.github/workflows/deploy.yml` — Docker build+push to GHCR, SSH deploy to VPS
 - `.env.example` — all required environment variables documented
 
+## Target Groups to Add (Marketing & Onboarding)
+
+- **Tidy Towns committees** — community groups responsible for local environmental upkeep; good fit for reporting litter, dumping, vandalism, and maintenance issues within a defined area.
+
 ## Future Development (Logged)
 
 - **Frontend error capture** — Add Sentry to capture React/JavaScript crashes in the browser. Server-side errors are already captured in the Super Admin error log. Frontend capture is low priority until active user base grows. 30-minute job when needed.
