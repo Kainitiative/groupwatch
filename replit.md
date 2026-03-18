@@ -114,20 +114,23 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 
 ## Deployment
 
-VPS: LetsHost, Dublin, 2 CPU / 4GB RAM / 40GB disk
+**Domain:** `groupwatchplatform.com`
+**VPS:** LetsHost, Dublin, 2 CPU / 4GB RAM / 40GB disk
 
 Deployment files in project root:
-- `Dockerfile` — multi-stage build; Node 20 Alpine; builds frontend + API server, serves static files in prod
-- `docker-compose.yml` — `app` (API+static) + `nginx` services; uploads volume; healthcheck
-- `deploy/nginx/nginx.conf` — TLS, HTTP→HTTPS, gzip, security headers, 10 MB upload limit
+- `Dockerfile` — 5-stage build: deps → frontend-build → api-build → runner (production) → migrator
+- `docker-compose.yml` — `app` (API+static) + `nginx` + `migrator` (profile: migration) services; uploads volume; healthcheck
+- `deploy/nginx/nginx.conf` — serves `groupwatchplatform.com`, gzip, security headers, 10 MB upload limit
 - `.env.example` — all required environment variables with comments
-- `.github/workflows/deploy.yml` — CI: build Docker image, push to GHCR; CD: SCP files + SSH restart on VPS
+- `.github/workflows/deploy.yml` — CI: builds `app` + `migrator` images, pushes to GHCR; CD: SCP files, run migrator, restart app
 
-**GitHub Actions secrets required:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
+**GitHub Actions secrets required:** `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`, `DATABASE_URL`
+
+**Health check endpoint:** `GET /api/healthz`
 
 **SSL: Cloudflare (free)**
-- Add your domain to Cloudflare (free account)
-- Point your domain registrar nameservers to Cloudflare's
+- Add `groupwatchplatform.com` to Cloudflare (free account)
+- Point domain registrar nameservers to Cloudflare's
 - In Cloudflare dashboard: SSL/TLS → set mode to **Full**
 - Cloudflare handles HTTPS — Nginx only listens on port 80
 
@@ -136,6 +139,13 @@ Deployment files in project root:
 # 1. Install Docker + Docker Compose
 # 2. Copy .env.example to /opt/groupwatch/.env and fill in values
 # 3. docker compose up -d
+```
+
+**Running DB migrations manually:**
+```bash
+# On the VPS after SSHing in:
+cd /opt/groupwatch
+GITHUB_REPOSITORY=<your-github-repo> docker compose --profile migration run --rm migrator
 ```
 
 ## Development Commands

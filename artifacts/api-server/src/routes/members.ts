@@ -102,7 +102,7 @@ router.post("/groups/:groupSlug/members/invite", requireAuth, async (req, res): 
       canFileReports: true,
     }).onConflictDoNothing();
 
-    const appUrl = process.env.APP_URL || "https://groupwatch.io";
+    const appUrl = process.env.APP_URL || "https://groupwatchplatform.com";
     const inviteUrl = `${appUrl}/dashboard`;
     sendMemberInviteEmail(normalizedEmail, group.name, caller?.name ?? "Group Admin", inviteUrl).catch(() => {});
     res.json({ message: `${existingUser.name} has been added to the group` });
@@ -136,7 +136,7 @@ router.post("/groups/:groupSlug/members/invite", requireAuth, async (req, res): 
     expiresAt,
   });
 
-  const appUrl = process.env.APP_URL || "https://groupwatch.io";
+  const appUrl = process.env.APP_URL || "https://groupwatchplatform.com";
   const inviteUrl = `${appUrl}/register?invite=${token}`;
   sendMemberInviteEmail(normalizedEmail, group.name, caller?.name ?? "Group Admin", inviteUrl).catch(() => {});
 

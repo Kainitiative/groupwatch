@@ -10,9 +10,9 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const FROM_ADDRESS = process.env.SMTP_FROM || "noreply@groupwatch.io";
+const FROM_ADDRESS = process.env.SMTP_FROM || "noreply@groupwatchplatform.com";
 const APP_NAME = "GroupWatch";
-const APP_URL = process.env.APP_URL || "https://groupwatch.io";
+const APP_URL = process.env.APP_URL || "https://groupwatchplatform.com";
 
 export async function sendWelcomeEmail(email: string, name: string): Promise<void> {
   if (!process.env.SMTP_USER) return; // Skip in dev if not configured

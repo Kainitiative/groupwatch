@@ -137,7 +137,7 @@ export default function CreateGroup() {
                         <FormControl>
                           <div className="flex relative">
                             <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-input bg-muted text-muted-foreground sm:text-sm">
-                              groupwatch.io/g/
+                              groupwatchplatform.com/g/
                             </span>
                             <Input 
                               placeholder="river-trust" 

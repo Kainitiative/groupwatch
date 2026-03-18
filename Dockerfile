@@ -61,3 +61,20 @@ COPY --from=frontend-build /app/artifacts/app/dist ./public
 EXPOSE 8080
 
 CMD ["node", "dist/index.cjs"]
+
+# ── Stage 5: Migrator (run DB schema push against production DB) ───────────────
+FROM node:20-alpine AS migrator
+WORKDIR /app
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY lib/db/package.json ./lib/db/
+COPY lib/db/src ./lib/db/src
+COPY lib/db/drizzle.config.ts ./lib/db/
+
+RUN pnpm install --frozen-lockfile
+
+WORKDIR /app/lib/db
+
+CMD ["pnpm", "run", "push"]

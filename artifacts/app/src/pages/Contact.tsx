@@ -23,10 +23,10 @@ export default function Contact() {
               </div>
               <h3 className="font-semibold text-foreground mb-2">Email</h3>
               <a
-                href="mailto:hello@groupwatch.io"
+                href="mailto:hello@groupwatchplatform.com"
                 className="text-accent hover:underline text-sm font-medium"
               >
-                hello@groupwatch.io
+                hello@groupwatchplatform.com
               </a>
               <p className="text-xs text-muted-foreground mt-2">For all general and billing enquiries</p>
             </div>

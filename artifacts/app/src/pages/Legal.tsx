@@ -46,7 +46,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">5. Your rights (GDPR)</h3>
               <p className="leading-relaxed">
-                You have the right to access, correct, or delete your personal data. You may request a data export or deletion by emailing <a href="mailto:hello@groupwatch.io" className="text-accent hover:underline">hello@groupwatch.io</a>. We will respond within 30 days.
+                You have the right to access, correct, or delete your personal data. You may request a data export or deletion by emailing <a href="mailto:hello@groupwatchplatform.com" className="text-accent hover:underline">hello@groupwatchplatform.com</a>. We will respond within 30 days.
               </p>
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">6. Third-party services</h3>
@@ -104,7 +104,7 @@ export default function Legal() {
 
               <h3 className="text-base font-semibold text-foreground mt-6 mb-2">9. Contact</h3>
               <p className="leading-relaxed">
-                Questions about these terms: <a href="mailto:hello@groupwatch.io" className="text-accent hover:underline">hello@groupwatch.io</a>
+                Questions about these terms: <a href="mailto:hello@groupwatchplatform.com" className="text-accent hover:underline">hello@groupwatchplatform.com</a>
               </p>
             </section>
           </div>

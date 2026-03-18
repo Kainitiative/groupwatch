@@ -41,7 +41,7 @@ router.post("/billing/:groupSlug/checkout", requireAuth, async (req, res): Promi
   }
 
   const stripe = getStripe();
-  const appUrl = process.env.APP_URL || "https://groupwatch.io";
+  const appUrl = process.env.APP_URL || "https://groupwatchplatform.com";
 
   const [subscription] = await db
     .select()
@@ -98,7 +98,7 @@ router.post("/billing/:groupSlug/portal", requireAuth, async (req, res): Promise
   }
 
   const stripe = getStripe();
-  const appUrl = process.env.APP_URL || "https://groupwatch.io";
+  const appUrl = process.env.APP_URL || "https://groupwatchplatform.com";
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: subscription.stripeCustomerId,

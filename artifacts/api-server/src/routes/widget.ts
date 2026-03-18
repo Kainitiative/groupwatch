@@ -194,7 +194,7 @@ router.post("/widget/:slug/report", photoUpload.array("photos", 5), async (req, 
   }
 
   // Fire notifications asynchronously
-  const reportUrl = `${process.env.APP_URL || "https://groupwatch.io"}/g/${slug}/reports/${referenceNumber}`;
+  const reportUrl = `${process.env.APP_URL || "https://groupwatchplatform.com"}/g/${slug}/reports/${referenceNumber}`;
   const notifTitle = `New ${incidentType.name} — ${severity.toUpperCase()} (Public)`;
   const notifBody = `${group.name} · ${referenceNumber} · via public form`;
 

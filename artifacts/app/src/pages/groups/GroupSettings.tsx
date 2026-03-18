@@ -275,7 +275,7 @@ function ApiKeysTab({ slug }: { slug: string }) {
     }
   };
 
-  const baseUrl = typeof window !== "undefined" ? `${window.location.origin}/api/v1` : "https://app.groupwatch.io/api/v1";
+  const baseUrl = typeof window !== "undefined" ? `${window.location.origin}/api/v1` : "https://groupwatchplatform.com/api/v1";
 
   return (
     <div className="space-y-6">
