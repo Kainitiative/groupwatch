@@ -3,7 +3,7 @@ import { format, differenceInDays, isPast, formatDistanceToNow } from "date-fns"
 import {
   ShieldCheck, Activity, Users, CreditCard, CheckCircle2, Search,
   ExternalLink, ToggleLeft, ToggleRight, AlertTriangle, Settings,
-  TrendingUp, Clock, Globe, X, AlertCircle, Trash2, RefreshCw,
+  TrendingUp, Clock, Globe, X, AlertCircle, Trash2, RefreshCw, CalendarPlus,
 } from "lucide-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -111,6 +111,8 @@ export default function SuperAdmin() {
   const [activeTab, setActiveTab] = useState<AdminTab>("overview");
   const [groupSearch, setGroupSearch] = useState("");
   const [userSearch, setUserSearch] = useState("");
+  const [extendingTrial, setExtendingTrial] = useState<string | null>(null);
+  const [extendDays, setExtendDays] = useState(14);
 
   const { data: revenue, isLoading: revLoading } = useQuery<Revenue>({
     queryKey: ["admin-revenue"],
@@ -166,6 +168,22 @@ export default function SuperAdmin() {
     onSuccess: (_data, slug) => {
       const g = groupsData?.groups.find(g => g.slug === slug);
       toast({ title: `${g?.name ?? slug} set to active` });
+      qc.invalidateQueries({ queryKey: ["admin-groups"] });
+      qc.invalidateQueries({ queryKey: ["admin-revenue"] });
+    },
+    onError: (e: any) => toast({ variant: "destructive", title: "Failed", description: e.message }),
+  });
+
+  const extendTrialMutation = useMutation({
+    mutationFn: ({ slug, days }: { slug: string; days: number }) =>
+      adminFetch(`/admin/groups/${slug}/extend-trial`, {
+        method: "POST",
+        body: JSON.stringify({ days }),
+      }),
+    onSuccess: (_data, { slug, days }) => {
+      const g = groupsData?.groups.find(g => g.slug === slug);
+      toast({ title: `Trial extended by ${days} days`, description: g?.name });
+      setExtendingTrial(null);
       qc.invalidateQueries({ queryKey: ["admin-groups"] });
       qc.invalidateQueries({ queryKey: ["admin-revenue"] });
     },
@@ -433,7 +451,7 @@ export default function SuperAdmin() {
                           <td className="px-4 py-3 text-right text-muted-foreground">{g.memberCount}</td>
                           <td className="px-4 py-3 text-right text-muted-foreground">{g.reportCount}</td>
                           <td className="px-4 py-3 text-right">
-                            <div className="flex items-center justify-end gap-2">
+                            <div className="flex items-center justify-end gap-2 flex-wrap">
                               <a
                                 href={`/g/${g.slug}/settings`}
                                 target="_blank"
@@ -442,7 +460,41 @@ export default function SuperAdmin() {
                               >
                                 <ExternalLink className="w-3 h-3" /> Settings
                               </a>
-                              {g.subscriptionStatus !== "active" && (
+                              {g.subscriptionStatus !== "active" && extendingTrial !== g.slug && (
+                                <button
+                                  onClick={() => { setExtendingTrial(g.slug); setExtendDays(14); }}
+                                  className="text-xs font-medium text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-300 hover:bg-blue-50 transition-colors"
+                                >
+                                  <CalendarPlus className="w-3 h-3 inline mr-1" />Extend Trial
+                                </button>
+                              )}
+                              {extendingTrial === g.slug && (
+                                <div className="flex items-center gap-1.5">
+                                  <input
+                                    type="number"
+                                    min={1}
+                                    max={365}
+                                    value={extendDays}
+                                    onChange={e => setExtendDays(Math.max(1, parseInt(e.target.value) || 1))}
+                                    className="w-16 text-xs border border-border rounded-lg px-2 py-1.5 bg-background focus:outline-none focus:ring-2 focus:ring-blue-300 text-center"
+                                  />
+                                  <span className="text-xs text-muted-foreground">days</span>
+                                  <button
+                                    onClick={() => extendTrialMutation.mutate({ slug: g.slug, days: extendDays })}
+                                    disabled={extendTrialMutation.isPending}
+                                    className="text-xs font-medium text-blue-700 px-2.5 py-1.5 rounded-lg border border-blue-300 hover:bg-blue-50 transition-colors disabled:opacity-50"
+                                  >
+                                    Confirm
+                                  </button>
+                                  <button
+                                    onClick={() => setExtendingTrial(null)}
+                                    className="text-xs text-muted-foreground hover:text-foreground px-2 py-1.5 rounded-lg border border-border hover:bg-muted transition-colors"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              )}
+                              {g.subscriptionStatus !== "active" && extendingTrial !== g.slug && (
                                 <button
                                   onClick={() => activateMutation.mutate(g.slug)}
                                   disabled={activateMutation.isPending}

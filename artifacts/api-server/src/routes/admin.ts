@@ -107,6 +107,36 @@ router.post("/admin/groups/:groupSlug/activate", requireAuth, async (req, res): 
   res.json({ message: `Group ${group.name} activated` });
 });
 
+router.post("/admin/groups/:groupSlug/extend-trial", requireAuth, async (req, res): Promise<void> => {
+  if (!await requireSuperAdmin(req, res)) return;
+
+  const slug = Array.isArray(req.params.groupSlug) ? req.params.groupSlug[0] : req.params.groupSlug;
+  const [group] = await db.select().from(groupsTable).where(eq(groupsTable.slug, slug));
+  if (!group) { res.status(404).json({ error: "Group not found" }); return; }
+
+  const days = parseInt(String(req.body.days));
+  if (!days || days < 1 || days > 365) {
+    res.status(422).json({ error: "Days must be between 1 and 365" });
+    return;
+  }
+
+  const [sub] = await db.select().from(subscriptionsTable).where(eq(subscriptionsTable.groupId, group.id));
+
+  // Extend from current trial end if still in future, otherwise extend from today
+  const base = sub?.trialEndsAt && new Date(sub.trialEndsAt) > new Date()
+    ? new Date(sub.trialEndsAt)
+    : new Date();
+
+  const newTrialEnd = new Date(base);
+  newTrialEnd.setDate(newTrialEnd.getDate() + days);
+
+  await db.update(subscriptionsTable)
+    .set({ trialEndsAt: newTrialEnd, status: "trial" })
+    .where(eq(subscriptionsTable.groupId, group.id));
+
+  res.json({ message: `Trial extended by ${days} days`, trialEndsAt: newTrialEnd });
+});
+
 router.get("/admin/platform-settings", requireAuth, async (req, res): Promise<void> => {
   if (!await requireSuperAdmin(req, res)) return;
 
