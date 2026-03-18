@@ -288,7 +288,7 @@ Implementation: a `useGroupTerminology(groupType)` hook in the frontend that ret
 
 ## Target Groups to Add (Marketing & Onboarding)
 
-- **Tidy Towns committees** — community groups responsible for local environmental upkeep; good fit for reporting litter, dumping, vandalism, and maintenance issues within a defined area.
+- **Tidy Towns committees** — ✅ pillar page live at `/for/tidy-towns`. Community groups responsible for local environmental upkeep; good fit for reporting litter, dumping, vandalism, and maintenance issues within a defined area.
 
 ## Planned Feature: Optional Self-Assignment When Filing a Report
 
