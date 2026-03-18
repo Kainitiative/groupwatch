@@ -190,6 +190,102 @@ pnpm --filter @workspace/api-server run typecheck
 - `.github/workflows/deploy.yml` — Docker build+push to GHCR, SSH deploy to VPS
 - `.env.example` — all required environment variables documented
 
+## Planned Feature: groupType-Driven Terminology & Defaults
+
+### Goal
+Keep one platform, one codebase. Use the group's `groupType` to adapt language, default categories, and UI copy so each organisation feels like the product was built for them — without building separate apps.
+
+### What exists today
+- `groupType` is a free-text field on the `groups` table, captured at registration
+- It is stored but not used to drive anything in the UI or API
+- Incident categories are created manually by each group admin after sign-up
+
+---
+
+### Phase 1 — Formalise the groupType enum
+
+**Data layer:**
+- Change `groupType` from free-text to a constrained enum (or enforce via validation)
+- Defined values to start:
+  - `angling_club`
+  - `neighbourhood_watch`
+  - `hoa` (homeowners association)
+  - `sports_club`
+  - `tidy_towns`
+  - `other` (catch-all for unrecognised types)
+- Existing free-text values should be mapped to the enum on migration (most will be `other`)
+- Update the Create Group form to use a dropdown instead of a text input
+
+---
+
+### Phase 2 — Terminology config system
+
+Create a shared config file (e.g. `lib/shared/src/groupTypeConfig.ts`) that maps each groupType to its terminology overrides:
+
+```
+groupType → {
+  reportNoun: "report" | "sighting" | "incident" | "complaint" | "observation"
+  reportVerb: "report" | "log" | "submit" | "flag"
+  memberNoun: "member" | "resident" | "angler" | "warden"
+  areaLabel: "area" | "water" | "estate" | "zone" | "patch"
+}
+```
+
+Example mappings:
+- `angling_club` → sighting, log, angler, water
+- `neighbourhood_watch` → incident, report, resident, area
+- `hoa` → complaint, submit, resident, estate
+- `tidy_towns` → observation, log, volunteer, patch
+- `sports_club` → report, flag, member, zone
+
+The API returns the group's `groupType` in the group object (it already does). The frontend reads it and looks up the terminology config to swap in the right words at render time. No separate API calls needed.
+
+---
+
+### Phase 3 — Default incident categories on group creation
+
+When a group is created, the API seeds a set of default incident types based on the groupType. Admin can edit/delete/add after the fact.
+
+Example seed sets:
+- `angling_club` → Illegal netting, Pollution, Poaching, Bank damage, Fish kill
+- `neighbourhood_watch` → Suspicious activity, Vandalism, Theft, Anti-social behaviour, Fly-tipping
+- `tidy_towns` → Litter, Illegal dumping, Graffiti, Overgrown verge, Pothole
+- `hoa` → Noise complaint, Parking violation, Property damage, Maintenance issue, Security concern
+- `sports_club` → Trespassing, Field damage, Equipment theft, Anti-social behaviour, Safety hazard
+- `other` → Generic set: Incident, Suspicious activity, Damage, Safety concern
+
+This replaces the current blank slate that every new admin faces, reducing time-to-value.
+
+---
+
+### Phase 4 — UI copy adaptation
+
+Places in the UI where terminology swaps apply:
+- Report submission page heading and button labels
+- Dashboard section headings ("Recent Reports" → "Recent Sightings")
+- Sidebar navigation labels
+- Empty states ("No reports yet" → "No sightings logged yet")
+- Notification/email subjects
+
+Implementation: a `useGroupTerminology(groupType)` hook in the frontend that returns the terminology object. Components pull from this hook rather than hardcoding strings.
+
+---
+
+### What this does NOT include
+- Separate routing or feature sets per groupType — all groups use the same pages
+- Role/permission differences per groupType — permissions stay the same
+- Separate billing tiers per groupType — all on the same €20/month plan
+
+---
+
+### Files that will need changes
+- `lib/db/src/schema/groups.ts` — add enum constraint to `groupType`
+- `lib/shared/src/groupTypeConfig.ts` — new file, the terminology and seed data config
+- `artifacts/api-server/src/routes/groups.ts` — seed default incident types on creation
+- `artifacts/app/src/pages/groups/CreateGroup.tsx` — dropdown instead of text input
+- `artifacts/app/src/hooks/useGroupTerminology.ts` — new hook
+- Multiple pages in `artifacts/app/src/pages/` — swap hardcoded strings to use the hook
+
 ## Target Groups to Add (Marketing & Onboarding)
 
 - **Tidy Towns committees** — community groups responsible for local environmental upkeep; good fit for reporting litter, dumping, vandalism, and maintenance issues within a defined area.
