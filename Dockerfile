@@ -21,6 +21,7 @@ COPY lib ./lib
 
 ARG VITE_API_URL=/api
 ENV PORT=3000
+ENV BASE_PATH=/
 
 RUN pnpm --filter @workspace/app run build
 
