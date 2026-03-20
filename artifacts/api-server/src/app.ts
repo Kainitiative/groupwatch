@@ -9,6 +9,10 @@ import { logError } from "./lib/logError";
 
 const app: Express = express();
 
+// Trust the first proxy (nginx / Cloudflare) so that secure session cookies
+// work correctly when NODE_ENV=production behind a reverse proxy.
+app.set("trust proxy", 1);
+
 const isProduction = process.env.NODE_ENV === "production";
 
 const allowedOrigins = process.env.ALLOWED_ORIGINS
