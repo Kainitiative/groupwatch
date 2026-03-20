@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+Disallow: /dashboard
+Disallow: /groups/new
+Disallow: /admin
+Disallow: /my-reports
+Disallow: /g/*/settings
+Disallow: /g/*/reports
+Disallow: /g/*/analytics
+Disallow: /g/*/map
+
+Sitemap: https://groupwatchplatform.com/sitemap.xml
