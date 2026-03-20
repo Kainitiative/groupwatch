@@ -1,5 +1,5 @@
 # ── Stage 1: Install dependencies ─────────────────────────────────────────────
-FROM node:20-alpine AS deps
+FROM node:20-slim AS deps
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -33,7 +33,7 @@ COPY lib ./lib
 RUN pnpm --filter @workspace/api-server run build
 
 # ── Stage 4: Production image ──────────────────────────────────────────────────
-FROM node:20-alpine AS runner
+FROM node:20-slim AS runner
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -64,7 +64,7 @@ EXPOSE 8080
 CMD ["node", "dist/index.cjs"]
 
 # ── Stage 5: Migrator (run DB schema push against production DB) ───────────────
-FROM node:20-alpine AS migrator
+FROM node:20-slim AS migrator
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
