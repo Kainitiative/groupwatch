@@ -42,6 +42,10 @@ router.post("/auth/register", async (req, res): Promise<void> => {
 
   req.session.userId = user.id;
 
+  await new Promise<void>((resolve, reject) =>
+    req.session.save((err) => (err ? reject(err) : resolve()))
+  );
+
   sendWelcomeEmail(user.email, user.name).catch(() => {});
 
   res.status(201).json({
@@ -79,6 +83,10 @@ router.post("/auth/login", async (req, res): Promise<void> => {
   }
 
   req.session.userId = user.id;
+
+  await new Promise<void>((resolve, reject) =>
+    req.session.save((err) => (err ? reject(err) : resolve()))
+  );
 
   res.json({
     user: {
