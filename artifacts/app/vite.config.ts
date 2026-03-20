@@ -105,7 +105,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/api\/(groups\/[^/]+\/incident-types|auth\/me|users\/me)/,
+            urlPattern: /\/api\/groups\/[^/]+\/incident-types/,
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "api-form-data-cache",
