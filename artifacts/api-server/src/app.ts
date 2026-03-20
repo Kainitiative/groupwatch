@@ -28,6 +28,14 @@ if (!isProduction) {
 
 app.use(cookieParser());
 
+// Prevent Cloudflare (and any proxy) from caching API responses
+app.use("/api", (_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Surrogate-Control", "no-store");
+  next();
+});
+
 // Raw body for Stripe webhooks — must come BEFORE json middleware
 app.use("/api/billing/webhooks", express.raw({ type: "application/json" }));
 
@@ -42,8 +50,11 @@ app.use("/api", router);
 if (isProduction) {
   const staticDir = path.resolve(process.cwd(), "public");
   if (fs.existsSync(staticDir)) {
+    // Hashed assets (JS/CSS bundles) get long-lived cache
     app.use(express.static(staticDir, { maxAge: "7d", immutable: true }));
+    // index.html must never be cached — it references the hashed bundles
     app.get("/{*path}", (_req, res) => {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
       res.sendFile(path.join(staticDir, "index.html"));
     });
   }
