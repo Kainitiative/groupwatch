@@ -60,7 +60,7 @@ RUN mkdir -p ./artifacts/api-server/uploads
 WORKDIR /app/artifacts/api-server
 
 # Copy frontend static files into API server's public dir (cwd-relative)
-COPY --from=frontend-build /app/artifacts/app/dist ./public
+COPY --from=frontend-build /app/artifacts/app/dist/public ./public
 
 EXPOSE 8080
 
