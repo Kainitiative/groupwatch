@@ -286,6 +286,22 @@ router.get("/groups/:groupSlug/join-link", requireAuth, async (req, res): Promis
   res.json({ token: group.joinToken, url });
 });
 
+router.get("/groups/join/:token", async (req, res): Promise<void> => {
+  const token = Array.isArray(req.params.token) ? req.params.token[0] : req.params.token;
+
+  const [group] = await db
+    .select({ id: groupsTable.id, name: groupsTable.name, slug: groupsTable.slug, description: groupsTable.description, logoUrl: groupsTable.logoUrl })
+    .from(groupsTable)
+    .where(eq(groupsTable.joinToken, token));
+
+  if (!group) {
+    res.status(404).json({ error: "This join link is invalid or has expired" });
+    return;
+  }
+
+  res.json(group);
+});
+
 router.post("/groups/join/:token", requireAuth, async (req, res): Promise<void> => {
   const token = Array.isArray(req.params.token) ? req.params.token[0] : req.params.token;
 

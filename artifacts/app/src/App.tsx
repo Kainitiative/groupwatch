@@ -12,6 +12,7 @@ import ForgotPassword from "@/pages/auth/ForgotPassword";
 import ResetPassword from "@/pages/auth/ResetPassword";
 import Dashboard from "@/pages/Dashboard";
 import CreateGroup from "@/pages/groups/CreateGroup";
+import JoinGroup from "@/pages/groups/JoinGroup";
 import GroupProfile from "@/pages/groups/GroupProfile";
 import GroupSettings from "@/pages/groups/GroupSettings";
 import SubmitReport from "@/pages/reports/SubmitReport";
@@ -81,6 +82,9 @@ function Router() {
       <Route path="/g/:slug" component={GroupProfile} />
       <Route path="/report/:slug" component={SubmitReport} />
       <Route path="/r/:slug" component={PublicReport} />
+
+      {/* Group join */}
+      <Route path="/groups/join/:token" component={JoinGroup} />
 
       {/* Protected */}
       <Route path="/dashboard" component={Dashboard} />

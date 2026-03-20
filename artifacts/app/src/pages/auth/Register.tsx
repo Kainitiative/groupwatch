@@ -20,10 +20,12 @@ const registerSchema = z.object({
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function Register() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const registerMutation = useRegister();
+
+  const nextPath = new URLSearchParams(location.split("?")[1] ?? "").get("next") || "/dashboard";
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -34,7 +36,7 @@ export default function Register() {
     try {
       await registerMutation.mutateAsync({ data });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
-      setLocation("/dashboard");
+      setLocation(nextPath);
     } catch (error: any) {
       toast({
         variant: "destructive",
