@@ -39,7 +39,7 @@ if (isProduction) {
   const staticDir = path.resolve(process.cwd(), "public");
   if (fs.existsSync(staticDir)) {
     app.use(express.static(staticDir, { maxAge: "7d", immutable: true }));
-    app.get("*", (_req, res) => {
+    app.get("/{*path}", (_req, res) => {
       res.sendFile(path.join(staticDir, "index.html"));
     });
   }
