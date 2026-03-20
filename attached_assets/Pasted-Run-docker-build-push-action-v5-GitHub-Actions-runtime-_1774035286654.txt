@@ -1,0 +1,240 @@
+Run docker/build-push-action@v5
+GitHub Actions runtime token ACs
+Docker info
+Proxy configuration
+Buildx version
+Builder info
+/usr/bin/docker buildx build --cache-from type=gha --cache-to type=gha,mode=max --file Dockerfile --iidfile /home/runner/work/_temp/docker-actions-toolkit-TIqwf4/build-iidfile-38be1ce736.txt --label org.opencontainers.image.created=2026-03-20T19:31:06.918Z --label org.opencontainers.image.description= --label org.opencontainers.image.licenses= --label org.opencontainers.image.revision=a8ceae1726ca81b06b23c55ea6eb925fe8c0062a --label org.opencontainers.image.source=https://github.com/Kainitiative/groupwatch --label org.opencontainers.image.title=groupwatch --label org.opencontainers.image.url=https://github.com/Kainitiative/groupwatch --label org.opencontainers.image.version=main --attest type=provenance,mode=min,inline-only=true,builder-id=https://github.com/Kainitiative/groupwatch/actions/runs/23359311965 --tag ghcr.io/kainitiative/groupwatch:main --tag ghcr.io/kainitiative/groupwatch:latest --tag ghcr.io/kainitiative/groupwatch:sha-a8ceae1 --target runner --metadata-file /home/runner/work/_temp/docker-actions-toolkit-TIqwf4/build-metadata-9d744feee5.json --push .
+#0 building with "builder-3c727887-db59-4072-b842-b890ea0b7f08" instance using docker-container driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.81kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 ...
+
+#3 [auth] library/node:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:20-alpine
+#2 DONE 0.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
+#6 resolve docker.io/library/node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa done
+#6 DONE 0.0s
+
+#7 importing cache manifest from gha:7884125895434362803
+#7 DONE 0.2s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 6.12MB 0.2s done
+#5 DONE 0.2s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
+#6 sha256:9d10d4687fae6e13c052431ea3221ccda835c3262df3564310345ffe173146d9 445B / 445B 0.1s done
+#6 sha256:7ad115895a6aadccf7f98a05c33873c04df2933ba557c5bcdbedd3de612803da 1.26MB / 1.26MB 0.2s done
+#6 sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153 0B / 3.86MB 0.2s
+#6 sha256:ed2fdcee5269a06b0b8b77c69867176443364a72a9626e9aa2e66ab1ebda35a7 0B / 43.22MB 0.2s
+#6 sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153 3.86MB / 3.86MB 0.3s done
+#6 sha256:ed2fdcee5269a06b0b8b77c69867176443364a72a9626e9aa2e66ab1ebda35a7 43.22MB / 43.22MB 0.4s done
+#6 extracting sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153
+#6 extracting sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153 0.1s done
+#6 extracting sha256:ed2fdcee5269a06b0b8b77c69867176443364a72a9626e9aa2e66ab1ebda35a7
+#6 extracting sha256:ed2fdcee5269a06b0b8b77c69867176443364a72a9626e9aa2e66ab1ebda35a7 1.1s done
+#6 DONE 1.6s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-alpine@sha256:b88333c42c23fbd91596ebd7fd10de239cedab9617de04142dde7315e3bc0afa
+#6 extracting sha256:7ad115895a6aadccf7f98a05c33873c04df2933ba557c5bcdbedd3de612803da 0.0s done
+#6 extracting sha256:9d10d4687fae6e13c052431ea3221ccda835c3262df3564310345ffe173146d9 done
+#6 DONE 1.7s
+
+#8 [deps  2/11] WORKDIR /app
+#8 DONE 0.5s
+
+#9 [deps  3/11] RUN corepack enable && corepack prepare pnpm@latest --activate
+#9 0.480 Preparing pnpm@latest for immediate activation...
+#9 DONE 1.6s
+
+#10 [deps  4/11] COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+#10 DONE 0.0s
+
+#11 [deps  5/11] COPY lib/db/package.json ./lib/db/
+#11 DONE 0.0s
+
+#12 [runner  6/12] COPY lib/api-zod/package.json ./lib/api-zod/
+#12 DONE 0.0s
+
+#13 [deps  6/11] COPY lib/db/src ./lib/db/src
+#13 DONE 0.0s
+
+#14 [runner  7/12] COPY artifacts/api-server/package.json ./artifacts/api-server/
+#14 DONE 0.0s
+
+#15 [deps  7/11] COPY lib/api-zod/package.json ./lib/api-zod/
+#15 DONE 0.0s
+
+#16 [deps  8/11] COPY lib/api-zod/src ./lib/api-zod/src
+#16 DONE 0.0s
+
+#17 [runner  8/12] RUN pnpm install --frozen-lockfile --prod
+#17 ...
+
+#18 [deps  9/11] COPY artifacts/api-server/package.json ./artifacts/api-server/
+#18 DONE 0.0s
+
+#19 [deps 10/11] COPY artifacts/app/package.json ./artifacts/app/
+#19 DONE 0.0s
+
+#20 [deps 11/11] RUN pnpm install --frozen-lockfile
+#20 0.951 Scope: all 5 workspace projects
+#20 1.433 Lockfile is up to date, resolution step is skipped
+#20 1.750 Progress: resolved 1, reused 0, downloaded 0, added 0
+#20 1.989 Packages: +683
+#20 1.989 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#20 2.760 Progress: resolved 683, reused 0, downloaded 16, added 0
+#20 3.799 Progress: resolved 683, reused 0, downloaded 29, added 4
+#20 4.844 Progress: resolved 683, reused 0, downloaded 110, added 36
+#20 ...
+
+#17 [runner  8/12] RUN pnpm install --frozen-lockfile --prod
+#17 0.927 Scope: all 4 workspace projects
+#17 1.444 Lockfile is up to date, resolution step is skipped
+#17 1.564 Progress: resolved 1, reused 0, downloaded 0, added 0
+#17 1.603 Packages: +158
+#17 1.603 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#17 2.569 Progress: resolved 158, reused 0, downloaded 24, added 4
+#17 3.633 Progress: resolved 158, reused 0, downloaded 78, added 24
+#17 4.633 Progress: resolved 158, reused 0, downloaded 158, added 101
+#17 4.820 Progress: resolved 158, reused 0, downloaded 158, added 158, done
+#17 5.079 
+#17 5.079 devDependencies: skipped
+#17 5.079 
+#17 5.082 . preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+#17 5.110 . preinstall: Done
+#17 5.244 Done in 5s using pnpm v10.32.1
+#17 DONE 5.3s
+
+#20 [deps 11/11] RUN pnpm install --frozen-lockfile
+#20 5.838 Progress: resolved 683, reused 0, downloaded 201, added 81
+#20 6.840 Progress: resolved 683, reused 0, downloaded 308, added 155
+#20 7.842 Progress: resolved 683, reused 0, downloaded 333, added 167
+#20 8.845 Progress: resolved 683, reused 0, downloaded 344, added 171
+#20 9.846 Progress: resolved 683, reused 0, downloaded 345, added 171
+#20 10.85 Progress: resolved 683, reused 0, downloaded 348, added 171
+#20 11.85 Progress: resolved 683, reused 0, downloaded 503, added 320
+#20 12.85 Progress: resolved 683, reused 0, downloaded 596, added 359
+#20 13.85 Progress: resolved 683, reused 0, downloaded 661, added 386
+#20 14.51 Progress: resolved 683, reused 0, downloaded 683, added 683, done
+#20 14.86 .../esbuild@0.27.3/node_modules/esbuild postinstall$ node install.js
+#20 14.92 .../esbuild@0.27.3/node_modules/esbuild postinstall: Done
+#20 15.22 
+#20 15.22 devDependencies:
+#20 15.22 + prettier 3.8.1
+#20 15.22 + typescript 5.9.3
+#20 15.22 
+#20 15.26 . preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+#20 15.28 . preinstall: Done
+#20 15.40 Done in 15.1s using pnpm v10.32.1
+#20 DONE 16.5s
+
+#21 [frontend-build 1/3] COPY artifacts/app ./artifacts/app
+#21 ...
+
+#22 [api-build 1/3] COPY artifacts/api-server ./artifacts/api-server
+#22 DONE 0.6s
+
+#21 [frontend-build 1/3] COPY artifacts/app ./artifacts/app
+#21 DONE 0.6s
+
+#23 [api-build 2/3] COPY lib ./lib
+#23 DONE 0.1s
+
+#24 [frontend-build 2/3] COPY lib ./lib
+#24 DONE 0.0s
+
+#25 [frontend-build 3/3] RUN pnpm --filter @workspace/app run build
+#25 0.757 
+#25 0.757 > @workspace/app@0.0.0 build /app/artifacts/app
+#25 0.757 > vite build --config vite.config.ts
+#25 0.757 
+#25 1.052 /app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:115
+#25 1.052 		throw new Error(
+#25 1.052 		      ^
+#25 1.052 
+#25 1.052 Error: Cannot find module @rollup/rollup-linux-x64-musl. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try `npm i` again after removing both package-lock.json and node_modules directory.
+#25 1.052     at requireWithFriendlyError (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:115:9)
+#25 1.052     at Object.<anonymous> (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:124:76)
+#25 1.052     ... 3 lines matching cause stack trace ...
+#25 1.052     at Module._load (node:internal/modules/cjs/loader:1091:12)
+#25 1.052     at cjsLoader (node:internal/modules/esm/translators:298:15)
+#25 1.052     at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:240:7)
+#25 1.052     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+#25 1.052     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24) {
+#25 1.052   [cause]: Error: Cannot find module '@rollup/rollup-linux-x64-musl'
+#25 1.052   Require stack:
+#25 1.052   - /app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js
+#25 1.052       at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+#25 1.052       at Module._load (node:internal/modules/cjs/loader:1038:27)
+#25 1.052       at Module.require (node:internal/modules/cjs/loader:1289:19)
+#25 1.052       at require (node:internal/modules/helpers:182:18)
+#25 1.052       at requireWithFriendlyError (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:97:10)
+#25 1.052       at Object.<anonymous> (/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js:124:76)
+#25 1.052       at Module._compile (node:internal/modules/cjs/loader:1521:14)
+#25 1.052       at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+#25 1.052       at Module.load (node:internal/modules/cjs/loader:1266:32)
+#25 1.052       at Module._load (node:internal/modules/cjs/loader:1091:12) {
+#25 1.052     code: 'MODULE_NOT_FOUND',
+#25 1.052     requireStack: [
+#25 1.052       '/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js'
+#25 1.052     ]
+#25 1.052   }
+#25 1.052 }
+#25 1.057 
+#25 1.057 Node.js v20.20.1
+#25 1.132 /app/artifacts/app:
+#25 1.132  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/app@0.0.0 build: `vite build --config vite.config.ts`
+#25 1.132 Exit status 1
+#25 ERROR: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+
+#26 [api-build 3/3] RUN pnpm --filter @workspace/api-server run build
+#26 0.764 
+#26 0.764 > @workspace/api-server@0.0.0 build /app/artifacts/api-server
+#26 0.764 > tsx ./build.ts
+#26 0.764 
+#26 CANCELED
+------
+ > [frontend-build 3/3] RUN pnpm --filter @workspace/app run build:
+1.052     requireStack: [
+1.052       '/app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/native.js'
+1.052     ]
+1.052   }
+1.052 }
+1.057 
+1.057 Node.js v20.20.1
+1.132 /app/artifacts/app:
+1.132  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/app@0.0.0 build: `vite build --config vite.config.ts`
+1.132 Exit status 1
+------
+Dockerfile:26
+--------------------
+  24 |     ENV BASE_PATH=/
+  25 |     
+  26 | >>> RUN pnpm --filter @workspace/app run build
+  27 |     
+  28 |     # ── Stage 3: Build API server ──────────────────────────────────────────────────
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+Error: buildx failed with: ERROR: failed to build: failed to solve: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+0s
+0s
