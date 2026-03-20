@@ -16,6 +16,7 @@ RUN pnpm install --frozen-lockfile
 
 # ── Stage 2: Build frontend ────────────────────────────────────────────────────
 FROM deps AS frontend-build
+COPY tsconfig.base.json ./
 COPY artifacts/app ./artifacts/app
 COPY lib ./lib
 
@@ -27,6 +28,7 @@ RUN pnpm --filter @workspace/app run build
 
 # ── Stage 3: Build API server ──────────────────────────────────────────────────
 FROM deps AS api-build
+COPY tsconfig.base.json ./
 COPY artifacts/api-server ./artifacts/api-server
 COPY lib ./lib
 
