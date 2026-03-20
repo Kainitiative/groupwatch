@@ -9,6 +9,7 @@ COPY lib/db/package.json ./lib/db/
 COPY lib/db/src ./lib/db/src
 COPY lib/api-zod/package.json ./lib/api-zod/
 COPY lib/api-zod/src ./lib/api-zod/src
+COPY lib/api-client-react/package.json ./lib/api-client-react/
 COPY artifacts/api-server/package.json ./artifacts/api-server/
 COPY artifacts/app/package.json ./artifacts/app/
 
