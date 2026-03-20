@@ -1,0 +1,248 @@
+Run docker/build-push-action@v5
+GitHub Actions runtime token ACs
+Docker info
+Proxy configuration
+Buildx version
+Builder info
+/usr/bin/docker buildx build --cache-from type=gha,scope=slim-v1 --cache-to type=gha,scope=slim-v1,mode=max --file Dockerfile --iidfile /home/runner/work/_temp/docker-actions-toolkit-LWH2lY/build-iidfile-886d66e389.txt --label org.opencontainers.image.created=2026-03-20T19:38:38.586Z --label org.opencontainers.image.description= --label org.opencontainers.image.licenses= --label org.opencontainers.image.revision=663cbfc4b5f48db70eb0fb60c6870b220b1d4a25 --label org.opencontainers.image.source=https://github.com/Kainitiative/groupwatch --label org.opencontainers.image.title=groupwatch --label org.opencontainers.image.url=https://github.com/Kainitiative/groupwatch --label org.opencontainers.image.version=main --attest type=provenance,mode=min,inline-only=true,builder-id=https://github.com/Kainitiative/groupwatch/actions/runs/23359579487 --tag ghcr.io/kainitiative/groupwatch:main --tag ghcr.io/kainitiative/groupwatch:latest --tag ghcr.io/kainitiative/groupwatch:sha-663cbfc --target runner --metadata-file /home/runner/work/_temp/docker-actions-toolkit-LWH2lY/build-metadata-36eae14cf7.json --push .
+#0 building with "builder-4a92b696-ebda-4a93-ab31-50f0e45e10fc" instance using docker-container driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.81kB done
+#1 DONE 0.0s
+
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:20-slim
+#3 DONE 0.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 importing cache manifest from gha:13387688659076395645
+#5 DONE 0.0s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 resolve docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd done
+#6 sha256:44d7c76471e26ea07b364506ecc994ce1989cef868eaed50679d122774ffe435 445B / 445B 0.1s done
+#6 sha256:826a82fd63cc5f414d92dd9851c9462290322549302fed79c0d200e0734ecccf 3.31kB / 3.31kB 0.1s done
+#6 sha256:74251002e6ddbd63bef74e22f6e690c88dfbb143bfbdc160191aadf8c02c3432 1.71MB / 1.71MB 0.1s done
+#6 ...
+
+#7 [internal] load build context
+#7 transferring context: 6.12MB 0.2s done
+#7 DONE 0.2s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 sha256:cd109496182f48ac89395e36b9eb2b6afe88cc5e20d1b530b84d903345bf7a2b 26.21MB / 41.42MB 0.3s
+#6 sha256:6db0909c4473287ed4d1f950d26b8bc5b7b4206d365a0e7740cb89e46979153e 3.15MB / 28.24MB 0.2s
+#6 sha256:cd109496182f48ac89395e36b9eb2b6afe88cc5e20d1b530b84d903345bf7a2b 41.42MB / 41.42MB 0.5s
+#6 sha256:6db0909c4473287ed4d1f950d26b8bc5b7b4206d365a0e7740cb89e46979153e 12.58MB / 28.24MB 0.3s
+#6 sha256:cd109496182f48ac89395e36b9eb2b6afe88cc5e20d1b530b84d903345bf7a2b 41.42MB / 41.42MB 0.5s done
+#6 sha256:6db0909c4473287ed4d1f950d26b8bc5b7b4206d365a0e7740cb89e46979153e 28.24MB / 28.24MB 0.6s done
+#6 extracting sha256:6db0909c4473287ed4d1f950d26b8bc5b7b4206d365a0e7740cb89e46979153e
+#6 extracting sha256:6db0909c4473287ed4d1f950d26b8bc5b7b4206d365a0e7740cb89e46979153e 0.9s done
+#6 DONE 1.5s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 extracting sha256:826a82fd63cc5f414d92dd9851c9462290322549302fed79c0d200e0734ecccf done
+#6 extracting sha256:cd109496182f48ac89395e36b9eb2b6afe88cc5e20d1b530b84d903345bf7a2b
+#6 extracting sha256:cd109496182f48ac89395e36b9eb2b6afe88cc5e20d1b530b84d903345bf7a2b 1.0s done
+#6 DONE 2.5s
+
+#6 [deps  1/11] FROM docker.io/library/node:20-slim@sha256:17281e8d1dc4d671976c6b89a12f47a44c2f390b63a989e2e327631041f544fd
+#6 extracting sha256:74251002e6ddbd63bef74e22f6e690c88dfbb143bfbdc160191aadf8c02c3432 0.0s done
+#6 extracting sha256:44d7c76471e26ea07b364506ecc994ce1989cef868eaed50679d122774ffe435 done
+#6 DONE 2.6s
+
+#8 [deps  2/11] WORKDIR /app
+#8 DONE 0.9s
+
+#9 [deps  3/11] RUN corepack enable && corepack prepare pnpm@latest --activate
+#9 0.331 Preparing pnpm@latest for immediate activation...
+#9 DONE 1.4s
+
+#10 [deps  4/11] COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+#10 DONE 0.0s
+
+#11 [deps  5/11] COPY lib/db/package.json ./lib/db/
+#11 DONE 0.0s
+
+#12 [runner  6/12] COPY lib/api-zod/package.json ./lib/api-zod/
+#12 DONE 0.0s
+
+#13 [deps  6/11] COPY lib/db/src ./lib/db/src
+#13 DONE 0.0s
+
+#14 [runner  7/12] COPY artifacts/api-server/package.json ./artifacts/api-server/
+#14 DONE 0.0s
+
+#15 [deps  7/11] COPY lib/api-zod/package.json ./lib/api-zod/
+#15 DONE 0.0s
+
+#16 [deps  8/11] COPY lib/api-zod/src ./lib/api-zod/src
+#16 DONE 0.0s
+
+#17 [runner  8/12] RUN pnpm install --frozen-lockfile --prod
+#17 ...
+
+#18 [deps  9/11] COPY artifacts/api-server/package.json ./artifacts/api-server/
+#18 DONE 0.0s
+
+#19 [deps 10/11] COPY artifacts/app/package.json ./artifacts/app/
+#19 DONE 0.0s
+
+#20 [deps 11/11] RUN pnpm install --frozen-lockfile
+#20 0.692 Scope: all 5 workspace projects
+#20 1.048 Lockfile is up to date, resolution step is skipped
+#20 1.301 Progress: resolved 1, reused 0, downloaded 0, added 0
+#20 1.461 Packages: +686
+#20 1.461 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#20 2.306 Progress: resolved 686, reused 0, downloaded 15, added 0
+#20 3.309 Progress: resolved 686, reused 0, downloaded 27, added 4
+#20 4.310 Progress: resolved 686, reused 0, downloaded 174, added 151
+#20 5.313 Progress: resolved 686, reused 0, downloaded 310, added 284
+#20 6.314 Progress: resolved 686, reused 0, downloaded 336, added 292
+#20 ...
+
+#17 [runner  8/12] RUN pnpm install --frozen-lockfile --prod
+#17 0.706 Scope: all 4 workspace projects
+#17 1.073 Lockfile is up to date, resolution step is skipped
+#17 1.179 Progress: resolved 1, reused 0, downloaded 0, added 0
+#17 1.219 Packages: +158
+#17 1.219 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#17 2.181 Progress: resolved 158, reused 0, downloaded 29, added 8
+#17 3.182 Progress: resolved 158, reused 0, downloaded 106, added 41
+#17 4.185 Progress: resolved 158, reused 0, downloaded 157, added 157
+#17 5.349 Progress: resolved 158, reused 0, downloaded 158, added 157
+#17 5.350 Progress: resolved 158, reused 0, downloaded 158, added 158, done
+#17 5.516 
+#17 5.516 devDependencies: skipped
+#17 5.516 
+#17 5.520 . preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+#17 5.535 . preinstall: Done
+#17 5.592 Done in 5.4s using pnpm v10.32.1
+#17 DONE 6.4s
+
+#20 [deps 11/11] RUN pnpm install --frozen-lockfile
+#20 7.316 Progress: resolved 686, reused 0, downloaded 347, added 296
+#20 8.315 Progress: resolved 686, reused 0, downloaded 350, added 296
+#20 9.316 Progress: resolved 686, reused 0, downloaded 432, added 336
+#20 10.32 Progress: resolved 686, reused 0, downloaded 505, added 361
+#20 11.32 Progress: resolved 686, reused 0, downloaded 641, added 436
+#20 12.04 Progress: resolved 686, reused 0, downloaded 686, added 686, done
+#20 12.46 .../esbuild@0.27.3/node_modules/esbuild postinstall$ node install.js
+#20 12.52 .../esbuild@0.27.3/node_modules/esbuild postinstall: Done
+#20 12.94 
+#20 12.94 devDependencies:
+#20 12.94 + prettier 3.8.1
+#20 12.94 + typescript 5.9.3
+#20 12.94 
+#20 13.01 . preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+#20 13.03 . preinstall: Done
+#20 13.19 Done in 13s using pnpm v10.32.1
+#20 DONE 13.2s
+
+#21 [api-build 1/3] COPY artifacts/api-server ./artifacts/api-server
+#21 ...
+
+#22 [frontend-build 1/3] COPY artifacts/app ./artifacts/app
+#22 DONE 1.9s
+
+#21 [api-build 1/3] COPY artifacts/api-server ./artifacts/api-server
+#21 DONE 1.9s
+
+#23 [api-build 2/3] COPY lib ./lib
+#23 DONE 0.1s
+
+#24 [frontend-build 2/3] COPY lib ./lib
+#24 DONE 0.1s
+
+#25 [frontend-build 3/3] RUN pnpm --filter @workspace/app run build
+#25 0.566 
+#25 0.566 > @workspace/app@0.0.0 build /app/artifacts/app
+#25 0.566 > vite build --config vite.config.ts
+#25 0.566 
+#25 0.903 ▲ [WARNING] Cannot find base config file "../../tsconfig.base.json" [tsconfig.json]
+#25 0.903 
+#25 0.903     tsconfig.json:2:13:
+#25 0.903       2 │   "extends": "../../tsconfig.base.json",
+#25 0.903         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#25 0.903 
+#25 1.249 vite v7.3.1 building client environment for production...
+#25 1.362 ✓ 0 modules transformed.
+#25 1.375 ✗ Build failed in 64ms
+#25 1.376 error during build:
+#25 1.376 [vite-plugin-pwa:build] [plugin vite-plugin-pwa:build] index.html: There was an error during the build:
+#25 1.376   failed to resolve "extends":"../../tsconfig.base.json" in /app/artifacts/app/tsconfig.json
+#25 1.376 Additionally, handling the error in the 'buildEnd' hook caused the following error:
+#25 1.376   failed to resolve "extends":"../../tsconfig.base.json" in /app/artifacts/app/tsconfig.json
+#25 1.376 file: /app/artifacts/app/index.html
+#25 1.376     at getRollupError (file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+#25 1.376     at file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:23467:39
+#25 1.376     at async catchUnfinishedHookActions (file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:22925:16)
+#25 1.376     at async rollupInternal (file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:23450:5)
+#25 1.376     at async buildEnvironment (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33541:12)
+#25 1.376     at async Object.build (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33900:19)
+#25 1.376     at async Object.buildApp (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33897:153)
+#25 1.376     at async CAC.<anonymous> (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/cli.js:629:3)
+#25 1.427 /app/artifacts/app:
+#25 1.427  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/app@0.0.0 build: `vite build --config vite.config.ts`
+#25 1.427 Exit status 1
+#25 ERROR: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+
+#26 [api-build 3/3] RUN pnpm --filter @workspace/api-server run build
+#26 0.566 
+#26 0.566 > @workspace/api-server@0.0.0 build /app/artifacts/api-server
+#26 0.566 > tsx ./build.ts
+#26 0.566 
+#26 1.069 building server...
+#26 1.084 ▲ [WARNING] Cannot find base config file "../../tsconfig.base.json" [tsconfig.json]
+#26 1.084 
+#26 1.084     tsconfig.json:2:13:
+#26 1.084       2 │   "extends": "../../tsconfig.base.json",
+#26 1.084         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#26 1.084 
+#26 1.087 ▲ [WARNING] Cannot find base config file "../../tsconfig.base.json" [tsconfig.json]
+#26 1.087 
+#26 1.087     ../../lib/db/tsconfig.json:2:13:
+#26 1.087       2 │   "extends": "../../tsconfig.base.json",
+#26 1.087         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#26 1.087 
+#26 1.334 ▲ [WARNING] Cannot find base config file "../../tsconfig.base.json" [tsconfig.json]
+#26 1.334 
+#26 1.334     ../../lib/api-zod/tsconfig.json:2:13:
+#26 1.334       2 │   "extends": "../../tsconfig.base.json",
+#26 1.334         ╵              ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#26 1.334 
+#26 CANCELED
+------
+ > [frontend-build 3/3] RUN pnpm --filter @workspace/app run build:
+1.376     at file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:23467:39
+1.376     at async catchUnfinishedHookActions (file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:22925:16)
+1.376     at async rollupInternal (file:///app/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:23450:5)
+1.376     at async buildEnvironment (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33541:12)
+1.376     at async Object.build (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33900:19)
+1.376     at async Object.buildApp (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/chunks/config.js:33897:153)
+1.376     at async CAC.<anonymous> (file:///app/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/node/cli.js:629:3)
+1.427 /app/artifacts/app:
+1.427  ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/app@0.0.0 build: `vite build --config vite.config.ts`
+1.427 Exit status 1
+------
+Dockerfile:26
+--------------------
+  24 |     ENV BASE_PATH=/
+  25 |     
+  26 | >>> RUN pnpm --filter @workspace/app run build
+  27 |     
+  28 |     # ── Stage 3: Build API server ──────────────────────────────────────────────────
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+Error: buildx failed with: ERROR: failed to build: failed to solve: process "/bin/sh -c pnpm --filter @workspace/app run build" did not complete successfully: exit code: 1
+0s
+1s
+0s
+2s
+1s
