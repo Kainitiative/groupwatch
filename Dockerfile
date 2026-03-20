@@ -73,6 +73,7 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY tsconfig.base.json ./
 COPY lib/db/package.json ./lib/db/
 COPY lib/db/src ./lib/db/src
 COPY lib/db/drizzle.config.ts ./lib/db/
@@ -81,4 +82,4 @@ RUN pnpm install --frozen-lockfile
 
 WORKDIR /app/lib/db
 
-CMD ["pnpm", "run", "push"]
+CMD ["pnpm", "run", "migrate"]
