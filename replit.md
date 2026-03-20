@@ -2,6 +2,16 @@
 
 A general-purpose group incident reporting SaaS platform. Any organised group (angling clubs, environmental groups, neighbourhood watch, HOAs, football clubs, animal welfare) can subscribe to manage incident reporting for their members.
 
+## Production Deployment
+
+- **Live URL**: https://groupwatchplatform.com
+- **VPS**: Ubuntu 24.04 at 185.43.233.219 (LetsHost Dublin)
+- **Stack**: Docker Compose → nginx (port 80) + app (port 8080 internal) + PostgreSQL (host)
+- **CI/CD**: GitHub Actions → ghcr.io/kainitiative/groupwatch → VPS via SSH
+- **SSL**: Cloudflare Flexible (Cloudflare terminates TLS, origin is HTTP)
+- **Repo**: github.com/Kainitiative/groupwatch (main branch)
+- **Pending**: Brevo SMTP setup (needs domain DNS verified in Brevo), Stripe webhook confirmation
+
 ## Architecture
 
 **Monorepo (pnpm workspaces)**
