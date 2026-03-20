@@ -36,7 +36,7 @@ export default function Landing() {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4 animate-in slide-in-from-bottom-16 duration-700 delay-500">
-            <Link href="/groups/new">
+            <Link href="/register">
               <Button size="lg" className="w-full sm:w-auto h-14 px-8 text-base bg-amber-500 hover:bg-amber-400 text-white rounded-xl shadow-xl shadow-amber-500/30 hover:shadow-amber-400/40 hover:-translate-y-1 transition-all font-semibold">
                 Register Your Group
                 <ArrowRight className="ml-2 w-5 h-5" />

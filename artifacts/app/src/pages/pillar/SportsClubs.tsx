@@ -53,7 +53,7 @@ export default function SportsClubs() {
           <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
             From pitch damage to anti-social behaviour, give your members and grounds staff a single place to report, track, and escalate incidents — with full audit trails for insurance and county board submissions.
           </p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Club — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -188,7 +188,7 @@ export default function SportsClubs() {
         <div className="max-w-xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Get your club set up today.</h2>
           <p className="text-muted-foreground mb-8">First month completely free. No credit card required.</p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Club — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />

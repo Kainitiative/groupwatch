@@ -89,7 +89,7 @@ export default function Features() {
           <div className="mt-20 text-center">
             <h2 className="text-2xl font-bold text-foreground mb-4">Ready to get your group set up?</h2>
             <p className="text-muted-foreground mb-8">First month free. No credit card required.</p>
-            <Link href="/groups/new">
+            <Link href="/register">
               <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
                 Register Your Group
                 <ArrowRight className="ml-2 w-5 h-5" />

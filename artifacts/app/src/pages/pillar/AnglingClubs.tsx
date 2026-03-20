@@ -53,7 +53,7 @@ export default function AnglingClubs() {
           <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
             Give every member — on the riverbank, in a boat, or walking a beat — a fast way to report poaching, pollution, and illegal activity. Offline-ready, GPS-tagged, court-admissible.
           </p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Club — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -188,7 +188,7 @@ export default function AnglingClubs() {
         <div className="max-w-xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Ready to protect your waters?</h2>
           <p className="text-muted-foreground mb-8">Register your club today. First month completely free.</p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Club — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />

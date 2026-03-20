@@ -91,7 +91,7 @@ export default function OfflinePwa() {
           </div>
 
           <div className="mt-16 text-center">
-            <Link href="/groups/new">
+            <Link href="/register">
               <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
                 Register Your Group
                 <ArrowRight className="ml-2 w-5 h-5" />

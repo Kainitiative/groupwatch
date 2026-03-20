@@ -57,7 +57,7 @@ export default function TidyTowns() {
           <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
             Give your volunteers a fast way to report litter, dumping, and maintenance issues from the field. GPS-tagged evidence that impresses adjudicators and gets councils moving.
           </p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl h-14 px-8 shadow-lg shadow-amber-500/25">
               Register Your Committee — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -193,7 +193,7 @@ export default function TidyTowns() {
         <div className="max-w-xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Ready to get your committee organised?</h2>
           <p className="text-muted-foreground mb-8">Register today. First month completely free — no credit card required.</p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl h-14 px-8 shadow-lg shadow-amber-500/25">
               Register Your Committee — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />

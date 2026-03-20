@@ -42,7 +42,7 @@ export default function Pricing() {
                 <span className="text-5xl font-extrabold text-foreground">€20</span>
                 <span className="text-muted-foreground mb-2">/month</span>
               </div>
-              <Link href="/groups/new">
+              <Link href="/register">
                 <Button variant="outline" className="w-full mb-8 rounded-xl">
                   Start Free Trial
                 </Button>
@@ -70,7 +70,7 @@ export default function Pricing() {
                 <span className="text-primary-foreground/70 mb-2">/year</span>
               </div>
               <p className="text-sm text-primary-foreground/60 mb-6">€16.67/month — 2 months free</p>
-              <Link href="/groups/new">
+              <Link href="/register">
                 <Button className="w-full mb-8 rounded-xl bg-accent hover:bg-accent/90 text-accent-foreground font-semibold shadow-lg shadow-accent/25">
                   Start Free Trial
                   <ArrowRight className="ml-2 w-4 h-4" />

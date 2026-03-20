@@ -53,7 +53,7 @@ export default function HOA() {
           <p className="text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
             Give residents a simple, structured way to report issues in shared spaces — car parks, bin stores, common areas. Every report is GPS-tagged, timestamped, and legally admissible.
           </p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Association — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -189,7 +189,7 @@ export default function HOA() {
         <div className="max-w-xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">Ready to manage your complex better?</h2>
           <p className="text-muted-foreground mb-8">Register today. First month completely free — no credit card required.</p>
-          <Link href="/groups/new">
+          <Link href="/register">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl h-14 px-8 shadow-lg shadow-accent/25">
               Register Your Association — Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
