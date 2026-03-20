@@ -1,6 +1,6 @@
 services:
   app:
-    image: ghcr.io/${GITHUB_REPOSITORY:-groupwatch/groupwatch}:latest
+    image: ghcr.io/kainitiative/groupwatch:latest
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8080"
@@ -32,7 +32,7 @@ services:
       start_period: 15s
 
   migrator:
-    image: ghcr.io/${GITHUB_REPOSITORY:-groupwatch/groupwatch}:migrator
+    image: ghcr.io/kainitiative/groupwatch:migrator
     restart: no
     environment:
       DATABASE_URL: ${DATABASE_URL}
