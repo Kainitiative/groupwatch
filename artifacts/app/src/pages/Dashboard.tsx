@@ -12,6 +12,12 @@ export default function Dashboard() {
   const { data: groups, isLoading: groupsLoading } = useGetMyGroups();
   const { data: reports, isLoading: reportsLoading } = useGetMyReports();
 
+  // Redirect unauthenticated users — do this before loading other data
+  if (!userLoading && !user) {
+    window.location.href = "/login";
+    return null;
+  }
+
   if (userLoading || groupsLoading || reportsLoading) {
     return (
       <SidebarLayout>
@@ -24,12 +30,6 @@ export default function Dashboard() {
         </div>
       </SidebarLayout>
     );
-  }
-
-  // Ensure user is authenticated, otherwise redirect (could be handled in a wrapper, but safe here)
-  if (!user) {
-    window.location.href = "/login";
-    return null;
   }
 
   return (
