@@ -82,7 +82,7 @@ define(['./workbox-f8a938ec'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "/index.html",
-    "revision": "0.9l5d21bpvhk"
+    "revision": "0.a8afdlihq3c"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/index.html"), {
@@ -116,7 +116,7 @@ define(['./workbox-f8a938ec'], (function (workbox) { 'use strict';
       statuses: [0, 200]
     })]
   }), 'GET');
-  workbox.registerRoute(/\/api\/(groups\/[^/]+\/incident-types|auth\/me|users\/me)/, new workbox.StaleWhileRevalidate({
+  workbox.registerRoute(/\/api\/groups\/[^/]+\/incident-types/, new workbox.StaleWhileRevalidate({
     "cacheName": "api-form-data-cache",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 50,
