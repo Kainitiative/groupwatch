@@ -111,6 +111,9 @@ jobs:
             # Bring up / restart the app
             GITHUB_REPOSITORY=$REPO docker compose up -d --remove-orphans
 
+            # Reload nginx config (picks up any nginx.conf changes)
+            docker compose exec -T nginx nginx -s reload || true
+
             # Wait and verify health
             sleep 15
             curl -sf http://localhost:8080/api/healthz || (echo "Health check failed!" && exit 1)

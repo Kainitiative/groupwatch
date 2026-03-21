@@ -28,7 +28,7 @@ export function createSessionMiddleware() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: "auto",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       sameSite: "lax",
       path: "/",
