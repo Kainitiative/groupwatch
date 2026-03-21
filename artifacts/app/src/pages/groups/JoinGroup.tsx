@@ -24,6 +24,7 @@ export default function JoinGroup() {
   const [joinState, setJoinState] = useState<JoinState>("loading");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Load group info
   useEffect(() => {
     if (!token) return;
     fetch(`/api/groups/join/${token}`, { credentials: "include" })
@@ -39,6 +40,19 @@ export default function JoinGroup() {
         setJoinState("invalid");
       });
   }, [token]);
+
+  // Auto-join once we know user is logged in and group is loaded
+  useEffect(() => {
+    if (joinState !== "ready" || userLoading || !user || !token) return;
+    setJoinState("joining");
+    fetch(`/api/groups/join/${token}`, { method: "POST", credentials: "include" })
+      .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+      .then(({ ok, data }) => {
+        if (!ok) { setErrorMessage(data.error || "Something went wrong"); setJoinState("error"); return; }
+        setJoinState(data.message?.includes("already") ? "already-member" : "success");
+      })
+      .catch(() => { setErrorMessage("Could not connect. Please try again."); setJoinState("error"); });
+  }, [joinState, userLoading, user, token]);
 
   const handleJoin = async () => {
     if (!user) {
