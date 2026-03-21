@@ -102,7 +102,8 @@ router.post("/auth/login", async (req, res): Promise<void> => {
 });
 
 router.post("/auth/logout", async (req, res): Promise<void> => {
-  req.session.destroy(() => {});
+  await new Promise<void>((resolve) => req.session.destroy(() => resolve()));
+  res.clearCookie("connect.sid", { path: "/" });
   res.json({ message: "Logged out successfully" });
 });
 
