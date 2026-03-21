@@ -50,7 +50,7 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
                     </Button>
                   </Link>
                 </>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
