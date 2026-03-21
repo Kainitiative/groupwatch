@@ -9,7 +9,7 @@ interface PublicLayoutProps {
 }
 
 export default function PublicLayout({ children, transparentHeader = false }: PublicLayoutProps) {
-  const { data: user } = useGetMe();
+  const { data: user, isLoading: authLoading } = useGetMe();
 
   return (
     <div className="min-h-screen flex flex-col bg-background selection:bg-accent/20 selection:text-accent">
@@ -33,13 +33,13 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
             </nav>
 
             <div className="flex items-center gap-3">
-              {user ? (
+              {!authLoading && user ? (
                 <Link href="/dashboard">
                   <Button className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all">
                     Dashboard
                   </Button>
                 </Link>
-              ) : (
+              ) : !authLoading ? (
                 <>
                   <Link href="/login" className={`hidden sm:block text-sm font-medium transition-colors hover:text-accent ${transparentHeader ? "text-white" : "text-foreground"}`}>
                     Sign In

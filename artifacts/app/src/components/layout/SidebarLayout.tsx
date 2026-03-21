@@ -13,7 +13,7 @@ import {
   BarChart2,
   Map
 } from "lucide-react";
-import { useGetMe, useGetMyGroups, useLogout } from "@workspace/api-client-react";
+import { useGetMe, useGetMyGroups } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,17 +28,15 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const [location] = useLocation();
   const { data: user } = useGetMe();
   const { data: groups } = useGetMyGroups();
-  const { mutate: logout } = useLogout();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
-    logout(undefined, {
-      onSuccess: () => {
-        queryClient.clear();
-        window.location.href = "/login";
-      }
-    });
+    // Fire server logout in background — don't wait for it
+    fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(() => {});
+    // Immediately clear cache and navigate — always reliable
+    queryClient.clear();
+    window.location.href = "/login";
   };
 
   const NavLinks = () => (
