@@ -80,6 +80,12 @@ export default function Landing() {
               </Button>
             </Link>
           </div>
+          <p className="mt-6 text-white/50 text-sm animate-in fade-in duration-700 delay-700">
+            Already have an account?{" "}
+            <Link href="/login" className="text-white/80 underline underline-offset-4 hover:text-white transition-colors font-medium">
+              Sign in
+            </Link>
+          </p>
         </div>
       </section>
 

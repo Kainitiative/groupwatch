@@ -41,7 +41,7 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
                 </Link>
               ) : !authLoading ? (
                 <>
-                  <Link href="/login" className={`hidden sm:block text-sm font-medium transition-colors hover:text-accent ${transparentHeader ? "text-white" : "text-foreground"}`}>
+                  <Link href="/login" className={`text-sm font-medium transition-colors hover:text-accent ${transparentHeader ? "text-white" : "text-foreground"}`}>
                     Sign In
                   </Link>
                   <Link href="/register">
