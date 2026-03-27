@@ -9,7 +9,7 @@ interface PublicLayoutProps {
 }
 
 export default function PublicLayout({ children, transparentHeader = false }: PublicLayoutProps) {
-  const { data: user, isLoading: authLoading } = useGetMe();
+  const { data: user } = useGetMe();
 
   return (
     <div className="min-h-screen flex flex-col bg-background selection:bg-accent/20 selection:text-accent">
@@ -17,12 +17,12 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
         transparentHeader ? "absolute top-0 left-0 bg-transparent" : "bg-card border-b border-border sticky top-0"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
-            <Link href="/" className="flex items-center group-hover:opacity-90 transition-opacity">
+          <div className="flex justify-between items-center h-14 sm:h-20">
+            <Link href="/" className="flex items-center shrink-0 transition-opacity hover:opacity-80">
               <img
                 src={`${import.meta.env.BASE_URL}images/logo-banner.png`}
                 alt="GroupWatch Platform"
-                className="h-10 w-auto object-contain rounded-lg"
+                className="h-8 sm:h-10 w-auto max-w-[140px] sm:max-w-[200px] object-contain rounded-lg"
               />
             </Link>
             
@@ -32,25 +32,25 @@ export default function PublicLayout({ children, transparentHeader = false }: Pu
               <Link href="/help" className={`text-sm font-medium transition-colors hover:text-accent ${transparentHeader ? "text-white/80" : "text-muted-foreground"}`}>Help</Link>
             </nav>
 
-            <div className="flex items-center gap-3">
-              {!authLoading && user ? (
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {user ? (
                 <Link href="/dashboard">
-                  <Button className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all">
+                  <Button size="sm" className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-xl shadow-lg shadow-accent/25 sm:h-10 sm:px-4">
                     Dashboard
                   </Button>
                 </Link>
-              ) : !authLoading ? (
+              ) : (
                 <>
-                  <Link href="/login" className={`text-sm font-medium transition-colors hover:text-accent ${transparentHeader ? "text-white" : "text-foreground"}`}>
+                  <Link href="/login" className={`text-sm font-medium transition-colors hover:text-accent whitespace-nowrap ${transparentHeader ? "text-white" : "text-foreground"}`}>
                     Sign In
                   </Link>
                   <Link href="/register">
-                    <Button className="bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:-translate-y-0.5 transition-all">
+                    <Button size="sm" className="bg-amber-500 hover:bg-amber-400 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/25 hover:-translate-y-0.5 transition-all whitespace-nowrap sm:h-10 sm:px-4">
                       Get Started
                     </Button>
                   </Link>
                 </>
-              ) : null}
+              )}
             </div>
           </div>
         </div>
