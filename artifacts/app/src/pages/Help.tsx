@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, Settings, Bell, FileText, Smartphone, Users } from "lucide-react";
+import { BookOpen, Settings, Bell, FileText, Smartphone, Users, Share2 } from "lucide-react";
 import PublicLayout from "@/components/layout/PublicLayout";
 import {
   Accordion,
@@ -212,6 +212,71 @@ After cancellation, your group and all its data remain accessible in a read-only
         content: `To export all your group's data, use the CSV export from the Analytics page and PDF exports for individual reports. These give you a complete copy of your incident records.
 
 To request full data deletion, contact us at the address on the Contact page. We'll process your request within 30 days in line with GDPR requirements and confirm deletion by email.`,
+      },
+    ],
+  },
+  {
+    icon: Share2,
+    title: "Promoting Your Report Link on Facebook",
+    description: "Three ways to give your Facebook followers and group members a one-tap link to submit a report.",
+    articles: [
+      {
+        title: "Finding your group's report link",
+        content: `Every group on GroupWatch has a unique public report link that anyone can use to submit an incident — no account required (unless your group has enabled member-only reporting).
+
+To find your link:
+1. Sign in and go to your group's Settings → Profile
+2. Look for the "Public Report Link" — it looks like: groupwatchplatform.com/report/your-group-name
+3. Copy this link — you'll use it in all three methods below.
+
+You can also find your group slug (the short name at the end of the URL) in your browser's address bar when you're inside your group's dashboard.`,
+      },
+      {
+        title: "Option 1 — Add a button to your Facebook Page",
+        content: `If your group has a Facebook Page, you can add a permanent "Report Now" button that appears right at the top of your page.
+
+Steps:
+1. Go to your Facebook Page and click Edit Page (or the blue button area near your cover photo)
+2. Click "Add a Button" or "Edit Button" if one already exists
+3. Choose "Learn More" or "Sign Up" from the list of button types
+4. Paste your GroupWatch report link into the website URL field
+5. Click Save
+
+The button now appears to everyone who visits your page. One tap takes them straight to your group's report form — fully mobile-friendly and works offline once the page has loaded.
+
+Tip: Edit your page's About section to include the link as well, so it's visible in search results.`,
+      },
+      {
+        title: "Option 2 — Pin a post in your Facebook Group",
+        content: `If your group communicates through a private Facebook Group (rather than a Page), pin a post with the report link so it's always at the top.
+
+Steps:
+1. Create a new post in your Facebook Group with text like:
+   "📋 Report an incident directly to us — tap the link below. It takes under 2 minutes and works offline."
+   Then paste your GroupWatch report link on the next line.
+2. After posting, click the three dots (⋯) in the top-right corner of the post
+3. Select "Pin Post"
+
+The post stays pinned at the very top of your group feed permanently. Every member sees it when they open the group. Replace it with a new pin if you ever need to update the link.
+
+Tip: Add a screenshot of the report form to the post so members know what to expect before they click.`,
+      },
+      {
+        title: "Option 3 — Rich link previews when sharing",
+        content: `Whenever anyone pastes your GroupWatch report link into Facebook, WhatsApp, Twitter, Telegram, or Slack, it automatically shows a rich card — not just a bare URL.
+
+The card includes:
+• Your group's name as the title
+• A short description prompting members to tap and report
+• Your group's logo (if you've uploaded one in Settings → Profile)
+
+This happens automatically — there's nothing extra to set up. It works for:
+• groupwatchplatform.com/report/your-group — the report submission form
+• groupwatchplatform.com/g/your-group — your group's public profile page
+
+If you've just added or changed your group logo and the old image still shows, open this URL in a browser and let Facebook refresh its cache:
+facebook.com/sharedstuff/developer?u=https://groupwatchplatform.com/report/your-group
+(Replace "your-group" with your actual group slug.)`,
       },
     ],
   },
