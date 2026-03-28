@@ -3,7 +3,7 @@ import { useRoute, Link } from "wouter";
 import { useGetReport, useAddReportUpdate, useGetMe } from "@workspace/api-client-react";
 import { AddReportUpdateRequestUpdateType, AddReportUpdateRequestNewStatus } from "@workspace/api-client-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { getGetReportQueryKey } from "@workspace/api-client-react";
+import { getGetReportQueryKey, getListReportsQueryKey } from "@workspace/api-client-react";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { useToast } from "@/hooks/use-toast";
@@ -108,16 +108,17 @@ export default function ReportDetail() {
   const [newStatus, setNewStatus] = useState<string>("");
   const [activePanel, setActivePanel] = useState<"note" | "status" | "escalation" | null>(null);
   const [listening, setListening] = useState(false);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [selectedContactId, setSelectedContactId] = useState<string>("");
   const [escalationNote, setEscalationNote] = useState<string>("");
 
-  const { data: escalationContacts = [] } = useQuery<any[]>({
+  interface EscalationContact { id: string; name: string; role: string | null; phone: string | null; email: string | null; }
+  const { data: escalationContacts = [] } = useQuery<EscalationContact[]>({
     queryKey: [`/api/groups/${slug}/escalation-contacts`],
     queryFn: async () => {
       const res = await fetch(`/api/groups/${slug}/escalation-contacts`, { credentials: "include" });
       if (!res.ok) return [];
-      return res.json();
+      return res.json() as Promise<EscalationContact[]>;
     },
     enabled: activePanel === "escalation",
   });
@@ -160,6 +161,7 @@ export default function ReportDetail() {
 
   const invalidate = () => {
     queryClient.invalidateQueries({ queryKey: getGetReportQueryKey(slug, ref) });
+    queryClient.invalidateQueries({ queryKey: getListReportsQueryKey(slug) });
   };
 
   const handleClaim = async () => {
@@ -167,8 +169,8 @@ export default function ReportDetail() {
       await addUpdate.mutateAsync({ groupSlug: slug, referenceNumber: ref, data: { updateType: "claim" } });
       invalidate();
       toast({ title: "Report claimed", description: "You are now the assigned responder." });
-    } catch (e: any) {
-      toast({ title: "Error", description: e?.message ?? "Could not claim report", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: err instanceof Error ? err.message : "Could not claim report", variant: "destructive" });
     }
   };
 
@@ -183,8 +185,8 @@ export default function ReportDetail() {
       setNewStatus("");
       setActivePanel(null);
       toast({ title: "Status updated", description: `Report marked as ${statusLabel[newStatus] ?? newStatus}` });
-    } catch (e: any) {
-      toast({ title: "Error", description: e?.message ?? "Could not update status", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: err instanceof Error ? err.message : "Could not update status", variant: "destructive" });
     }
   };
 
@@ -199,8 +201,8 @@ export default function ReportDetail() {
       setNoteText("");
       setActivePanel(null);
       toast({ title: "Note added" });
-    } catch (e: any) {
-      toast({ title: "Error", description: e?.message ?? "Could not add note", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: err instanceof Error ? err.message : "Could not add note", variant: "destructive" });
     }
   };
 
@@ -220,8 +222,8 @@ export default function ReportDetail() {
       setEscalationNote("");
       setActivePanel(null);
       toast({ title: "Report escalated", description: "Status updated to Escalated." });
-    } catch (e: any) {
-      toast({ title: "Error", description: e?.message ?? "Could not escalate report", variant: "destructive" });
+    } catch (err) {
+      toast({ title: "Error", description: err instanceof Error ? err.message : "Could not escalate report", variant: "destructive" });
     }
   };
 

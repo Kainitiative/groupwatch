@@ -81,9 +81,11 @@ router.get("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise<
     .select({
       report: incidentReportsTable,
       incidentType: incidentTypesTable,
+      claimerName: usersTable.name,
     })
     .from(incidentReportsTable)
     .leftJoin(incidentTypesTable, eq(incidentReportsTable.incidentTypeId, incidentTypesTable.id))
+    .leftJoin(usersTable, eq(incidentReportsTable.claimedByUserId, usersTable.id))
     .where(and(...conditions))
     .orderBy(desc(incidentReportsTable.submittedAt))
     .limit(limit)
@@ -100,7 +102,7 @@ router.get("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise<
   );
 
   res.json({
-    reports: reports.map(({ report, incidentType }) => ({
+    reports: reports.map(({ report, incidentType, claimerName }) => ({
       id: report.id,
       referenceNumber: report.referenceNumber,
       groupSlug: slug,
@@ -113,7 +115,7 @@ router.get("/groups/:groupSlug/reports", requireAuth, async (req, res): Promise<
       status: report.status,
       isAnonymous: report.isAnonymous,
       claimedByUserId: report.claimedByUserId,
-      claimedByName: null,
+      claimedByName: claimerName ?? null,
       submittedAt: report.submittedAt,
       photoCount: photoCountMap[report.id] ?? 0,
     })),
@@ -321,9 +323,10 @@ router.get("/groups/:groupSlug/reports/:referenceNumber", requireAuth, async (re
   if (!member) { res.status(403).json({ error: "You are not a member of this group" }); return; }
 
   const [result] = await db
-    .select({ report: incidentReportsTable, incidentType: incidentTypesTable })
+    .select({ report: incidentReportsTable, incidentType: incidentTypesTable, claimerName: usersTable.name })
     .from(incidentReportsTable)
     .leftJoin(incidentTypesTable, eq(incidentReportsTable.incidentTypeId, incidentTypesTable.id))
+    .leftJoin(usersTable, eq(incidentReportsTable.claimedByUserId, usersTable.id))
     .where(and(
       eq(incidentReportsTable.referenceNumber, refNum),
       eq(incidentReportsTable.groupId, group.id)
@@ -331,7 +334,7 @@ router.get("/groups/:groupSlug/reports/:referenceNumber", requireAuth, async (re
 
   if (!result) { res.status(404).json({ error: "Report not found" }); return; }
 
-  const { report, incidentType } = result;
+  const { report, incidentType, claimerName } = result;
 
   const photos = await db
     .select()
@@ -358,7 +361,7 @@ router.get("/groups/:groupSlug/reports/:referenceNumber", requireAuth, async (re
       status: report.status,
       isAnonymous: report.isAnonymous,
       claimedByUserId: report.claimedByUserId,
-      claimedByName: null,
+      claimedByName: claimerName ?? null,
       submittedAt: report.submittedAt,
       photoCount: photos.length,
     },
