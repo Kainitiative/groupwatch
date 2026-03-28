@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { Link, useLocation, useSearch } from "wouter";
+import { Link, useLocation } from "wouter";
 import { 
   LayoutDashboard, 
   FileText, 
@@ -27,8 +27,6 @@ interface SidebarLayoutProps {
 
 export default function SidebarLayout({ children }: SidebarLayoutProps) {
   const [location] = useLocation();
-  const search = useSearch();
-  const searchParams = new URLSearchParams(search);
   const { data: user } = useGetMe();
   const { data: groups } = useGetMyGroups();
   const queryClient = useQueryClient();
@@ -130,9 +128,9 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                     </Link>
                   )}
                   {group.myRole === 'admin' && (
-                    <Link href={`/g/${group.slug}/settings?tab=billing`} className={cn(
+                    <Link href={`/g/${group.slug}/settings/billing`} className={cn(
                       "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
-                      location.startsWith(`/g/${group.slug}/settings`) && searchParams.get("tab") === "billing"
+                      location === `/g/${group.slug}/settings/billing`
                         ? "text-accent bg-accent/10 font-medium" 
                         : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
                     )}>
@@ -141,9 +139,9 @@ export default function SidebarLayout({ children }: SidebarLayoutProps) {
                     </Link>
                   )}
                   {group.myRole === 'admin' && (
-                    <Link href={`/g/${group.slug}/settings`} className={cn(
+                    <Link href={`/g/${group.slug}/settings/profile`} className={cn(
                       "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors",
-                      location.startsWith(`/g/${group.slug}/settings`) && searchParams.get("tab") !== "billing"
+                      location.startsWith(`/g/${group.slug}/settings`) && location !== `/g/${group.slug}/settings/billing`
                         ? "text-accent bg-accent/10 font-medium" 
                         : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-foreground/5"
                     )}>

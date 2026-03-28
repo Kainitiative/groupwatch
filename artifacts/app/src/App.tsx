@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, Redirect } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,7 +14,6 @@ import Dashboard from "@/pages/Dashboard";
 import CreateGroup from "@/pages/groups/CreateGroup";
 import JoinGroup from "@/pages/groups/JoinGroup";
 import GroupProfile from "@/pages/groups/GroupProfile";
-import GroupSettings from "@/pages/groups/GroupSettings";
 import SubmitReport from "@/pages/reports/SubmitReport";
 import MyReports from "@/pages/reports/MyReports";
 import SuperAdmin from "@/pages/admin/SuperAdmin";
@@ -25,6 +24,17 @@ import PublicReport from "@/pages/groups/PublicReport";
 import Analytics from "@/pages/groups/Analytics";
 import MapBoundaries from "@/pages/groups/MapBoundaries";
 import PwaPrompts from "@/components/PwaPrompts";
+
+// Settings sub-pages
+import GroupSettingsProfile from "@/pages/groups/settings/GroupSettingsProfile";
+import GroupSettingsMembers from "@/pages/groups/settings/GroupSettingsMembers";
+import GroupSettingsIncidentTypes from "@/pages/groups/settings/GroupSettingsIncidentTypes";
+import GroupSettingsEscalation from "@/pages/groups/settings/GroupSettingsEscalation";
+import GroupSettingsBilling from "@/pages/groups/settings/GroupSettingsBilling";
+import GroupSettingsWidget from "@/pages/groups/settings/GroupSettingsWidget";
+import GroupSettingsApiKeys from "@/pages/groups/settings/GroupSettingsApiKeys";
+import GroupSettingsSocial from "@/pages/groups/settings/GroupSettingsSocial";
+
 // Public content pages
 import Pricing from "@/pages/Pricing";
 import Features from "@/pages/Features";
@@ -94,7 +104,22 @@ function Router() {
       <Route path="/g/:slug/reports" component={ReportsDashboard} />
       <Route path="/g/:slug/analytics" component={Analytics} />
       <Route path="/g/:slug/map" component={MapBoundaries} />
-      <Route path="/g/:slug/settings" component={GroupSettings} />
+
+      {/* Settings sub-pages — must come before the catch-all redirect */}
+      <Route path="/g/:slug/settings/profile" component={GroupSettingsProfile} />
+      <Route path="/g/:slug/settings/members" component={GroupSettingsMembers} />
+      <Route path="/g/:slug/settings/incident-types" component={GroupSettingsIncidentTypes} />
+      <Route path="/g/:slug/settings/escalation" component={GroupSettingsEscalation} />
+      <Route path="/g/:slug/settings/billing" component={GroupSettingsBilling} />
+      <Route path="/g/:slug/settings/widget" component={GroupSettingsWidget} />
+      <Route path="/g/:slug/settings/api-keys" component={GroupSettingsApiKeys} />
+      <Route path="/g/:slug/settings/social" component={GroupSettingsSocial} />
+
+      {/* /g/:slug/settings → redirect to profile sub-page */}
+      <Route path="/g/:slug/settings">
+        {(params) => <Redirect to={`/g/${params.slug}/settings/profile`} />}
+      </Route>
+
       <Route path="/my-reports" component={MyReports} />
       <Route path="/admin" component={SuperAdmin} />
 
