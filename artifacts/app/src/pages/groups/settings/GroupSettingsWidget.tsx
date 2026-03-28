@@ -151,6 +151,25 @@ export default function GroupSettingsWidget() {
               </div>
             </div>
 
+            {/* Live inline preview */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Globe className="w-4 h-4 text-emerald-400" />
+                <h3 className="font-semibold text-white text-sm">Live Preview</h3>
+                <span className="text-xs text-slate-500 ml-1">— how the form looks to the public</span>
+              </div>
+              <div className="rounded-xl overflow-hidden border border-slate-700 bg-slate-950">
+                <iframe
+                  src={publicUrl}
+                  title="Public Report Form Preview"
+                  className="w-full"
+                  style={{ height: "480px", border: "none" }}
+                  loading="lazy"
+                />
+              </div>
+              <p className="text-xs text-slate-500 mt-2">This is exactly what visitors see when they follow your public reporting link.</p>
+            </div>
+
             {/* Embed code */}
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
               <div className="flex items-center justify-between mb-4">
