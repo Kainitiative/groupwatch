@@ -7,10 +7,23 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - **Live URL**: https://groupwatchplatform.com
 - **VPS**: Ubuntu 24.04 at 185.43.233.219 (LetsHost Dublin)
 - **Stack**: Docker Compose → nginx (port 80) + app (port 8080 internal) + PostgreSQL (host)
-- **CI/CD**: GitHub Actions → ghcr.io/kainitiative/groupwatch → VPS via SSH
+- **CI/CD**: GitHub Actions → ghcr.io/kainitiative/groupwatch → VPS pulls image manually
 - **SSL**: Cloudflare Flexible (Cloudflare terminates TLS, origin is HTTP)
-- **Repo**: github.com/Kainitiative/groupwatch (main branch)
-- **Pending**: Brevo SMTP setup (needs domain DNS verified in Brevo), Stripe webhook confirmation
+- **Repo**: github.com/Kainitiative/groupwatch (push to `main` branch to trigger Actions)
+- **IMPORTANT — push from Replit**: always use `git push origin master:main` (local branch is `master`, Actions triggers on `main`)
+
+## VPS Deployment Process
+
+After pushing to `main` on GitHub, wait for Actions to build (~2 mins), then on VPS:
+```bash
+cd /opt/groupwatch && docker compose pull app && docker compose up -d --force-recreate app
+```
+
+### GHCR Authentication
+- **GHCR package**: ghcr.io/kainitiative/groupwatch is currently **PUBLIC** — no login needed on VPS
+- **If package is made private**: VPS needs `docker login ghcr.io -u Kainitiative --password-stdin` with a PAT that has `read:packages` scope
+- **Token on VPS**: The `read:packages` PAT created on 28 Mar 2026 was shared in chat and is **COMPROMISED** — delete it at github.com/settings/tokens and create a new one
+- **Action needed**: After rotating, run `echo "NEW_TOKEN" | docker login ghcr.io -u Kainitiative --password-stdin` on the VPS (only needed if GHCR package is made private)
 
 ## Architecture
 
