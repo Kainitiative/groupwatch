@@ -56,10 +56,9 @@ export default function GroupSettingsIncidentTypes() {
       queryClient.invalidateQueries({ queryKey: [`/api/groups/${slug}/incident-types`] });
       queryClient.invalidateQueries({ queryKey: [`/api/groups/${slug}/setup-progress`] });
       toast({ title: "Added", description: `Incident type "${newTypeName}" added` });
-    } catch (err: any) {
-      const status = err?.status ?? err?.response?.status;
-      const msg = err?.data?.error ?? err?.message ?? "Unknown error";
-      toast({ title: `Error${status ? ` (${status})` : ""}`, description: msg || "Failed to add incident type", variant: "destructive" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to add incident type";
+      toast({ title: "Error", description: message, variant: "destructive" });
     }
   };
 

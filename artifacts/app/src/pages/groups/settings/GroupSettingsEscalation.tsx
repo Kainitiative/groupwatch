@@ -7,6 +7,16 @@ import { PhoneCall, Pencil, Trash2, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import GroupSettingsLayout from "@/components/layout/GroupSettingsLayout";
 
+type EscalationContact = {
+  id: string;
+  name: string;
+  organisation?: string | null;
+  role?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  notes?: string | null;
+};
+
 const emptyContact = { name: "", organisation: "", role: "", phone: "", email: "", notes: "" };
 
 export default function GroupSettingsEscalation() {
@@ -18,7 +28,7 @@ export default function GroupSettingsEscalation() {
   const { data: group, isLoading } = useGetGroup(slug);
   const { data: user, isLoading: userLoading, isError: userError } = useGetMe();
 
-  const { data: escalationContacts = [], refetch: refetchContacts } = useQuery<any[]>({
+  const { data: escalationContacts = [], refetch: refetchContacts } = useQuery<EscalationContact[]>({
     queryKey: [`/api/groups/${slug}/escalation-contacts`],
     queryFn: async () => {
       const res = await fetch(`/api/groups/${slug}/escalation-contacts`, { credentials: "include" });
@@ -119,7 +129,7 @@ export default function GroupSettingsEscalation() {
             </div>
           ) : (
             <div className="divide-y divide-slate-800">
-              {escalationContacts.map((c: any) => (
+              {escalationContacts.map((c) => (
                 <div key={c.id} className="px-5 py-4">
                   {editingContactId === c.id ? (
                     <div className="space-y-3">

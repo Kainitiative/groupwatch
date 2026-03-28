@@ -3,7 +3,7 @@ import { useRoute, useLocation } from "wouter";
 import { useGetGroup } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { Key, Copy, Code2, CheckCircle2, Plus } from "lucide-react";
+import { Key, Copy, Code2, CheckCircle2, Plus, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import GroupSettingsLayout from "@/components/layout/GroupSettingsLayout";
 
@@ -58,8 +58,9 @@ export default function GroupSettingsApiKeys() {
       setNewKeyName("");
       setShowCreate(false);
       queryClient.invalidateQueries({ queryKey: ["api-keys", slug] });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message, variant: "destructive" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "An unknown error occurred";
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setCreating(false);
     }
@@ -75,8 +76,9 @@ export default function GroupSettingsApiKeys() {
       if (!res.ok) throw new Error("Failed to revoke key");
       queryClient.invalidateQueries({ queryKey: ["api-keys", slug] });
       toast({ title: "API key revoked" });
-    } catch (e: any) {
-      toast({ title: "Error", description: e.message, variant: "destructive" });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "An unknown error occurred";
+      toast({ title: "Error", description: message, variant: "destructive" });
     } finally {
       setRevoking(null);
     }
@@ -150,7 +152,18 @@ export default function GroupSettingsApiKeys() {
     "Authorization": "Bearer YOUR_API_KEY"
   }
 })`}</pre>
-          <p className="text-xs text-slate-500 mt-3">Replace <code className="text-slate-300">YOUR_API_KEY</code> with the key you create below.</p>
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-xs text-slate-500">Replace <code className="text-slate-300">YOUR_API_KEY</code> with the key you create below.</p>
+            <a
+              href="https://groupwatchplatform.com/help#api"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 transition-colors shrink-0"
+            >
+              <ExternalLink className="w-3 h-3" />
+              View API docs
+            </a>
+          </div>
         </div>
 
         {/* REST API reference */}
