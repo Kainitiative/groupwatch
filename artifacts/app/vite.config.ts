@@ -111,7 +111,17 @@ export default defineConfig({
             handler: "StaleWhileRevalidate",
             options: {
               cacheName: "api-form-data-cache",
-              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 },
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 * 5 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+          {
+            urlPattern: /\/api\/groups\/[^/]+$/,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "api-group-cache",
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 50, maxAgeSeconds: 60 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
@@ -120,8 +130,8 @@ export default defineConfig({
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
-              networkTimeoutSeconds: 10,
-              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 },
+              networkTimeoutSeconds: 5,
+              expiration: { maxEntries: 100, maxAgeSeconds: 60 * 5 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },

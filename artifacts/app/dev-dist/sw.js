@@ -82,7 +82,7 @@ define(['./workbox-f8a938ec'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "/index.html",
-    "revision": "0.la21qfq00po"
+    "revision": "0.t4u6ig1k7ag"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("/index.html"), {
@@ -120,17 +120,27 @@ define(['./workbox-f8a938ec'], (function (workbox) { 'use strict';
     "cacheName": "api-form-data-cache",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 50,
-      maxAgeSeconds: 86400
+      maxAgeSeconds: 300
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
+  workbox.registerRoute(/\/api\/groups\/[^/]+$/, new workbox.NetworkFirst({
+    "cacheName": "api-group-cache",
+    "networkTimeoutSeconds": 5,
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 50,
+      maxAgeSeconds: 60
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]
     })]
   }), 'GET');
   workbox.registerRoute(/\/api\/.*/, new workbox.NetworkFirst({
     "cacheName": "api-cache",
-    "networkTimeoutSeconds": 10,
+    "networkTimeoutSeconds": 5,
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 100,
-      maxAgeSeconds: 86400
+      maxAgeSeconds: 300
     }), new workbox.CacheableResponsePlugin({
       statuses: [0, 200]
     })]

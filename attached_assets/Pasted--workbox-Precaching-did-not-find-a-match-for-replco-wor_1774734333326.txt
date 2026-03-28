@@ -1,0 +1,551 @@
+ workbox Precaching did not find a match for /__replco/workspace_iframe.html?initialPath=%2Fg%2Farklow-open%2Fsettings%2Fwidget&id=artifacts%2Fapp
+ workbox The navigation route /__replco/workspace_iframe.html?initialPath=%2Fg%2Farklow-open%2Fsettings%2Fwidget&id=artifacts%2Fapp is not being used, since the URL being navigated to doesn't match the allowlist.
+ workbox No route found for: /__replco/workspace_iframe.html?initialPath=%2Fg%2Farklow-open%2Fsettings%2Fwidget&id=artifacts%2Fapp
+ workbox Precaching did not find a match for /g/arklow-open/settings/widget
+ workbox The navigation route /g/arklow-open/settings/widget is not being used, since the URL being navigated to doesn't match the allowlist.
+ workbox No route found for: /g/arklow-open/settings/widget
+ workbox Precaching did not find a match for /__replco/static/devtools/injected.js
+ workbox No route found for: /__replco/static/devtools/injected.js
+ workbox Precaching did not find a match for /@vite/client
+ workbox No route found for: /@vite/client
+ workbox Precaching did not find a match for https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+ workbox Router is responding to: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+ workbox Precaching did not find a match for /@replit/vite-plugin-dev-banner/banner-script.js
+ workbox No route found for: /@replit/vite-plugin-dev-banner/banner-script.js
+ workbox Precaching did not find a match for /src/main.tsx?t=1774733783340
+ workbox No route found for: /src/main.tsx?t=1774733783340
+ workbox Found a cached response in 'google-fonts-cache'.
+ workbox Using CacheFirst to respond to 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+ View the final response here.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Precaching did not find a match for /@react-refresh
+ workbox No route found for: /@react-refresh
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/client/env.mjs
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/client/env.mjs
+ workbox Precaching did not find a match for /src/App.tsx?t=1774733783340
+ workbox No route found for: /src/App.tsx?t=1774733783340
+ workbox Precaching did not find a match for /src/index.css?t=1774733783340
+ workbox No route found for: /src/index.css?t=1774733783340
+ workbox Precaching did not find a match for /@vite-plugin-pwa/pwa-entry-point-loaded
+ workbox No route found for: /@vite-plugin-pwa/pwa-entry-point-loaded
+ workbox Precaching did not find a match for /src/components/ui/toaster.tsx
+ workbox No route found for: /src/components/ui/toaster.tsx
+ workbox Precaching did not find a match for /src/components/ui/tooltip.tsx
+ workbox No route found for: /src/components/ui/tooltip.tsx
+ workbox Precaching did not find a match for /src/pages/not-found.tsx
+ workbox No route found for: /src/pages/not-found.tsx
+ workbox Precaching did not find a match for /src/pages/Landing.tsx
+ workbox No route found for: /src/pages/Landing.tsx
+ workbox Precaching did not find a match for /src/pages/auth/Login.tsx
+ workbox No route found for: /src/pages/auth/Login.tsx
+ workbox Precaching did not find a match for /src/pages/auth/Register.tsx
+ workbox No route found for: /src/pages/auth/Register.tsx
+ workbox Precaching did not find a match for /src/pages/auth/ForgotPassword.tsx
+ workbox No route found for: /src/pages/auth/ForgotPassword.tsx
+ workbox Precaching did not find a match for /src/pages/auth/ResetPassword.tsx
+ workbox No route found for: /src/pages/auth/ResetPassword.tsx
+ workbox Precaching did not find a match for /src/pages/Dashboard.tsx
+ workbox No route found for: /src/pages/Dashboard.tsx
+ workbox Precaching did not find a match for /src/pages/groups/CreateGroup.tsx
+ workbox No route found for: /src/pages/groups/CreateGroup.tsx
+ workbox Precaching did not find a match for /src/pages/groups/JoinGroup.tsx
+ workbox No route found for: /src/pages/groups/JoinGroup.tsx
+ workbox Precaching did not find a match for /src/pages/groups/GroupProfile.tsx
+ workbox No route found for: /src/pages/groups/GroupProfile.tsx
+ workbox Precaching did not find a match for /src/pages/reports/SubmitReport.tsx
+ workbox No route found for: /src/pages/reports/SubmitReport.tsx
+ workbox Precaching did not find a match for /src/pages/reports/MyReports.tsx
+ workbox No route found for: /src/pages/reports/MyReports.tsx
+ workbox Precaching did not find a match for /src/pages/admin/SuperAdmin.tsx
+ workbox No route found for: /src/pages/admin/SuperAdmin.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportsDashboard.tsx
+ workbox No route found for: /src/pages/groups/ReportsDashboard.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportDetail.tsx
+ workbox No route found for: /src/pages/groups/ReportDetail.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportPrint.tsx
+ workbox No route found for: /src/pages/groups/ReportPrint.tsx
+ workbox Precaching did not find a match for /src/pages/groups/PublicReport.tsx
+ workbox No route found for: /src/pages/groups/PublicReport.tsx
+ workbox Precaching did not find a match for /src/pages/groups/Analytics.tsx
+ workbox No route found for: /src/pages/groups/Analytics.tsx
+ workbox Precaching did not find a match for /src/pages/groups/MapBoundaries.tsx
+ workbox No route found for: /src/pages/groups/MapBoundaries.tsx
+ workbox Precaching did not find a match for /src/components/PwaPrompts.tsx
+ workbox No route found for: /src/components/PwaPrompts.tsx
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsProfile.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsProfile.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsMembers.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsMembers.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsIncidentTypes.tsx?t=1774733141128
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsIncidentTypes.tsx?t=1774733141128
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsEscalation.tsx?t=1774733131283
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsEscalation.tsx?t=1774733131283
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsBilling.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsBilling.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsWidget.tsx?t=1774733783340
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsWidget.tsx?t=1774733783340
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsApiKeys.tsx?t=1774733112508
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsApiKeys.tsx?t=1774733112508
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsSocial.tsx?t=1774733543979
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsSocial.tsx?t=1774733543979
+ workbox Precaching did not find a match for /src/pages/Pricing.tsx
+ workbox No route found for: /src/pages/Pricing.tsx
+ workbox Precaching did not find a match for /src/pages/Features.tsx
+ workbox No route found for: /src/pages/Features.tsx
+ workbox Precaching did not find a match for /src/pages/OfflinePwa.tsx
+ workbox No route found for: /src/pages/OfflinePwa.tsx
+ workbox Precaching did not find a match for /src/pages/Help.tsx
+ workbox No route found for: /src/pages/Help.tsx
+ workbox Precaching did not find a match for /src/pages/Legal.tsx
+ workbox No route found for: /src/pages/Legal.tsx
+ workbox Precaching did not find a match for /src/pages/Contact.tsx
+ workbox No route found for: /src/pages/Contact.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/AnglingClubs.tsx
+ workbox No route found for: /src/pages/pillar/AnglingClubs.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/EnvironmentalGroups.tsx
+ workbox No route found for: /src/pages/pillar/EnvironmentalGroups.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/SportsClubs.tsx
+ workbox No route found for: /src/pages/pillar/SportsClubs.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/NeighbourhoodWatch.tsx
+ workbox No route found for: /src/pages/pillar/NeighbourhoodWatch.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/HOA.tsx
+ workbox No route found for: /src/pages/pillar/HOA.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/TidyTowns.tsx
+ workbox No route found for: /src/pages/pillar/TidyTowns.tsx
+ workbox Precaching did not find a match for /src/components/ui/card.tsx
+ workbox No route found for: /src/components/ui/card.tsx
+ workbox Precaching did not find a match for /src/hooks/use-toast.ts
+ workbox No route found for: /src/hooks/use-toast.ts
+ workbox Precaching did not find a match for /src/components/ui/toast.tsx
+ workbox No route found for: /src/components/ui/toast.tsx
+ workbox Precaching did not find a match for /src/components/ui/button.tsx
+ workbox No route found for: /src/components/ui/button.tsx
+ workbox Precaching did not find a match for /src/components/ui/input.tsx
+ workbox No route found for: /src/components/ui/input.tsx
+ workbox Precaching did not find a match for /src/components/ui/form.tsx
+ workbox No route found for: /src/components/ui/form.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/index.ts
+ workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/index.ts
+ workbox Precaching did not find a match for /src/components/layout/PublicLayout.tsx
+ workbox No route found for: /src/components/layout/PublicLayout.tsx
+ workbox Precaching did not find a match for /src/lib/utils.ts
+ workbox No route found for: /src/lib/utils.ts
+ workbox Precaching did not find a match for /src/components/layout/SidebarLayout.tsx
+ workbox No route found for: /src/components/layout/SidebarLayout.tsx
+ workbox Precaching did not find a match for /src/components/ui/skeleton.tsx
+ workbox No route found for: /src/components/ui/skeleton.tsx
+ workbox Precaching did not find a match for /src/components/ui/textarea.tsx
+ workbox No route found for: /src/components/ui/textarea.tsx
+ workbox Precaching did not find a match for /src/components/ui/select.tsx
+ workbox No route found for: /src/components/ui/select.tsx
+ workbox Precaching did not find a match for /src/lib/groupTypeConfig.ts
+ workbox No route found for: /src/lib/groupTypeConfig.ts
+ workbox Precaching did not find a match for /src/hooks/useGroupTerminology.ts
+ workbox No route found for: /src/hooks/useGroupTerminology.ts
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/leaflet@1.9.4/node_modules/leaflet/dist/leaflet.css
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/leaflet@1.9.4/node_modules/leaflet/dist/leaflet.css
+ workbox Precaching did not find a match for /src/components/SubscriptionGuard.tsx
+ workbox No route found for: /src/components/SubscriptionGuard.tsx
+ workbox Precaching did not find a match for /src/components/ui/HelpTooltip.tsx
+ workbox No route found for: /src/components/ui/HelpTooltip.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/leaflet-draw@1.0.4/node_modules/leaflet-draw/dist/leaflet.draw.css
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/leaflet-draw@1.0.4/node_modules/leaflet-draw/dist/leaflet.draw.css
+ workbox Precaching did not find a match for /src/components/layout/GroupSettingsLayout.tsx?t=1774732971263
+ workbox No route found for: /src/components/layout/GroupSettingsLayout.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/components/ui/accordion.tsx
+ workbox No route found for: /src/components/ui/accordion.tsx
+ workbox Precaching did not find a match for /src/components/ui/label.tsx
+ workbox No route found for: /src/components/ui/label.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.ts
+ workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.ts
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts
+ workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts
+ workbox Precaching did not find a match for /src/components/ui/sheet.tsx
+ workbox No route found for: /src/components/ui/sheet.tsx
+ workbox Precaching did not find a match for /src/components/ui/avatar.tsx
+ workbox No route found for: /src/components/ui/avatar.tsx
+ workbox Precaching did not find a match for /src/components/UpgradeWall.tsx
+ workbox No route found for: /src/components/UpgradeWall.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/custom-fetch.ts
+ workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/custom-fetch.ts
+ workbox Precaching did not find a match for https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap
+ workbox Router is responding to: https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap
+ workbox Found a cached response in 'google-fonts-cache'.
+ workbox Using CacheFirst to respond to 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap'
+ View the final response here.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Precaching did not find a match for /images/logo-transparent.png
+ workbox No route found for: /images/logo-transparent.png
+ workbox Precaching did not find a match for /images/logo-banner.png
+ workbox No route found for: /images/logo-banner.png
+ workbox Precaching did not find a match for /api/auth/me
+ workbox Router is responding to: /api/auth/me
+ workbox Precaching did not find a match for /api/users/me/groups
+ workbox Router is responding to: /api/users/me/groups
+ workbox Precaching did not find a match for /api/groups/arklow-open
+ workbox Router is responding to: /api/groups/arklow-open
+ workbox Router is responding to: /registerSW.js
+ workbox Found a cached response in 'workbox-precache-v2-https://4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev/'.
+ workbox Network request for '/api/groups/arklow-open' returned a response with status '200'.
+ workbox Using NetworkFirst to respond to '/api/groups/arklow-open'
+ View the final response here.
+ workbox The response for /api/groups/arklow-open has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+ workbox Network request for '/api/auth/me' returned a response with status '200'.
+ workbox Using NetworkFirst to respond to '/api/auth/me'
+ View the final response here.
+ workbox The response for /api/auth/me has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+ workbox Network request for '/api/users/me/groups' returned a response with status '200'.
+ workbox Using NetworkFirst to respond to '/api/users/me/groups'
+ View the final response here.
+ workbox The response for /api/users/me/groups has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+ workbox Updating the 'api-cache' cache with a new Response for /api/groups/arklow-open.
+ workbox Updating the 'api-cache' cache with a new Response for /api/auth/me.
+ workbox Updating the 'api-cache' cache with a new Response for /api/users/me/groups.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox No route found for: /api/groups/arklow-open
+ workbox Precaching did not find a match for /api/groups/arklow-open
+ workbox Router is responding to: /api/groups/arklow-open
+ workbox Network request for '/api/groups/arklow-open' returned a response with status '200'.
+ workbox Using NetworkFirst to respond to '/api/groups/arklow-open'
+ View the final response here.
+ workbox The response for /api/groups/arklow-open has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+ workbox Updating the 'api-cache' cache with a new Response for /api/groups/arklow-open.
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Precaching did not find a match for https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+ workbox Router is responding to: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+ workbox Found a cached response in 'google-fonts-cache'.
+ workbox Using CacheFirst to respond to 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+ View the final response here.
+ workbox Precaching did not find a match for /@react-refresh
+ workbox No route found for: /@react-refresh
+ workbox Cache expiration ran and found no entries to remove.
+ workbox Precaching did not find a match for https://www.googletagmanager.com/gtag/js?id=G-BXRW1Q3YGK
+ workbox No route found for: https://www.googletagmanager.com/gtag/js?id=G-BXRW1Q3YGK
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/client/env.mjs
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/vite@7.3.1_@types+node@25.3.5_jiti@2.6.1_lightningcss@1.31.1_terser@5.46.1_tsx@4.21.0_yaml@2.8.2/node_modules/vite/dist/client/env.mjs
+ workbox No route found for: https://region1.google-analytics.com/g/collect?v=2&tid=G-BXRW1Q3YGK&gtm=45je63p1v9246958184za200zd9246958184&_p=1774734299688&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&cid=1343128371.1774733280&ul=en-gb&sr=1707x1067&uaa=x86&uab=64&uafvl=Chromium%3B146.0.7680.165%7CNot-A.Brand%3B24.0.0.0%7CGoogle%2520Chrome%3B146.0.7680.165&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&_s=1&tag_exp=0~115938466~115938469~117266400~117484252~118128922&sid=1774733279&sct=1&seg=1&dl=https%3A%2F%2F4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev%2Fg%2Farklow-open%2Fsettings%2Fwidget&dr=https%3A%2F%2Freplit.com%2F&dt=GroupWatch%20Platform&en=page_view&_ee=1&tfd=865
+ workbox Precaching did not find a match for /@replit/vite-plugin-dev-banner/banner-script.js
+ workbox No route found for: /@replit/vite-plugin-dev-banner/banner-script.js
+ workbox Precaching did not find a match for /src/main.tsx?t=1774733783340
+ workbox No route found for: /src/main.tsx?t=1774733783340
+ workbox Precaching did not find a match for /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/react-dom_client.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/react-dom_client.js?v=1916cd57
+ workbox Precaching did not find a match for /src/App.tsx?t=1774733783340
+ workbox No route found for: /src/App.tsx?t=1774733783340
+ workbox Precaching did not find a match for /src/index.css?t=1774733783340
+ workbox No route found for: /src/index.css?t=1774733783340
+ workbox Precaching did not find a match for /@vite-plugin-pwa/pwa-entry-point-loaded
+ workbox No route found for: /@vite-plugin-pwa/pwa-entry-point-loaded
+ workbox Precaching did not find a match for /manifest.webmanifest
+ workbox No route found for: /manifest.webmanifest
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-KC53NVYV.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-KC53NVYV.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-OUZEF5U7.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-OUZEF5U7.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/wouter.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/wouter.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/@tanstack_react-query.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/@tanstack_react-query.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/ui/toaster.tsx
+ workbox No route found for: /src/components/ui/toaster.tsx
+ workbox Precaching did not find a match for /src/components/ui/tooltip.tsx
+ workbox No route found for: /src/components/ui/tooltip.tsx
+ workbox Precaching did not find a match for /src/pages/not-found.tsx
+ workbox No route found for: /src/pages/not-found.tsx
+ workbox Precaching did not find a match for /src/pages/Landing.tsx
+ workbox No route found for: /src/pages/Landing.tsx
+ workbox Precaching did not find a match for /src/pages/auth/Login.tsx
+ workbox No route found for: /src/pages/auth/Login.tsx
+ workbox Precaching did not find a match for /src/pages/auth/Register.tsx
+ workbox No route found for: /src/pages/auth/Register.tsx
+ workbox Precaching did not find a match for /src/pages/auth/ForgotPassword.tsx
+ workbox No route found for: /src/pages/auth/ForgotPassword.tsx
+ workbox Precaching did not find a match for /src/pages/auth/ResetPassword.tsx
+ workbox No route found for: /src/pages/auth/ResetPassword.tsx
+ workbox Precaching did not find a match for /src/pages/Dashboard.tsx
+ workbox No route found for: /src/pages/Dashboard.tsx
+ workbox Precaching did not find a match for /src/pages/groups/CreateGroup.tsx
+ workbox No route found for: /src/pages/groups/CreateGroup.tsx
+ workbox Precaching did not find a match for /src/pages/groups/JoinGroup.tsx
+ workbox No route found for: /src/pages/groups/JoinGroup.tsx
+ workbox Precaching did not find a match for /src/pages/groups/GroupProfile.tsx
+ workbox No route found for: /src/pages/groups/GroupProfile.tsx
+ workbox Precaching did not find a match for /src/pages/reports/SubmitReport.tsx
+ workbox No route found for: /src/pages/reports/SubmitReport.tsx
+ workbox Precaching did not find a match for /src/pages/reports/MyReports.tsx
+ workbox No route found for: /src/pages/reports/MyReports.tsx
+ workbox Precaching did not find a match for /src/pages/admin/SuperAdmin.tsx
+ workbox No route found for: /src/pages/admin/SuperAdmin.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportsDashboard.tsx
+ workbox No route found for: /src/pages/groups/ReportsDashboard.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportDetail.tsx
+ workbox No route found for: /src/pages/groups/ReportDetail.tsx
+ workbox Precaching did not find a match for /src/pages/groups/ReportPrint.tsx
+ workbox No route found for: /src/pages/groups/ReportPrint.tsx
+ workbox Precaching did not find a match for /src/pages/groups/PublicReport.tsx
+ workbox No route found for: /src/pages/groups/PublicReport.tsx
+ workbox Precaching did not find a match for /src/pages/groups/Analytics.tsx
+ workbox No route found for: /src/pages/groups/Analytics.tsx
+ workbox Precaching did not find a match for /src/pages/groups/MapBoundaries.tsx
+ workbox No route found for: /src/pages/groups/MapBoundaries.tsx
+ workbox Precaching did not find a match for /src/components/PwaPrompts.tsx
+ workbox No route found for: /src/components/PwaPrompts.tsx
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsProfile.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsProfile.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsMembers.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsMembers.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsIncidentTypes.tsx?t=1774733141128
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsIncidentTypes.tsx?t=1774733141128
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsEscalation.tsx?t=1774733131283
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsEscalation.tsx?t=1774733131283
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsBilling.tsx?t=1774732971263
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsBilling.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsWidget.tsx?t=1774733783340
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsWidget.tsx?t=1774733783340
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsApiKeys.tsx?t=1774733112508
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsApiKeys.tsx?t=1774733112508
+ workbox Precaching did not find a match for /src/pages/groups/settings/GroupSettingsSocial.tsx?t=1774733543979
+ workbox No route found for: /src/pages/groups/settings/GroupSettingsSocial.tsx?t=1774733543979
+ workbox Precaching did not find a match for /src/pages/Pricing.tsx
+ workbox No route found for: /src/pages/Pricing.tsx
+ workbox Precaching did not find a match for /src/pages/Features.tsx
+ workbox No route found for: /src/pages/Features.tsx
+ workbox Precaching did not find a match for /src/pages/OfflinePwa.tsx
+ workbox No route found for: /src/pages/OfflinePwa.tsx
+ workbox Precaching did not find a match for /src/pages/Help.tsx
+ workbox No route found for: /src/pages/Help.tsx
+ workbox Precaching did not find a match for /src/pages/Legal.tsx
+ workbox No route found for: /src/pages/Legal.tsx
+ workbox Precaching did not find a match for /src/pages/Contact.tsx
+ workbox No route found for: /src/pages/Contact.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/AnglingClubs.tsx
+ workbox No route found for: /src/pages/pillar/AnglingClubs.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/EnvironmentalGroups.tsx
+ workbox No route found for: /src/pages/pillar/EnvironmentalGroups.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/SportsClubs.tsx
+ workbox No route found for: /src/pages/pillar/SportsClubs.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/NeighbourhoodWatch.tsx
+ workbox No route found for: /src/pages/pillar/NeighbourhoodWatch.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/HOA.tsx
+ workbox No route found for: /src/pages/pillar/HOA.tsx
+ workbox Precaching did not find a match for /src/pages/pillar/TidyTowns.tsx
+ workbox No route found for: /src/pages/pillar/TidyTowns.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-ZFAV6LTU.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-ZFAV6LTU.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-ZPAKAAQN.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-ZPAKAAQN.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/ui/card.tsx
+ workbox No route found for: /src/components/ui/card.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/lucide-react.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/lucide-react.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/react.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/react.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=1916cd57
+ workbox Precaching did not find a match for /src/lib/utils.ts
+ workbox No route found for: /src/lib/utils.ts
+ workbox Precaching did not find a match for /src/hooks/use-toast.ts
+ workbox No route found for: /src/hooks/use-toast.ts
+ workbox Precaching did not find a match for /src/components/ui/toast.tsx
+ workbox No route found for: /src/components/ui/toast.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-UNSR7KZU.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-UNSR7KZU.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-XUMTLT5D.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-XUMTLT5D.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-JF5DELC6.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-JF5DELC6.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-DPI47DLZ.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-DPI47DLZ.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-2LSV6VYK.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-2LSV6VYK.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-6MJMO5WW.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-6MJMO5WW.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-C3OEO4XK.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-C3OEO4XK.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-AV5PLS3M.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-AV5PLS3M.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-JSET4TII.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-JSET4TII.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/ui/button.tsx
+ workbox No route found for: /src/components/ui/button.tsx
+ workbox Precaching did not find a match for /src/components/layout/PublicLayout.tsx
+ workbox No route found for: /src/components/layout/PublicLayout.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/react-hook-form.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/react-hook-form.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/@hookform_resolvers_zod.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/@hookform_resolvers_zod.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/zod.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/zod.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/ui/input.tsx
+ workbox No route found for: /src/components/ui/input.tsx
+ workbox Precaching did not find a match for /src/components/ui/form.tsx
+ workbox No route found for: /src/components/ui/form.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/index.ts
+ workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/index.ts
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-2HDGEW7N.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-2HDGEW7N.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/layout/SidebarLayout.tsx
+ workbox No route found for: /src/components/layout/SidebarLayout.tsx
+ workbox Precaching did not find a match for /src/components/ui/skeleton.tsx
+ workbox No route found for: /src/components/ui/skeleton.tsx
+ workbox Precaching did not find a match for /src/components/ui/textarea.tsx
+ workbox No route found for: /src/components/ui/textarea.tsx
+ workbox Precaching did not find a match for /src/components/ui/select.tsx
+ workbox No route found for: /src/components/ui/select.tsx
+ workbox Precaching did not find a match for /src/lib/groupTypeConfig.ts
+ workbox No route found for: /src/lib/groupTypeConfig.ts
+ workbox Precaching did not find a match for /node_modules/.vite/deps/framer-motion.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/framer-motion.js?v=1916cd57
+ workbox Precaching did not find a match for /src/hooks/useGroupTerminology.ts
+ workbox No route found for: /src/hooks/useGroupTerminology.ts
+ workbox Precaching did not find a match for /node_modules/.vite/deps/react-leaflet.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/react-leaflet.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/leaflet.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/leaflet.js?v=1916cd57
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/leaflet@1.9.4/node_modules/leaflet/dist/leaflet.css
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/leaflet@1.9.4/node_modules/leaflet/dist/leaflet.css
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-GRYZPP7U.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-GRYZPP7U.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/date-fns.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/date-fns.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/SubscriptionGuard.tsx
+ workbox No route found for: /src/components/SubscriptionGuard.tsx
+ workbox Precaching did not find a match for /@fs/home/runner/workspace/node_modules/.pnpm/leaflet-draw@1.0.4/node_modules/leaflet-draw/dist/leaflet.draw.css
+ workbox No route found for: /@fs/home/runner/workspace/node_modules/.pnpm/leaflet-draw@1.0.4/node_modules/leaflet-draw/dist/leaflet.draw.css
+ workbox Precaching did not find a match for /node_modules/.vite/deps/recharts.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/recharts.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/ui/HelpTooltip.tsx
+ workbox No route found for: /src/components/ui/HelpTooltip.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-SIU35MPB.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/chunk-SIU35MPB.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/qrcode__react.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/qrcode__react.js?v=1916cd57
+ workbox Precaching did not find a match for /src/components/layout/GroupSettingsLayout.tsx?t=1774732971263
+ workbox No route found for: /src/components/layout/GroupSettingsLayout.tsx?t=1774732971263
+ workbox Precaching did not find a match for /src/components/ui/accordion.tsx
+ workbox No route found for: /src/components/ui/accordion.tsx
+ workbox Precaching did not find a match for /node_modules/.vite/deps/clsx.js?v=1916cd57
+ workbox No route found for: /node_modules/.vite/deps/clsx.js?v=1916cd57
+ workbox Precaching did not find a match for /node_modules/.vite/deps/tailwind-merge.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/tailwind-merge.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-toast.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-toast.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/class-variance-authority.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/class-variance-authority.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-UELUHA5R.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/chunk-UELUHA5R.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-slot.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-slot.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-UHCFOPOM.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/chunk-UHCFOPOM.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /src/components/ui/label.tsx
+workbox-f8a938ec.js:44 workbox No route found for: /src/components/ui/label.tsx
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.ts
+workbox-f8a938ec.js:44 workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.ts
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts
+workbox-f8a938ec.js:44 workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/generated/api.schemas.ts
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /src/components/ui/sheet.tsx
+workbox-f8a938ec.js:44 workbox No route found for: /src/components/ui/sheet.tsx
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /src/components/ui/avatar.tsx
+workbox-f8a938ec.js:44 workbox No route found for: /src/components/ui/avatar.tsx
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-select.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-select.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-QQYRHMIS.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/chunk-QQYRHMIS.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-XRJH2UCJ.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/chunk-XRJH2UCJ.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /src/components/UpgradeWall.tsx
+workbox-f8a938ec.js:44 workbox No route found for: /src/components/UpgradeWall.tsx
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-accordion.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-accordion.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-label.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-label.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/chunk-OXEFEYOR.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/chunk-OXEFEYOR.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /@fs/home/runner/workspace/lib/api-client-react/src/custom-fetch.ts
+workbox-f8a938ec.js:44 workbox No route found for: /@fs/home/runner/workspace/lib/api-client-react/src/custom-fetch.ts
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-dialog.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-dialog.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /node_modules/.vite/deps/@radix-ui_react-avatar.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox No route found for: /node_modules/.vite/deps/@radix-ui_react-avatar.js?v=1916cd57
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap
+workbox-f8a938ec.js:44 workbox Router is responding to: https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap
+workbox-f8a938ec.js:44 workbox Found a cached response in 'google-fonts-cache'.
+workbox-f8a938ec.js:44 workbox Using CacheFirst to respond to 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Outfit:wght@400..800&display=swap'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /api/auth/me
+workbox-f8a938ec.js:44 workbox Router is responding to: /api/auth/me
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /api/users/me/groups
+workbox-f8a938ec.js:44 workbox Router is responding to: /api/users/me/groups
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /api/groups/arklow-open
+workbox-f8a938ec.js:44 workbox Router is responding to: /api/groups/arklow-open
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /images/logo-transparent.png
+workbox-f8a938ec.js:44 workbox No route found for: /images/logo-transparent.png
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /images/logo-banner.png
+workbox-f8a938ec.js:44 workbox No route found for: /images/logo-banner.png
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2
+workbox-f8a938ec.js:44 workbox Router is responding to: https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2
+workbox-f8a938ec.js:44 workbox Router is responding to: https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2
+workbox-f8a938ec.js:44 workbox Found a cached response in 'gstatic-fonts-cache'.
+workbox-f8a938ec.js:44 workbox Using CacheFirst to respond to 'https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox Found a cached response in 'gstatic-fonts-cache'.
+workbox-f8a938ec.js:44 workbox Using CacheFirst to respond to 'https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHQ.woff2'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox Router is responding to: /registerSW.js
+workbox-f8a938ec.js:44 workbox Found a cached response in 'workbox-precache-v2-https://4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev/'.
+workbox-f8a938ec.js:44 workbox Router is responding to: /registerSW.js
+workbox-f8a938ec.js:44 workbox Found a cached response in 'workbox-precache-v2-https://4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev/'.
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /images/pwa-192.png
+workbox-f8a938ec.js:44 workbox No route found for: /images/pwa-192.png
+workbox-f8a938ec.js:44 workbox Network request for '/api/auth/me' returned a response with status '200'.
+workbox-f8a938ec.js:44 workbox Using NetworkFirst to respond to '/api/auth/me'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox The response for /api/auth/me has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+workbox-f8a938ec.js:44 workbox Network request for '/api/groups/arklow-open' returned a response with status '200'.
+workbox-f8a938ec.js:44 workbox Using NetworkFirst to respond to '/api/groups/arklow-open'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox The response for /api/groups/arklow-open has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+workbox-f8a938ec.js:44 workbox Network request for '/api/users/me/groups' returned a response with status '200'.
+workbox-f8a938ec.js:44 workbox Using NetworkFirst to respond to '/api/users/me/groups'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox The response for /api/users/me/groups has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+workbox-f8a938ec.js:44 workbox Updating the 'api-cache' cache with a new Response for /api/auth/me.
+workbox-f8a938ec.js:44 workbox Updating the 'api-cache' cache with a new Response for /api/groups/arklow-open.
+workbox-f8a938ec.js:44 workbox Updating the 'api-cache' cache with a new Response for /api/users/me/groups.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox No route found for: /api/groups/arklow-open
+workbox-f8a938ec.js:44 workbox Precaching did not find a match for /api/groups/arklow-open
+workbox-f8a938ec.js:44 workbox Router is responding to: /api/groups/arklow-open
+workbox-f8a938ec.js:44 workbox Network request for '/api/groups/arklow-open' returned a response with status '200'.
+workbox-f8a938ec.js:44 workbox Using NetworkFirst to respond to '/api/groups/arklow-open'
+workbox-f8a938ec.js:44 View the final response here.
+workbox-f8a938ec.js:44 workbox The response for /api/groups/arklow-open has a 'Vary: Origin' header. Consider setting the {ignoreVary: true} option on your strategy to ensure cache matching and deletion works as expected.
+workbox-f8a938ec.js:44 workbox Updating the 'api-cache' cache with a new Response for /api/groups/arklow-open.
+workbox-f8a938ec.js:44 workbox Cache expiration ran and found no entries to remove.
+workbox-f8a938ec.js:44 workbox No route found for: https://region1.google-analytics.com/g/collect?v=2&tid=G-BXRW1Q3YGK&gtm=45je63p1v9246958184za200zd9246958184&_p=1774734299688&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&cid=1343128371.1774733280&ul=en-gb&sr=1707x1067&uaa=x86&uab=64&uafvl=Chromium%3B146.0.7680.165%7CNot-A.Brand%3B24.0.0.0%7CGoogle%2520Chrome%3B146.0.7680.165&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AEAAAAQ&_s=2&tag_exp=0~115938466~115938469~117266400~117484252~118128922&sid=1774733279&sct=1&seg=1&dl=https%3A%2F%2F4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev%2Fg%2Farklow-open%2Fsettings%2Fwidget&dr=https%3A%2F%2Freplit.com%2F&dt=GroupWatch%20Platform&en=scroll&epn.percent_scrolled=90&_et=3&tfd=5871
+workbox-f8a938ec.js:44 workbox No route found for: https://region1.google-analytics.com/g/collect?v=2&tid=G-BXRW1Q3YGK&gtm=45je63p1v9246958184za200zd9246958184&_p=1774734299688&gcd=13l3l3l2l1l1&npa=1&dma_cps=a&dma=1&cid=1343128371.1774733280&ul=en-gb&sr=1707x1067&uaa=x86&uab=64&uafvl=Chromium%3B146.0.7680.165%7CNot-A.Brand%3B24.0.0.0%7CGoogle%2520Chrome%3B146.0.7680.165&uamb=0&uam=&uap=Windows&uapv=19.0.0&uaw=0&are=1&frm=0&pscdl=noapi&_eu=AAAAAAQ&_s=3&tag_exp=0~115938466~115938469~117266400~117484252~118128922&sid=1774733279&sct=1&seg=1&dl=https%3A%2F%2F4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev%2Fg%2Farklow-open%2Fsettings%2Fwidget&dr=https%3A%2F%2Freplit.com%2F&dt=GroupWatch%20Platform&en=user_engagement&_et=6763&tfd=7631
+client:733 [vite] connecting...
+client:827 [vite] connected.
+react-dom_client.js?v=1916cd57:17987 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+workbox-f8a938ec.js:44 workbox Router is responding to: /registerSW.js
+workbox-f8a938ec.js:44 workbox Found a cached response in 'workbox-precache-v2-https://4d97c551-a777-41c1-8085-026540cc99d3-00-16uk0w5skoyfb.picard.replit.dev/'.
+widget:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+react-dom_client.js?v=1916cd57:5749 Encountered two children with the same key, `/groups/arklow-open/incidents`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+(anonymous) @ react-dom_client.js?v=1916cd57:5749
+react-dom_client.js?v=1916cd57:5749 Encountered two children with the same key, `/groups/arklow-open/incidents`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+(anonymous) @ react-dom_client.js?v=1916cd57:5749
+react-dom_client.js?v=1916cd57:5749 Encountered two children with the same key, `/groups/arklow-open/incidents`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+(anonymous) @ react-dom_client.js?v=1916cd57:5749
