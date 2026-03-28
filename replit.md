@@ -12,9 +12,21 @@ A general-purpose group incident reporting SaaS platform. Any organised group (a
 - **Repo**: github.com/Kainitiative/groupwatch (push to `main` branch to trigger Actions)
 - **IMPORTANT — push from Replit**: always use `git push origin master:main` (local branch is `master`, Actions triggers on `main`)
 
+## ⚠️ Known Replit Gotcha — Checkpoint Rollbacks
+
+Replit automatically creates checkpoints during sessions. These checkpoints can **silently revert file changes** if a checkpoint was created before the edit was committed. This has caused lost work before (e.g. `SidebarLayout.tsx` billing link was reverted by a checkpoint on 28 Mar 2026, causing hours of debugging).
+
+**How to protect against this:**
+1. After making any code change, **immediately run `git add . && git commit`** before doing anything else
+2. Always push with `git push origin master:main` so the code is safely in GitHub
+3. If a deployed change isn't showing up, run `grep -n "YourNewCode" path/to/file.tsx` to verify the file wasn't rolled back
+4. If rolled back, re-apply the change and commit again — the Docker build cache means only genuinely changed files trigger a rebuild
+
 ## VPS Deployment Process
 
-After pushing to `main` on GitHub, wait for Actions to build (~2 mins), then on VPS:
+After pushing to `main` on GitHub, GitHub Actions auto-deploys (~2 mins build + deploy). No manual action needed on the VPS.
+
+If you ever need to force a manual redeploy:
 ```bash
 cd /opt/groupwatch && docker compose pull app && docker compose up -d --force-recreate app
 ```
