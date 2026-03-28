@@ -201,13 +201,12 @@ router.patch("/groups/:groupSlug", requireAuth, async (req, res): Promise<void> 
   const updates: Record<string, unknown> = {};
   for (const field of allowedFields) {
     if (req.body[field] !== undefined) {
-      const dbField = field.replace(/([A-Z])/g, "_$1").toLowerCase();
-      updates[dbField] = req.body[field];
+      updates[field] = req.body[field];
     }
   }
 
-  if (updates.slug && updates.slug !== slug) {
-    const existingWithSlug = await getGroupBySlug(updates.slug as string);
+  if (updates["slug"] && updates["slug"] !== slug) {
+    const existingWithSlug = await getGroupBySlug(updates["slug"] as string);
     if (existingWithSlug) {
       res.status(409).json({ error: "This URL is already taken" });
       return;
