@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRoute } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
+import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { Map, Trash2, Plus, Loader2, Save, X, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import "leaflet/dist/leaflet.css";
@@ -183,6 +184,7 @@ export default function MapBoundaries() {
 
   return (
     <SidebarLayout>
+      <SubscriptionGuard groupSlug={slug}>
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-foreground">Map Boundaries</h1>
@@ -287,6 +289,7 @@ export default function MapBoundaries() {
           </div>
         </div>
       </div>
+      </SubscriptionGuard>
     </SidebarLayout>
   );
 }

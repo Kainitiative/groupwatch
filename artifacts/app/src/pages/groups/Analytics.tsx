@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRoute } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
+import SubscriptionGuard from "@/components/SubscriptionGuard";
 import {
   LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
@@ -92,6 +93,7 @@ export default function Analytics() {
 
   return (
     <SidebarLayout>
+      <SubscriptionGuard groupSlug={slug}>
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
@@ -303,6 +305,7 @@ export default function Analytics() {
           </div>
         )}
       </div>
+      </SubscriptionGuard>
     </SidebarLayout>
   );
 }

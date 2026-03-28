@@ -7,6 +7,7 @@ import router from "./routes";
 import { createSessionMiddleware } from "./lib/session";
 import { logError } from "./lib/logError";
 import { ogRendererMiddleware } from "./lib/ogRenderer";
+import { requireGroupSubscription } from "./lib/subscription";
 
 const app: Express = express();
 
@@ -44,6 +45,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(createSessionMiddleware());
+
+app.use("/api/groups", requireGroupSubscription);
 
 app.use("/api", router);
 

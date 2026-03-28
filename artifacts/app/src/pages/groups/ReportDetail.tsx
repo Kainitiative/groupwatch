@@ -5,6 +5,7 @@ import { AddReportUpdateRequestUpdateType, AddReportUpdateRequestNewStatus } fro
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { getGetReportQueryKey } from "@workspace/api-client-react";
 import SidebarLayout from "@/components/layout/SidebarLayout";
+import SubscriptionGuard from "@/components/SubscriptionGuard";
 import { useToast } from "@/hooks/use-toast";
 import {
   ArrowLeft, MapPin, Camera, User, Shield, Clock, CheckCircle2,
@@ -246,6 +247,7 @@ export default function ReportDetail() {
 
   return (
     <SidebarLayout>
+      <SubscriptionGuard groupSlug={slug}>
       <div className="max-w-3xl mx-auto space-y-6">
 
         {/* Back + header */}
@@ -561,6 +563,7 @@ export default function ReportDetail() {
           Original submission is a permanent, locked record. All changes are appended to the activity timeline above.
         </div>
       </div>
+      </SubscriptionGuard>
     </SidebarLayout>
   );
 }

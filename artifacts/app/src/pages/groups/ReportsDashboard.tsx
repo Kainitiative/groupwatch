@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useListReports, useGetGroup, useGetMe } from "@workspace/api-client-react";
 import { useGroupTerminology } from "@/hooks/useGroupTerminology";
 import SidebarLayout from "@/components/layout/SidebarLayout";
+import SubscriptionGuard from "@/components/SubscriptionGuard";
 import {
   AlertTriangle, CheckCircle2, Clock, ArrowUpRight, Filter,
   ChevronLeft, ChevronRight, Loader2, FileText, Flame, TrendingUp, UserCheck
@@ -105,6 +106,7 @@ export default function ReportsDashboard() {
 
   return (
     <SidebarLayout>
+      <SubscriptionGuard groupSlug={slug}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -301,6 +303,7 @@ export default function ReportsDashboard() {
           )}
         </div>
       </div>
+      </SubscriptionGuard>
     </SidebarLayout>
   );
 }
