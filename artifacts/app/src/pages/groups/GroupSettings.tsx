@@ -1034,7 +1034,7 @@ export default function GroupSettings() {
                     onClick={() => checkout.mutate({ groupSlug: slug, data: { plan: "monthly" } }, {
                       onSuccess: (data) => data.url && window.location.replace(data.url),
                     })}
-                    className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl text-left transition-colors"
+                    className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-blue-500 rounded-xl text-left transition-all cursor-pointer hover:shadow-lg hover:shadow-blue-500/10 hover:-translate-y-0.5"
                   >
                     <p className="font-bold text-white">€20 / month</p>
                     <p className="text-xs text-slate-400 mt-1">Billed monthly</p>
@@ -1043,7 +1043,7 @@ export default function GroupSettings() {
                     onClick={() => checkout.mutate({ groupSlug: slug, data: { plan: "annual" } }, {
                       onSuccess: (data) => data.url && window.location.replace(data.url),
                     })}
-                    className="p-4 bg-emerald-950/40 hover:bg-emerald-950/60 border border-emerald-700/50 rounded-xl text-left transition-colors relative"
+                    className="p-4 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-700/50 hover:border-emerald-400 rounded-xl text-left transition-all cursor-pointer hover:shadow-lg hover:shadow-emerald-500/20 hover:-translate-y-0.5 relative"
                   >
                     <span className="absolute top-2 right-2 text-xs bg-emerald-600 text-white px-2 py-0.5 rounded-full">Best value</span>
                     <p className="font-bold text-white">€200 / year</p>
