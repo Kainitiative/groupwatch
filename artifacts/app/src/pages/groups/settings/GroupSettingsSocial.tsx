@@ -1,7 +1,8 @@
 import { useRoute, useLocation } from "wouter";
 import { useGetGroup } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
-import { Share2, Facebook, ExternalLink } from "lucide-react";
+import { Share2, Facebook, ExternalLink, Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import GroupSettingsLayout from "@/components/layout/GroupSettingsLayout";
 
 function ComingSoonBadge() {
@@ -10,10 +11,19 @@ function ComingSoonBadge() {
   );
 }
 
+function StepNum({ n }: { n: number }) {
+  return (
+    <span className="w-5 h-5 rounded-full bg-emerald-600/30 border border-emerald-600/50 text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0">
+      {n}
+    </span>
+  );
+}
+
 export default function GroupSettingsSocial() {
   const [, params] = useRoute("/g/:slug/settings/social");
   const slug = params?.slug ?? "";
   const [, navigate] = useLocation();
+  const { toast } = useToast();
 
   const { data: group, isLoading } = useGetGroup(slug);
   const { data: user, isLoading: userLoading, isError: userError } = useGetMe();
@@ -96,6 +106,128 @@ export default function GroupSettingsSocial() {
                 Enable public reporting in the{" "}
                 <a href={`/g/${slug}/settings/widget`} className="text-emerald-400 hover:text-emerald-300">Public Widget settings</a>{" "}
                 to activate share buttons on your public report pages.
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* How to: Facebook Page button */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">📘</span>
+            <h3 className="font-semibold text-white">Add a Report Button to your Facebook Page</h3>
+          </div>
+          <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+            Facebook Pages let you add a call-to-action button that links anywhere. You can use this to put a "Report an Incident" button right at the top of your group's Facebook Page — visible to every visitor without them needing to search for the link.
+          </p>
+
+          {group.publicReportingEnabled ? (
+            <>
+              <div className="bg-slate-800/60 rounded-xl p-3 mb-5 flex items-center gap-3">
+                <span className="text-xs text-slate-400">Your report link:</span>
+                <span className="text-sm text-slate-200 font-mono flex-1 truncate">{publicUrl}</span>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(publicUrl); toast({ title: "Link copied!" }); }}
+                  className="text-slate-400 hover:text-white transition-colors shrink-0"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <ol className="space-y-3">
+                {[
+                  { step: "Go to your Facebook Page and click Edit Page at the top." },
+                  { step: 'Click the "Add a button" option (or "Edit button" if one already exists).' },
+                  { step: 'Choose "Contact you" or "Learn More", then select "Link to Website".' },
+                  { step: "Paste your report link (copied above) into the URL field." },
+                  { step: 'Give the button a label like "Report an Incident" and save. The button now appears at the top of your page for everyone.' },
+                ].map(({ step }, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <StepNum n={i + 1} />
+                    <p className="text-sm text-slate-300 leading-relaxed">{step}</p>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="mt-5 bg-blue-950/30 border border-blue-700/30 rounded-xl p-3">
+                <p className="text-xs text-slate-400">
+                  <strong className="text-slate-300">Tip:</strong> You can also pin a post to the top of your page with the report link and a short message explaining what it's for. Pinned posts stay visible to all visitors.
+                </p>
+              </div>
+            </>
+          ) : (
+            <div className="bg-slate-800/50 rounded-xl p-4">
+              <p className="text-sm text-slate-400">
+                You'll need to enable public reporting first to get your report link.{" "}
+                <a href={`/g/${slug}/settings/widget`} className="text-emerald-400 hover:text-emerald-300">Go to Public Widget settings →</a>
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* How to: WhatsApp group */}
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-lg">💬</span>
+            <h3 className="font-semibold text-white">Share the Report Link in a WhatsApp Group</h3>
+          </div>
+          <p className="text-sm text-slate-400 mb-5 leading-relaxed">
+            Most community groups already use a WhatsApp group for quick communication. Pinning your report link there means members always have it to hand when they need to report something — even before they think to open the GroupWatch app.
+          </p>
+
+          {group.publicReportingEnabled ? (
+            <>
+              <div className="bg-slate-800/60 rounded-xl p-3 mb-5 flex items-center gap-3">
+                <span className="text-xs text-slate-400">Your report link:</span>
+                <span className="text-sm text-slate-200 font-mono flex-1 truncate">{publicUrl}</span>
+                <button
+                  onClick={() => { navigator.clipboard.writeText(publicUrl); toast({ title: "Link copied!" }); }}
+                  className="text-slate-400 hover:text-white transition-colors shrink-0"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <ol className="space-y-3 mb-5">
+                {[
+                  { step: "Copy your report link above." },
+                  { step: "Open your WhatsApp group and send a message with the link. Something like: \"Use this link to report an incident to the group: [link]. Reports go directly to our dashboard.\"" },
+                  { step: "Long-press the message and tap \"Pin\" to pin it to the top of the chat so it's always visible to everyone." },
+                  { step: "(Optional) Update the WhatsApp group description to include the link, so new members see it immediately when they join." },
+                ].map(({ step }, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <StepNum n={i + 1} />
+                    <p className="text-sm text-slate-300 leading-relaxed">{step}</p>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="bg-slate-800/50 rounded-xl p-4 space-y-3">
+                <p className="text-xs text-slate-400 font-medium">Suggested message to share:</p>
+                <div className="bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 relative">
+                  <p className="text-sm text-slate-300 leading-relaxed pr-8">
+                    👀 See something suspicious? Report it directly to the group here: <span className="text-emerald-400 break-all">{publicUrl}</span>
+                    {" "}— no app or account needed, just fill in the form and we'll see it on our dashboard straight away.
+                  </p>
+                  <button
+                    onClick={() => {
+                      const msg = `👀 See something suspicious? Report it directly to the group here: ${publicUrl} — no app or account needed, just fill in the form and we'll see it on our dashboard straight away.`;
+                      navigator.clipboard.writeText(msg);
+                      toast({ title: "Message copied!" });
+                    }}
+                    className="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <p className="text-xs text-slate-500">Click the copy icon to copy this message with your link already included.</p>
+              </div>
+            </>
+          ) : (
+            <div className="bg-slate-800/50 rounded-xl p-4">
+              <p className="text-sm text-slate-400">
+                You'll need to enable public reporting first to get your report link.{" "}
+                <a href={`/g/${slug}/settings/widget`} className="text-emerald-400 hover:text-emerald-300">Go to Public Widget settings →</a>
               </p>
             </div>
           )}
