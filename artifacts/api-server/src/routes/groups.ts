@@ -171,6 +171,7 @@ router.get("/groups/:groupSlug", async (req, res): Promise<void> => {
     contactEmail: group.contactEmail,
     socialLinks: group.socialLinks,
     publicHotspotMapEnabled: group.publicHotspotMapEnabled,
+    publicReportingEnabled: group.publicReportingEnabled,
     subscriptionStatus: subscription?.status ?? "trial",
     trialEndsAt: subscription?.trialEndsAt,
     memberCount: Number(memberCountResult?.count ?? 0),
