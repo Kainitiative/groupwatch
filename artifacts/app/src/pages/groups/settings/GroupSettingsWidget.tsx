@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRoute, useLocation } from "wouter";
-import { useGetGroup, useUpdateGroup } from "@workspace/api-client-react";
+import { useGetGroup, useUpdateGroup, getGetGroupQueryKey } from "@workspace/api-client-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { Globe, Copy, ExternalLink, ToggleLeft, ToggleRight, Code2 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
@@ -21,6 +22,7 @@ export default function GroupSettingsWidget() {
   const [, navigate] = useLocation();
   const { toast } = useToast();
 
+  const queryClient = useQueryClient();
   const { data: group, isLoading } = useGetGroup(slug);
   const { data: user, isLoading: userLoading, isError: userError } = useGetMe();
   const updateGroup = useUpdateGroup();
@@ -56,10 +58,12 @@ export default function GroupSettingsWidget() {
   const handleToggle = async () => {
     setToggling(true);
     try {
+      const enabling = !group.publicReportingEnabled;
       await updateGroup.mutateAsync(
-        { groupSlug: slug, data: { publicReportingEnabled: !group.publicReportingEnabled } }
+        { groupSlug: slug, data: { publicReportingEnabled: enabling } }
       );
-      toast({ title: group.publicReportingEnabled ? "Public reporting disabled" : "Public reporting enabled" });
+      await queryClient.invalidateQueries({ queryKey: getGetGroupQueryKey(slug) });
+      toast({ title: enabling ? "Public reporting enabled" : "Public reporting disabled" });
     } finally {
       setToggling(false);
     }
