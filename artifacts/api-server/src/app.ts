@@ -6,6 +6,7 @@ import fs from "fs";
 import router from "./routes";
 import { createSessionMiddleware } from "./lib/session";
 import { logError } from "./lib/logError";
+import { ogRendererMiddleware } from "./lib/ogRenderer";
 
 const app: Express = express();
 
@@ -45,6 +46,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(createSessionMiddleware());
 
 app.use("/api", router);
+
+// Intercept social media crawlers and return OG meta HTML
+// Must be before static file serving so Facebook/Twitter get proper previews
+app.use(ogRendererMiddleware());
 
 // Serve React frontend in production
 if (isProduction) {
