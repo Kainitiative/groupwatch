@@ -4,13 +4,14 @@ import {
   ShieldCheck, Activity, Users, CreditCard, CheckCircle2, Search,
   ExternalLink, ToggleLeft, ToggleRight, AlertTriangle, Settings,
   TrendingUp, Clock, Globe, X, AlertCircle, Trash2, RefreshCw, CalendarPlus,
+  Mail, Send, Loader2,
 } from "lucide-react";
 import { useGetMe } from "@workspace/api-client-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import SidebarLayout from "@/components/layout/SidebarLayout";
 import { useToast } from "@/hooks/use-toast";
 
-type AdminTab = "overview" | "groups" | "users" | "settings" | "errors";
+type AdminTab = "overview" | "groups" | "users" | "settings" | "errors" | "invitations";
 
 type AdminGroup = {
   id: string;
@@ -60,6 +61,29 @@ type ErrorLog = {
   meta: string | null;
   createdAt: string;
 };
+
+type Invitation = {
+  id: string;
+  email: string;
+  contactFirstName: string;
+  groupName: string;
+  groupType: string;
+  status: "pending" | "opened" | "visited" | "claimed" | "expired";
+  openedAt: string | null;
+  visitedAt: string | null;
+  expiresAt: string;
+  createdAt: string;
+};
+
+const INVITE_GROUP_TYPES = [
+  { value: "tidy_towns", label: "Tidy Towns" },
+  { value: "neighbourhood_watch", label: "Neighbourhood Watch / Community Alert" },
+  { value: "hoa", label: "Residents Association" },
+  { value: "angling_club", label: "Fishing / Angling Club" },
+  { value: "sports_club", label: "Sports Club" },
+  { value: "environmental", label: "Community Garden / Environmental" },
+  { value: "other", label: "Other" },
+];
 
 async function adminFetch<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`/api${path}`, {
@@ -113,6 +137,13 @@ export default function SuperAdmin() {
   const [userSearch, setUserSearch] = useState("");
   const [extendingTrial, setExtendingTrial] = useState<string | null>(null);
   const [extendDays, setExtendDays] = useState(14);
+
+  const [inviteForm, setInviteForm] = useState({
+    email: "",
+    contactFirstName: "",
+    groupName: "",
+    groupType: "",
+  });
 
   const { data: revenue, isLoading: revLoading } = useQuery<Revenue>({
     queryKey: ["admin-revenue"],
@@ -211,6 +242,23 @@ export default function SuperAdmin() {
     onError: (e: any) => toast({ variant: "destructive", title: "Failed", description: e.message }),
   });
 
+  const { data: invitationsData, isLoading: invitationsLoading } = useQuery<{ invitations: Invitation[] }>({
+    queryKey: ["admin-invitations"],
+    queryFn: () => adminFetch("/admin/invitations"),
+    enabled: !!user?.isSuperAdmin && activeTab === "invitations",
+  });
+
+  const sendInviteMutation = useMutation({
+    mutationFn: (body: typeof inviteForm) =>
+      adminFetch("/admin/invitations", { method: "POST", body: JSON.stringify(body) }),
+    onSuccess: () => {
+      toast({ title: "Invitation sent" });
+      setInviteForm({ email: "", contactFirstName: "", groupName: "", groupType: "" });
+      qc.invalidateQueries({ queryKey: ["admin-invitations"] });
+    },
+    onError: (e: any) => toast({ variant: "destructive", title: "Failed to send", description: e.message }),
+  });
+
   const filteredGroups = (groupsData?.groups ?? []).filter(g => {
     if (!groupSearch) return true;
     const q = groupSearch.toLowerCase();
@@ -262,6 +310,7 @@ export default function SuperAdmin() {
     { id: "users", label: "Users", icon: Users },
     { id: "settings", label: "Platform", icon: Settings },
     { id: "errors", label: "Errors", icon: AlertCircle, badge: errorsData?.total && errorsData.total > 0 ? errorsData.total : undefined },
+    { id: "invitations", label: "Invitations", icon: Mail },
   ];
 
   return (
@@ -777,6 +826,137 @@ export default function SuperAdmin() {
             )}
           </div>
         )}
+        {/* ── INVITATIONS ── */}
+        {activeTab === "invitations" && (
+          <div className="space-y-8">
+            {/* Send form */}
+            <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-5">
+                <Mail className="w-4 h-4 text-emerald-500" />
+                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">Send Invitation</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Contact Email</label>
+                  <input
+                    type="email"
+                    value={inviteForm.email}
+                    onChange={e => setInviteForm(f => ({ ...f, email: e.target.value }))}
+                    placeholder="contact@example.com"
+                    className="w-full h-10 rounded-xl border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Contact First Name</label>
+                  <input
+                    type="text"
+                    value={inviteForm.contactFirstName}
+                    onChange={e => setInviteForm(f => ({ ...f, contactFirstName: e.target.value }))}
+                    placeholder="e.g. Aoife"
+                    className="w-full h-10 rounded-xl border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Group Name</label>
+                  <input
+                    type="text"
+                    value={inviteForm.groupName}
+                    onChange={e => setInviteForm(f => ({ ...f, groupName: e.target.value }))}
+                    placeholder="e.g. Swords Tidy Towns"
+                    className="w-full h-10 rounded-xl border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Group Type</label>
+                  <select
+                    value={inviteForm.groupType}
+                    onChange={e => setInviteForm(f => ({ ...f, groupType: e.target.value }))}
+                    className="w-full h-10 rounded-xl border border-border bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+                  >
+                    <option value="">Select type…</option>
+                    {INVITE_GROUP_TYPES.map(t => (
+                      <option key={t.value} value={t.value}>{t.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  const { email, contactFirstName, groupName, groupType } = inviteForm;
+                  if (!email || !contactFirstName || !groupName || !groupType) {
+                    toast({ variant: "destructive", title: "All four fields are required" });
+                    return;
+                  }
+                  sendInviteMutation.mutate(inviteForm);
+                }}
+                disabled={sendInviteMutation.isPending}
+                className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-50"
+              >
+                {sendInviteMutation.isPending ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Send className="w-4 h-4" />
+                )}
+                Send Invitation
+              </button>
+            </div>
+
+            {/* Invitation log */}
+            <div>
+              <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-3">Invitation Log</h2>
+              <div className="bg-card border border-border/50 rounded-2xl overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-muted/40 border-b border-border/50">
+                      <tr>
+                        {["Group", "Contact", "Type", "Sent", "Status"].map((h, i) => (
+                          <th key={h} className={`px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider ${i >= 3 ? "text-right" : "text-left"}`}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border/30">
+                      {invitationsLoading ? (
+                        <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">Loading…</td></tr>
+                      ) : !invitationsData?.invitations?.length ? (
+                        <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">No invitations sent yet</td></tr>
+                      ) : (invitationsData.invitations).map(inv => {
+                        const statusStyles: Record<string, string> = {
+                          pending: "bg-slate-100 text-slate-600 border border-slate-300",
+                          opened: "bg-blue-500/15 text-blue-700 border border-blue-300",
+                          visited: "bg-amber-500/15 text-amber-700 border border-amber-300",
+                          claimed: "bg-emerald-500/15 text-emerald-700 border border-emerald-300",
+                          expired: "bg-red-500/15 text-red-600 border border-red-300",
+                        };
+                        const typeLabel = INVITE_GROUP_TYPES.find(t => t.value === inv.groupType)?.label ?? inv.groupType;
+                        return (
+                          <tr key={inv.id} className="hover:bg-muted/20 transition-colors">
+                            <td className="px-4 py-3">
+                              <p className="font-medium text-foreground">{inv.groupName}</p>
+                            </td>
+                            <td className="px-4 py-3 text-xs text-muted-foreground">
+                              <p>{inv.contactFirstName}</p>
+                              <p className="text-muted-foreground/70">{inv.email}</p>
+                            </td>
+                            <td className="px-4 py-3 text-xs text-muted-foreground">{typeLabel}</td>
+                            <td className="px-4 py-3 text-xs text-muted-foreground text-right">
+                              {format(new Date(inv.createdAt), "dd MMM yyyy")}
+                            </td>
+                            <td className="px-4 py-3 text-right">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusStyles[inv.status] ?? statusStyles.expired}`}>
+                                {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </SidebarLayout>
   );

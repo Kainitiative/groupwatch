@@ -6,6 +6,7 @@ import {
   subscriptionsTable,
   setupProgressTable,
   incidentTypesTable,
+  invitationsTable,
 } from "@workspace/db";
 import { eq, count, and } from "drizzle-orm";
 import { requireAuth } from "../lib/session";
@@ -71,7 +72,7 @@ const DEFAULT_INCIDENT_TYPES: Record<string, string[]> = {
 const router = Router();
 
 router.post("/groups", requireAuth, async (req, res): Promise<void> => {
-  const { name, slug, groupType, description, website, contactEmail } = req.body;
+  const { name, slug, groupType, description, website, contactEmail, inviteToken } = req.body;
 
   if (!name || !slug || !groupType) {
     res.status(422).json({ error: "Name, slug and group type are required" });
@@ -111,6 +112,32 @@ router.post("/groups", requireAuth, async (req, res): Promise<void> => {
         .where(eq(setupProgressTable.groupId, group.id));
     } catch (seedErr) {
       console.warn("[groups] incident type seeding failed (non-fatal):", seedErr);
+    }
+  }
+
+  if (inviteToken && typeof inviteToken === "string") {
+    const now = new Date();
+    const [inv] = await db
+      .select()
+      .from(invitationsTable)
+      .where(eq(invitationsTable.token, inviteToken))
+      .limit(1);
+
+    if (
+      inv &&
+      inv.status !== "claimed" &&
+      inv.status !== "expired" &&
+      inv.expiresAt > now
+    ) {
+      const sixMonths = new Date(now.getTime() + 180 * 24 * 60 * 60 * 1000);
+      await db
+        .update(subscriptionsTable)
+        .set({ trialEndsAt: sixMonths })
+        .where(eq(subscriptionsTable.groupId, group.id));
+      await db
+        .update(invitationsTable)
+        .set({ status: "claimed", claimedByGroupId: group.id })
+        .where(eq(invitationsTable.id, inv.id));
     }
   }
 

@@ -2,7 +2,7 @@ import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, Gift } from "lucide-react";
 import { useCreateGroup, useGetMe } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -31,13 +31,14 @@ const createGroupSchema = z.object({
 type CreateGroupFormValues = z.infer<typeof createGroupSchema>;
 
 export default function CreateGroup() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const createMutation = useCreateGroup();
-  
-  // ensure auth
+
   useGetMe();
+
+  const inviteToken = new URLSearchParams(window.location.search).get("invite") ?? "";
 
   const form = useForm<CreateGroupFormValues>({
     resolver: zodResolver(createGroupSchema),
@@ -65,28 +66,33 @@ export default function CreateGroup() {
 
   const onSubmit = async (data: CreateGroupFormValues) => {
     try {
-      // clean empty strings to undefined
-      const cleanData = {
+      const cleanData: Record<string, unknown> = {
         ...data,
         website: data.website || undefined,
         contactEmail: data.contactEmail || undefined,
         description: data.description || undefined,
       };
 
-      const result = await createMutation.mutateAsync({ data: cleanData });
-      
+      if (inviteToken) {
+        cleanData.inviteToken = inviteToken;
+      }
+
+      const result = await createMutation.mutateAsync({ data: cleanData as Parameters<typeof createMutation.mutateAsync>[0]["data"] });
+
       toast({
         title: "Group created successfully!",
-        description: "Your 1-month free trial has started.",
+        description: inviteToken
+          ? "Your 6-month free trial has been applied."
+          : "Your 1-month free trial has started.",
       });
-      
+
       queryClient.invalidateQueries({ queryKey: ["/api/users/me/groups"] });
       setLocation(`/g/${result.slug}/settings`);
-    } catch (error: any) {
+    } catch (err) {
       toast({
         variant: "destructive",
         title: "Creation failed",
-        description: error.message || "Failed to create group. The slug might already be taken.",
+        description: err instanceof Error ? err.message : "Failed to create group. The slug might already be taken.",
       });
     }
   };
@@ -101,15 +107,27 @@ export default function CreateGroup() {
         <div className="mb-8">
           <h1 className="text-3xl font-display font-bold text-foreground">Register your Group</h1>
           <p className="text-muted-foreground mt-2">
-            Set up your organization's workspace. You'll get a 1-month free trial, no credit card required.
+            Set up your organization's workspace.{" "}
+            {inviteToken
+              ? "Your 6-month free trial will be applied automatically."
+              : "You'll get a 1-month free trial, no credit card required."}
           </p>
         </div>
+
+        {inviteToken && (
+          <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 flex items-center gap-3">
+            <Gift className="w-5 h-5 text-emerald-600 shrink-0" />
+            <p className="text-sm font-semibold text-emerald-800">
+              6 months free — no credit card needed. Applied when you create your group.
+            </p>
+          </div>
+        )}
 
         <Card className="rounded-2xl border-border/50 shadow-xl shadow-black/5 overflow-hidden">
           <CardContent className="p-6 sm:p-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                
+
                 <FormField
                   control={form.control}
                   name="name"
@@ -117,11 +135,11 @@ export default function CreateGroup() {
                     <FormItem>
                       <FormLabel className="text-base font-semibold">Group Name</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="e.g. River Trust Ireland" 
-                          {...field} 
+                        <Input
+                          placeholder="e.g. River Trust Ireland"
+                          {...field}
                           onChange={handleNameChange}
-                          className="h-12 rounded-xl bg-background" 
+                          className="h-12 rounded-xl bg-background"
                         />
                       </FormControl>
                       <FormMessage />
@@ -141,10 +159,10 @@ export default function CreateGroup() {
                             <span className="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-input bg-muted text-muted-foreground sm:text-sm">
                               groupwatchplatform.com/g/
                             </span>
-                            <Input 
-                              placeholder="river-trust" 
-                              {...field} 
-                              className="h-12 rounded-l-none rounded-r-xl bg-background" 
+                            <Input
+                              placeholder="river-trust"
+                              {...field}
+                              className="h-12 rounded-l-none rounded-r-xl bg-background"
                             />
                           </div>
                         </FormControl>
@@ -187,10 +205,10 @@ export default function CreateGroup() {
                     <FormItem>
                       <FormLabel className="text-base font-semibold">Description (Optional)</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Tell us a bit about your organisation..." 
-                          {...field} 
-                          className="rounded-xl bg-background min-h-[100px] resize-y" 
+                        <Textarea
+                          placeholder="Tell us a bit about your organisation..."
+                          {...field}
+                          className="rounded-xl bg-background min-h-[100px] resize-y"
                         />
                       </FormControl>
                       <FormMessage />
@@ -229,13 +247,13 @@ export default function CreateGroup() {
                 </div>
 
                 <div className="pt-4 border-t border-border/50">
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     className="w-full md:w-auto h-12 px-8 text-base font-semibold bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl shadow-lg shadow-accent/20 transition-all"
                     disabled={createMutation.isPending}
                   >
                     {createMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin mr-2" /> : null}
-                    Create Group & Start Trial
+                    {inviteToken ? "Create Group & Claim 6 Months Free" : "Create Group & Start Trial"}
                   </Button>
                 </div>
               </form>

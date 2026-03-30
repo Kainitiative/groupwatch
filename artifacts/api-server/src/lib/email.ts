@@ -91,6 +91,80 @@ export async function sendMemberInviteEmail(
   });
 }
 
+const GROUP_TYPE_PARAGRAPHS: Record<string, string> = {
+  tidy_towns:
+    "Document dumping, graffiti, and environmental issues as they happen. Build an evidence record you can present directly to your council.",
+  neighbourhood_watch:
+    "Log suspicious activity, share updates with your responder network, and keep a timestamped record for Garda liaison meetings.",
+  hoa:
+    "Give residents a simple way to report maintenance issues, anti-social behaviour, and safety concerns — all tracked in one place.",
+  angling_club:
+    "Record poaching incidents, log water quality issues, and track access problems on your waters with photo evidence and GPS location.",
+  sports_club:
+    "Report vandalism, equipment theft, and grounds issues the moment they happen, with photo evidence and an automatic audit trail.",
+  environmental:
+    "Log damage, theft, and safety hazards with photos and location — and keep your whole committee informed automatically.",
+  other:
+    "Keep every community incident in one place with photo evidence, timestamps, and automatic audit trails — so nothing gets lost.",
+};
+
+export async function sendOutreachInvitationEmail(
+  email: string,
+  contactFirstName: string,
+  groupName: string,
+  groupType: string,
+  claimUrl: string,
+  pixelUrl: string
+): Promise<void> {
+  if (!process.env.SMTP_USER) return;
+
+  const typeParagraph =
+    GROUP_TYPE_PARAGRAPHS[groupType] ?? GROUP_TYPE_PARAGRAPHS.other;
+
+  const subject = `An invitation for ${groupName} — 6 months free`;
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head><meta charset="utf-8"></head>
+    <body style="font-family:sans-serif;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
+      <p style="margin:0 0 20px;">Hi ${contactFirstName},</p>
+
+      <p style="margin:0 0 20px;font-size:16px;font-weight:600;color:#111;">
+        Stop chasing reports across WhatsApp and paper — manage everything in one place.
+      </p>
+
+      <p style="margin:0 0 20px;">${typeParagraph}</p>
+
+      <p style="margin:0 0 20px;">
+        GroupWatch is already being tested by community groups across Ireland.
+      </p>
+
+      <p style="margin:0 0 24px;">
+        We'd like to invite <strong>${groupName}</strong> to join them free for
+        6 months — no credit card, no commitment.
+      </p>
+
+      <a href="${claimUrl}"
+         style="display:inline-block;background:#10b981;color:#ffffff;padding:14px 28px;
+                text-decoration:none;border-radius:8px;font-weight:700;font-size:15px;">
+        Claim your 6 months free →
+      </a>
+
+      <p style="margin:32px 0 0;color:#555;font-size:14px;">The GroupWatch Team</p>
+      <img src="${pixelUrl}" width="1" height="1" alt="" style="display:block;width:1px;height:1px;" />
+    </body>
+    </html>
+  `;
+
+  await transporter.sendMail({
+    from: `"${APP_NAME}" <${FROM_ADDRESS}>`,
+    to: email,
+    subject,
+    html,
+  });
+}
+
 export async function sendReportNotificationEmail(
   email: string,
   responderName: string,

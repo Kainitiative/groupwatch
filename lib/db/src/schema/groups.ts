@@ -62,3 +62,20 @@ export type Subscription = typeof subscriptionsTable.$inferSelect;
 export const insertSetupProgressSchema = createInsertSchema(setupProgressTable).omit({ id: true, updatedAt: true });
 export type InsertSetupProgress = z.infer<typeof insertSetupProgressSchema>;
 export type SetupProgress = typeof setupProgressTable.$inferSelect;
+
+export const invitationsTable = pgTable("invitations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull(),
+  contactFirstName: text("contact_first_name").notNull(),
+  groupName: text("group_name").notNull(),
+  groupType: text("group_type").notNull(),
+  token: text("token").notNull().unique(),
+  status: text("status", { enum: ["pending", "opened", "visited", "claimed", "expired"] }).notNull().default("pending"),
+  claimedByGroupId: uuid("claimed_by_group_id").references(() => groupsTable.id, { onDelete: "set null" }),
+  openedAt: timestamp("opened_at", { withTimezone: true }),
+  visitedAt: timestamp("visited_at", { withTimezone: true }),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type Invitation = typeof invitationsTable.$inferSelect;

@@ -8,6 +8,7 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
+import JoinInvite from "@/pages/auth/JoinInvite";
 import ForgotPassword from "@/pages/auth/ForgotPassword";
 import ResetPassword from "@/pages/auth/ResetPassword";
 import Dashboard from "@/pages/Dashboard";
@@ -66,6 +67,7 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/join" component={JoinInvite} />
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/reset-password/:token" component={ResetPassword} />
 

@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -25,7 +25,9 @@ export default function Register() {
   const queryClient = useQueryClient();
   const registerMutation = useRegister();
 
-  const nextPath = new URLSearchParams(location.split("?")[1] ?? "").get("next") || "/dashboard";
+  const params = new URLSearchParams(window.location.search);
+  const inviteToken = params.get("invite") ?? "";
+  const nextPath = params.get("next") || (inviteToken ? `/create-group?invite=${inviteToken}` : "/dashboard");
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -37,11 +39,11 @@ export default function Register() {
       await registerMutation.mutateAsync({ data });
       queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
       setLocation(nextPath);
-    } catch (error: any) {
+    } catch (err) {
       toast({
         variant: "destructive",
         title: "Registration failed",
-        description: error.message || "An error occurred during registration.",
+        description: err instanceof Error ? err.message : "An error occurred during registration.",
       });
     }
   };
@@ -50,7 +52,7 @@ export default function Register() {
     <PublicLayout>
       <div className="min-h-[calc(100vh-80px)] flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-background relative overflow-hidden">
         <div className="absolute top-0 w-full h-96 bg-gradient-to-b from-accent/5 to-transparent -z-10" />
-        
+
         <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
           <h2 className="mt-6 text-3xl font-display font-extrabold text-foreground tracking-tight">
             Create an account
@@ -61,6 +63,15 @@ export default function Register() {
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+          {inviteToken && (
+            <div className="mb-4 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 flex items-center gap-3">
+              <Gift className="w-5 h-5 text-emerald-600 shrink-0" />
+              <p className="text-sm font-semibold text-emerald-800">
+                6 months free — applied automatically on group creation
+              </p>
+            </div>
+          )}
+
           <div className="bg-card py-8 px-4 shadow-2xl shadow-black/5 sm:rounded-2xl sm:px-10 border border-border/50 relative overflow-hidden">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
@@ -106,8 +117,8 @@ export default function Register() {
                   )}
                 />
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full h-12 text-base font-semibold bg-accent hover:bg-accent/90 text-accent-foreground rounded-xl shadow-lg shadow-accent/20 transition-all"
                   disabled={registerMutation.isPending}
                 >
