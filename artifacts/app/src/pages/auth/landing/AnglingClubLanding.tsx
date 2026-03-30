@@ -103,23 +103,22 @@ export default function AnglingClubLanding({ token, groupName, contactFirstName 
             <span className="text-emerald-400">on every stretch of water.</span>
           </h1>
 
-          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mb-4 leading-relaxed">
+          <p className="text-slate-300 text-lg sm:text-xl max-w-2xl mb-2 leading-relaxed">
             Hi <strong className="text-white">{contactFirstName}</strong> — GroupWatch gives{" "}
-            <strong className="text-white">{groupName}</strong> a private platform where every member
-            can report poaching, pollution, and fish kills in seconds — with GPS, photos, and instant
-            alerts to every officer.
+            <strong className="text-white">{groupName}</strong> a private system where members can
+            report poaching, pollution, and fish kills in seconds.
           </p>
 
-          <p className="text-emerald-400 font-semibold text-base mb-10">
-            6 months completely free. No credit card needed.
+          <p className="text-slate-400 text-base max-w-2xl mb-10">
+            Turn every member into a set of eyes on the water.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 mb-5">
             <Link
               href={ctaHref}
               className="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-base py-4 px-8 rounded-xl transition-all shadow-xl shadow-emerald-500/30 hover:shadow-emerald-400/40 hover:-translate-y-0.5"
             >
-              Claim your 6 months free →
+              Set up your club (takes 2 minutes) →
             </Link>
             <a
               href="#features"
@@ -128,6 +127,25 @@ export default function AnglingClubLanding({ token, groupName, contactFirstName 
               See how it works
             </a>
           </div>
+
+          <p className="text-emerald-400 font-semibold text-sm mb-6">
+            6 months free — no card needed
+          </p>
+
+          <ol className="flex flex-col sm:flex-row gap-3 sm:gap-6">
+            {[
+              "Create your club",
+              "Invite your members",
+              "Start reporting immediately",
+            ].map((step, i) => (
+              <li key={step} className="flex items-center gap-2 text-slate-400 text-sm">
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold shrink-0">
+                  {i + 1}
+                </span>
+                {step}
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -244,8 +262,11 @@ export default function AnglingClubLanding({ token, groupName, contactFirstName 
             <div className="inline-flex items-center justify-center w-16 h-16 bg-emerald-500/20 rounded-2xl mb-6 mx-auto">
               <Fish className="w-8 h-8 text-emerald-400" />
             </div>
+            <p className="text-emerald-400 text-sm font-semibold uppercase tracking-wider mb-3">
+              This invite is reserved for {groupName}
+            </p>
             <h2 className="text-3xl font-bold text-white mb-3">
-              6 months free — just for {groupName}
+              Activate it to unlock your 6 months free
             </h2>
             <p className="text-slate-400 mb-2">
               Your exclusive invitation unlocks a full 6-month free trial.
