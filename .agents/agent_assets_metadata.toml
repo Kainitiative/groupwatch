@@ -1,5 +1,22 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "hpz-P4ut-Im7CqGucCQII"
+uri = "file://artifacts/app/public/images/fishing-hero.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "pe_uqUBaJuRyU_52FrmtG"
+uri = "file://artifacts/app/public/images/fishing-map.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "DOr0GXNgR4AS9OzLojQcO"
+uri = "file://artifacts/app/public/images/fishing-community.png"
+type = "image"
+title = "generated_image"
 
 [[outputs]]
 id = "BLpUrZz9zzzw7-UY4RU4r"

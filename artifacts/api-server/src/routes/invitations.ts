@@ -207,6 +207,7 @@ router.get("/invitations/:token/validate", async (req, res): Promise<void> => {
     valid: true,
     groupName: inv.groupName,
     contactFirstName: inv.contactFirstName,
+    groupType: inv.groupType,
   });
 });
 
