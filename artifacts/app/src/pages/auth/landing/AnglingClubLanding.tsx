@@ -215,16 +215,16 @@ export default function AnglingClubLanding({ token, groupName, contactFirstName 
               <span className="text-emerald-300 text-xs font-medium uppercase tracking-wider">Real-time visibility</span>
             </div>
             <h2 className="text-3xl font-bold text-white mb-4">
-              Every member becomes a warden
+              Give your waterkeepers real-time visibility through members and the public
             </h2>
             <p className="text-slate-400 leading-relaxed mb-6">
-              Your club's waterways are too vast for any one person to watch.
-              GroupWatch turns every member into a trusted reporter — with their phone,
-              they can log what they see in under a minute, and your committee sees it instantly.
+              Your waterkeepers can't be everywhere at once. GroupWatch extends their reach
+              by letting every club member — and even the public — log what they see on the water.
+              Every report lands instantly on the waterkeeper's dashboard, with GPS, photos, and a timestamp.
             </p>
             <p className="text-slate-400 leading-relaxed">
-              Officers get a clean dashboard with every sighting mapped and timestamped.
-              No more piecing together WhatsApp screenshots the night before an AGM.
+              No more relying on a phone call that comes too late. Your waterkeepers see it
+              as it happens and can act before the situation gets worse.
             </p>
           </div>
           <div className="flex-1 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl shadow-black/50">
