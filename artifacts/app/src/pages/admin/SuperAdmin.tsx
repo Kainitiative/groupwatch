@@ -847,7 +847,7 @@ export default function SuperAdmin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Contact First Name</label>
+                  <label className="block text-xs font-semibold text-muted-foreground mb-1.5">Contact First Name <span className="font-normal opacity-60">(optional)</span></label>
                   <input
                     type="text"
                     value={inviteForm.contactFirstName}
@@ -882,9 +882,9 @@ export default function SuperAdmin() {
               </div>
               <button
                 onClick={() => {
-                  const { email, contactFirstName, groupName, groupType } = inviteForm;
-                  if (!email || !contactFirstName || !groupName || !groupType) {
-                    toast({ variant: "destructive", title: "All four fields are required" });
+                  const { email, groupName, groupType } = inviteForm;
+                  if (!email || !groupName || !groupType) {
+                    toast({ variant: "destructive", title: "Email, group name and type are required" });
                     return;
                   }
                   sendInviteMutation.mutate(inviteForm);

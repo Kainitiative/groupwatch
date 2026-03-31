@@ -110,7 +110,6 @@ const GROUP_TYPE_PARAGRAPHS: Record<string, string> = {
 
 export async function sendOutreachInvitationEmail(
   email: string,
-  contactFirstName: string,
   groupName: string,
   groupType: string,
   claimUrl: string,
@@ -128,11 +127,9 @@ export async function sendOutreachInvitationEmail(
     <html>
     <head><meta charset="utf-8"></head>
     <body style="font-family:sans-serif;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
-      <p style="margin:0 0 20px;">Hi ${contactFirstName},</p>
-
       <p style="margin:0 0 20px;">
-        My name is Patrick Ryan, and I've developed a platform specifically for angling clubs,
-        societies and organisations across Ireland. GroupWatch gives your waterkeepers real-time
+        Hi, my name is Patrick Ryan, and I've developed a platform specifically for angling clubs,
+        societies and organisations. GroupWatch gives your waterkeepers real-time
         visibility over what's happening on your waters — illegal fishing, poaching, pollution,
         and other incidents — reported directly by your members and the public the moment they
         see something.
@@ -145,7 +142,7 @@ export async function sendOutreachInvitationEmail(
       <p style="margin:0 0 20px;">${typeParagraph}</p>
 
       <p style="margin:0 0 20px;">
-        GroupWatch is already being tested by community groups across Ireland.
+        GroupWatch is already being used by community groups to protect their waters and manage incidents in real time.
       </p>
 
       <p style="margin:0 0 24px;">

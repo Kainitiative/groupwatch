@@ -30,12 +30,13 @@ router.post("/admin/invitations", requireAuth, async (req, res): Promise<void> =
   if (!await requireSuperAdmin(req, res)) return;
 
   const { email, contactFirstName, groupName, groupType } = req.body;
-  if (!email || !contactFirstName || !groupName || !groupType) {
-    res.status(422).json({ error: "email, contactFirstName, groupName and groupType are required" });
+  if (!email || !groupName || !groupType) {
+    res.status(422).json({ error: "email, groupName and groupType are required" });
     return;
   }
 
   const emailLower = String(email).toLowerCase().trim();
+  const firstName = contactFirstName ? String(contactFirstName).trim() : "";
 
   const existing = await db
     .select()
@@ -61,7 +62,7 @@ router.post("/admin/invitations", requireAuth, async (req, res): Promise<void> =
     await db
       .update(invitationsTable)
       .set({
-        contactFirstName: String(contactFirstName).trim(),
+        contactFirstName: firstName,
         groupName: String(groupName).trim(),
         groupType: String(groupType).trim(),
         status: "pending",
@@ -77,7 +78,7 @@ router.post("/admin/invitations", requireAuth, async (req, res): Promise<void> =
       .insert(invitationsTable)
       .values({
         email: emailLower,
-        contactFirstName: String(contactFirstName).trim(),
+        contactFirstName: firstName,
         groupName: String(groupName).trim(),
         groupType: String(groupType).trim(),
         token,
@@ -93,7 +94,6 @@ router.post("/admin/invitations", requireAuth, async (req, res): Promise<void> =
 
   await sendOutreachInvitationEmail(
     emailLower,
-    String(contactFirstName).trim(),
     String(groupName).trim(),
     String(groupType).trim(),
     claimUrl,
