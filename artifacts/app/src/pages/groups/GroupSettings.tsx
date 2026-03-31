@@ -143,7 +143,7 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
 
       {expanded && (
         <div className="px-5 pb-5 space-y-4 bg-slate-950/40">
-          <div className="grid grid-cols-2 gap-3 pt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             <div>
               <label className="text-xs text-slate-400 mb-1.5 block font-medium">Role</label>
               <select
@@ -170,7 +170,7 @@ function MemberRow({ member, groupSlug, currentUserId }: { member: MemberData; g
           {role !== "member" && (
             <div>
               <p className="text-xs text-slate-400 mb-2 font-medium">Notification & Access Permissions</p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {[
                   { key: "canReceiveNotifications", icon: Bell, label: "Receive push notifications" },
                   { key: "canViewDashboard", icon: Eye, label: "View reports dashboard" },
@@ -567,8 +567,19 @@ export default function GroupSettings() {
 
         <SetupChecklist groupSlug={slug} />
 
-        {/* Tabs */}
-        <div className="flex gap-1 bg-slate-900 rounded-xl p-1 mb-8 overflow-x-auto">
+        {/* Tabs — dropdown on mobile, scrollable pill bar on desktop */}
+        <div className="sm:hidden mb-6">
+          <select
+            value={activeTab}
+            onChange={(e) => setActiveTab(e.target.value as Tab)}
+            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+          >
+            {tabs.map((tab) => (
+              <option key={tab.id} value={tab.id}>{tab.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="hidden sm:flex gap-1 bg-slate-900 rounded-xl p-1 mb-8 overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -609,7 +620,7 @@ export default function GroupSettings() {
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm text-slate-400 mb-1">Website</label>
                     <input
@@ -816,7 +827,7 @@ export default function GroupSettings() {
                     <div key={c.id} className="px-5 py-4">
                       {editingContactId === c.id ? (
                         <div className="space-y-3">
-                          <div className="grid grid-cols-2 gap-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input value={editContact.name} onChange={e => setEditContact(p => ({ ...p, name: e.target.value }))} placeholder="Name *" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
                             <input value={editContact.organisation} onChange={e => setEditContact(p => ({ ...p, organisation: e.target.value }))} placeholder="Organisation" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
                             <input value={editContact.role} onChange={e => setEditContact(p => ({ ...p, role: e.target.value }))} placeholder="Role / Title" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
@@ -870,7 +881,7 @@ export default function GroupSettings() {
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
               <h4 className="text-sm font-semibold text-white mb-3">Add Contact</h4>
               <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <input value={newContact.name} onChange={e => setNewContact(p => ({ ...p, name: e.target.value }))} placeholder="Name *" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
                   <input value={newContact.organisation} onChange={e => setNewContact(p => ({ ...p, organisation: e.target.value }))} placeholder="Organisation" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
                   <input value={newContact.role} onChange={e => setNewContact(p => ({ ...p, role: e.target.value }))} placeholder="Role / Title" className="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
