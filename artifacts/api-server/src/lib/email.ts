@@ -130,6 +130,14 @@ export async function sendOutreachInvitationEmail(
     <body style="font-family:sans-serif;color:#1a1a1a;max-width:560px;margin:0 auto;padding:24px 16px;">
       <p style="margin:0 0 20px;">Hi ${contactFirstName},</p>
 
+      <p style="margin:0 0 20px;">
+        My name is Patrick Ryan, and I've developed a platform specifically for angling clubs,
+        societies and organisations across Ireland. GroupWatch gives your waterkeepers real-time
+        visibility over what's happening on your waters — illegal fishing, poaching, pollution,
+        and other incidents — reported directly by your members and the public the moment they
+        see something.
+      </p>
+
       <p style="margin:0 0 20px;font-size:16px;font-weight:600;color:#111;">
         Stop chasing reports across WhatsApp and paper — manage everything in one place.
       </p>
