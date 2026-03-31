@@ -60,10 +60,12 @@ if (isProduction) {
   if (fs.existsSync(staticDir)) {
     // Service worker and workbox files must NEVER be cached by the browser —
     // if the browser caches sw.js the user will never receive updates.
-    app.get(/\/(sw\.js|workbox-[^/]+\.js)$/, (req, res, next) => {
+    // We serve these directly (bypassing express.static) so our no-cache
+    // headers cannot be overwritten by express.static's maxAge setting.
+    app.get(/\/(sw\.js|workbox-[^/]+\.js)$/, (req, res) => {
       res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
       res.setHeader("Pragma", "no-cache");
-      next();
+      res.sendFile(path.join(staticDir, req.path));
     });
 
     // Hashed assets (JS/CSS bundles) get long-lived cache
