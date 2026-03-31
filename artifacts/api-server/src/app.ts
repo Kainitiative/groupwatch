@@ -58,8 +58,17 @@ app.use(ogRendererMiddleware());
 if (isProduction) {
   const staticDir = path.resolve(process.cwd(), "public");
   if (fs.existsSync(staticDir)) {
+    // Service worker and workbox files must NEVER be cached by the browser —
+    // if the browser caches sw.js the user will never receive updates.
+    app.get(/\/(sw\.js|workbox-[^/]+\.js)$/, (req, res, next) => {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      next();
+    });
+
     // Hashed assets (JS/CSS bundles) get long-lived cache
     app.use(express.static(staticDir, { maxAge: "7d", immutable: true }));
+
     // index.html must never be cached — it references the hashed bundles
     app.get("/{*path}", (_req, res) => {
       res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
