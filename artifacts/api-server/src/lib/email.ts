@@ -99,7 +99,7 @@ const GROUP_TYPE_PARAGRAPHS: Record<string, string> = {
   hoa:
     "Give residents a simple way to report maintenance issues, anti-social behaviour, and safety concerns — all tracked in one place.",
   angling_club:
-    "Record poaching incidents, log water quality issues, and track access problems on your waters with photo evidence and GPS location.",
+    "Give your members and the public a direct line to your waterkeepers — reports come in instantly, with photos and GPS location. Add a report button to your club website or social media, share the link on WhatsApp, and manage everything from one simple dashboard.",
   sports_club:
     "Report vandalism, equipment theft, and grounds issues the moment they happen, with photo evidence and an automatic audit trail.",
   environmental:
